@@ -1,9 +1,7 @@
 import { IValidator } from './IValidator';
 import { sqlValidator } from './SqlValidator';
+import { pySparkValidator } from './PySparkValidator';
 import { Question, isDebugQuestion } from '@/types';
-
-// Placeholder for future validators
-// import { pysparkValidator } from './PySparkValidator';
 
 export function getValidator(question: Question): IValidator {
   // For debug questions, use validator based on language
@@ -12,7 +10,7 @@ export function getValidator(question: Question): IValidator {
       case 'sql':
         return sqlValidator;
       case 'pyspark':
-        throw new Error('PySpark validator not yet implemented');
+        return pySparkValidator;
       default:
         return sqlValidator;
     }
@@ -23,7 +21,7 @@ export function getValidator(question: Question): IValidator {
     case 'sql':
       return sqlValidator;
     case 'pyspark':
-      throw new Error('PySpark validator not yet implemented');
+      return pySparkValidator;
     default:
       return sqlValidator;
   }

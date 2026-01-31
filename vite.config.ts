@@ -10,6 +10,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ['@duckdb/duckdb-wasm'],
+    exclude: ['@duckdb/duckdb-wasm', 'pyodide'],
   },
+  assetsInclude: ['**/*.py'],
 })

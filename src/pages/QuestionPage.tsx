@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuestionStore } from '@/stores/questionStore';
 import { useEditorStore } from '@/stores/editorStore';
-import { useDuckDB } from '@/hooks/useDuckDB';
-import { useQuery } from '@/hooks/useQuery';
+import { useExecutor } from '@/hooks/useExecutor';
 import { useValidation } from '@/hooks/useValidation';
 import { QuestionViewLayout } from '@/components/question-view/QuestionViewLayout';
 import { SkillType, getInitialCode } from '@/types';
@@ -16,8 +15,15 @@ export function QuestionPage() {
   const { skill, id } = useParams<{ skill: string; id: string }>();
   const { currentQuestion, isLoading, error, fetchQuestion } = useQuestionStore();
   const { code, setCode, clearCode } = useEditorStore();
-  const { isInitialized, isLoading: isDuckDBLoading, error: duckDBError } = useDuckDB();
-  const { result, isExecuting, executeQuery, clearResult } = useQuery();
+  const {
+    isInitialized,
+    isLoading: isExecutorLoading,
+    error: executorError,
+    result,
+    isExecuting,
+    executeCode,
+    clearResult,
+  } = useExecutor(currentQuestion);
   const { validationResult, isValidating, validate, clearValidation } = useValidation();
 
   useEffect(() => {
@@ -42,7 +48,7 @@ export function QuestionPage() {
   const handleRun = async () => {
     if (!currentQuestion || !isInitialized) return;
     clearValidation();
-    await executeQuery(code, currentQuestion.tables);
+    await executeCode(code, currentQuestion.tables);
   };
 
   const handleSubmit = async () => {
@@ -64,24 +70,28 @@ export function QuestionPage() {
     );
   }
 
-  if (isLoading || isDuckDBLoading) {
+  if (isLoading || isExecutorLoading) {
+    const loadingMessage = isExecutorLoading
+      ? skill === 'pyspark'
+        ? 'Initializing Python engine...'
+        : 'Initializing SQL engine...'
+      : 'Loading question...';
+
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg text-slate-600 mb-2">
-            {isDuckDBLoading ? 'Initializing SQL engine...' : 'Loading question...'}
-          </div>
+          <div className="text-lg text-slate-600 mb-2">{loadingMessage}</div>
           <div className="text-sm text-slate-500">This may take a moment</div>
         </div>
       </div>
     );
   }
 
-  if (error || duckDBError) {
+  if (error || executorError) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg text-red-600 mb-4">{error || duckDBError}</div>
+          <div className="text-lg text-red-600 mb-4">{error || executorError}</div>
           <Link
             to={`/${skill}`}
             className="text-blue-600 hover:text-blue-800 underline"
