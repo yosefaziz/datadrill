@@ -57,7 +57,9 @@ class DuckDBService {
     if (!this.conn) throw new Error('DuckDB not initialized');
 
     try {
-      const finalSql = limit ? `SELECT * FROM (${sql}) LIMIT ${limit}` : sql;
+      // Strip trailing semicolons and whitespace for subquery wrapping
+      const cleanedSql = sql.trim().replace(/;+$/, '');
+      const finalSql = limit ? `SELECT * FROM (${cleanedSql}) LIMIT ${limit}` : cleanedSql;
       const result = await this.conn.query(finalSql);
 
       const columns = result.schema.fields.map((f) => f.name);
