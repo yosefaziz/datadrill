@@ -1,8 +1,13 @@
 import { useQuestionStore } from '@/stores/questionStore';
 import { QuestionCard } from './QuestionCard';
 import { Filters } from './Filters';
+import { SkillType } from '@/types';
 
-export function QuestionList() {
+interface QuestionListProps {
+  skill: SkillType;
+}
+
+export function QuestionList({ skill }: QuestionListProps) {
   const { getFilteredQuestions, isLoading, error } = useQuestionStore();
   const questions = getFilteredQuestions();
 
@@ -32,7 +37,7 @@ export function QuestionList() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {questions.map((question) => (
-            <QuestionCard key={question.id} question={question} />
+            <QuestionCard key={question.id} question={question} skill={skill} />
           ))}
         </div>
       )}

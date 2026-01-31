@@ -1,29 +1,40 @@
 import { create } from 'zustand';
-import { Question, QuestionMeta } from '@/types';
+import { Question, QuestionMeta, SkillType } from '@/types';
 
 // Track the latest request to prevent race conditions
 let latestQuestionRequestId = 0;
 
 interface QuestionState {
-  questions: QuestionMeta[];
+  // Questions by skill
+  questionsBySkill: Record<SkillType, QuestionMeta[]>;
   currentQuestion: Question | null;
+  currentSkill: SkillType | null;
   isLoading: boolean;
   error: string | null;
   filters: {
     difficulty: string | null;
     tag: string | null;
   };
-  fetchQuestions: () => Promise<void>;
-  fetchQuestion: (id: string) => Promise<void>;
+
+  // Actions
+  fetchQuestionsForSkill: (skill: SkillType) => Promise<void>;
+  fetchQuestion: (skill: SkillType, id: string) => Promise<void>;
+  setCurrentSkill: (skill: SkillType | null) => void;
   setDifficultyFilter: (difficulty: string | null) => void;
   setTagFilter: (tag: string | null) => void;
   getFilteredQuestions: () => QuestionMeta[];
   getAllTags: () => string[];
+  getQuestionCountBySkill: (skill: SkillType) => number;
 }
 
 export const useQuestionStore = create<QuestionState>((set, get) => ({
-  questions: [],
+  questionsBySkill: {
+    sql: [],
+    pyspark: [],
+    debug: [],
+  },
   currentQuestion: null,
+  currentSkill: null,
   isLoading: false,
   error: null,
   filters: {
@@ -31,13 +42,19 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     tag: null,
   },
 
-  fetchQuestions: async () => {
-    set({ isLoading: true, error: null });
+  fetchQuestionsForSkill: async (skill: SkillType) => {
+    set({ isLoading: true, error: null, currentSkill: skill });
     try {
-      const response = await fetch('/questions/index.json');
+      const response = await fetch(`/questions/${skill}/index.json`);
       if (!response.ok) throw new Error('Failed to fetch questions');
       const questions = await response.json();
-      set({ questions, isLoading: false });
+      set((state) => ({
+        questionsBySkill: {
+          ...state.questionsBySkill,
+          [skill]: questions,
+        },
+        isLoading: false,
+      }));
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : 'Failed to load questions',
@@ -46,11 +63,11 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     }
   },
 
-  fetchQuestion: async (id: string) => {
+  fetchQuestion: async (skill: SkillType, id: string) => {
     const requestId = ++latestQuestionRequestId;
-    set({ isLoading: true, error: null, currentQuestion: null });
+    set({ isLoading: true, error: null, currentQuestion: null, currentSkill: skill });
     try {
-      const response = await fetch(`/questions/${id}.json`);
+      const response = await fetch(`/questions/${skill}/${id}.json`);
       if (!response.ok) throw new Error('Failed to fetch question');
       const question = await response.json();
       // Only update state if this is still the latest request
@@ -68,6 +85,10 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     }
   },
 
+  setCurrentSkill: (skill) => {
+    set({ currentSkill: skill });
+  },
+
   setDifficultyFilter: (difficulty) => {
     set((state) => ({
       filters: { ...state.filters, difficulty },
@@ -81,7 +102,10 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
   },
 
   getFilteredQuestions: () => {
-    const { questions, filters } = get();
+    const { questionsBySkill, currentSkill, filters } = get();
+    if (!currentSkill) return [];
+
+    const questions = questionsBySkill[currentSkill];
     return questions.filter((q) => {
       if (filters.difficulty && q.difficulty !== filters.difficulty) return false;
       if (filters.tag && !q.tags.includes(filters.tag)) return false;
@@ -90,9 +114,17 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
   },
 
   getAllTags: () => {
-    const { questions } = get();
+    const { questionsBySkill, currentSkill } = get();
+    if (!currentSkill) return [];
+
+    const questions = questionsBySkill[currentSkill];
     const tags = new Set<string>();
     questions.forEach((q) => q.tags.forEach((t) => tags.add(t)));
     return Array.from(tags).sort();
+  },
+
+  getQuestionCountBySkill: (skill: SkillType) => {
+    const { questionsBySkill } = get();
+    return questionsBySkill[skill].length;
   },
 }));

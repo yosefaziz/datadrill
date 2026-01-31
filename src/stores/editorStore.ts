@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 
 interface EditorState {
-  sql: string;
-  setSql: (sql: string) => void;
-  clearSql: () => void;
+  code: string;
+  setCode: (code: string) => void;
+  clearCode: () => void;
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
-  sql: '',
-  setSql: (sql) => set({ sql }),
-  clearSql: () => set({ sql: '' }),
+  code: '',
+  setCode: (code) => set({ code }),
+  clearCode: () => set({ code: '' }),
 }));

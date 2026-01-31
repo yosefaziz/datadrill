@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import { QuestionMeta } from '@/types';
+import { QuestionMeta, SkillType } from '@/types';
 
 interface QuestionCardProps {
   question: QuestionMeta;
+  skill: SkillType;
 }
 
 const difficultyColors = {
@@ -11,10 +12,10 @@ const difficultyColors = {
   Hard: 'bg-red-100 text-red-800',
 };
 
-export function QuestionCard({ question }: QuestionCardProps) {
+export function QuestionCard({ question, skill }: QuestionCardProps) {
   return (
     <Link
-      to={`/question/${question.id}`}
+      to={`/${skill}/question/${question.id}`}
       className="block bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-5"
     >
       <div className="flex items-start justify-between gap-4">

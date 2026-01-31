@@ -1,7 +1,7 @@
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { Question, QueryResult, ValidationResult } from '@/types';
+import { Question, QueryResult, ValidationResult, getEditorLanguage } from '@/types';
 import { QuestionDescription } from './QuestionDescription';
-import { SqlEditor } from '@/components/editor/SqlEditor';
+import { CodeEditor } from '@/components/editor/CodeEditor';
 import { OutputPanel } from '@/components/editor/OutputPanel';
 
 interface QuestionViewLayoutProps {
@@ -23,6 +23,8 @@ export function QuestionViewLayout({
   onRun,
   onSubmit,
 }: QuestionViewLayoutProps) {
+  const language = getEditorLanguage(question);
+
   return (
     <div className="flex-1 p-4">
       <PanelGroup direction="horizontal" className="h-full">
@@ -37,7 +39,8 @@ export function QuestionViewLayout({
         <Panel defaultSize={60} minSize={30}>
           <PanelGroup direction="vertical">
             <Panel defaultSize={60} minSize={30}>
-              <SqlEditor
+              <CodeEditor
+                language={language}
                 onRun={onRun}
                 onSubmit={onSubmit}
                 isExecuting={isExecuting}
