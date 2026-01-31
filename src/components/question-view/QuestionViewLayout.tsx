@@ -48,7 +48,7 @@ export function QuestionViewLayout({
             <PanelResizeHandle className="h-2 bg-slate-200 hover:bg-slate-400 transition-colors my-1 rounded" />
 
             <Panel defaultSize={40} minSize={20}>
-              <OutputPanel result={result} validationResult={validationResult} />
+              <OutputPanel result={result} validationResult={validationResult} isLoading={isExecuting || isValidating} />
             </Panel>
           </PanelGroup>
         </Panel>

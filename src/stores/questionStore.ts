@@ -1,6 +1,9 @@
 import { create } from 'zustand';
 import { Question, QuestionMeta } from '@/types';
 
+// Track the latest request to prevent race conditions
+let latestQuestionRequestId = 0;
+
 interface QuestionState {
   questions: QuestionMeta[];
   currentQuestion: Question | null;
@@ -44,17 +47,24 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
   },
 
   fetchQuestion: async (id: string) => {
+    const requestId = ++latestQuestionRequestId;
     set({ isLoading: true, error: null, currentQuestion: null });
     try {
       const response = await fetch(`/questions/${id}.json`);
       if (!response.ok) throw new Error('Failed to fetch question');
       const question = await response.json();
-      set({ currentQuestion: question, isLoading: false });
+      // Only update state if this is still the latest request
+      if (requestId === latestQuestionRequestId) {
+        set({ currentQuestion: question, isLoading: false });
+      }
     } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : 'Failed to load question',
-        isLoading: false,
-      });
+      // Only update error state if this is still the latest request
+      if (requestId === latestQuestionRequestId) {
+        set({
+          error: error instanceof Error ? error.message : 'Failed to load question',
+          isLoading: false,
+        });
+      }
     }
   },
 

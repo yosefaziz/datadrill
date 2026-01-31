@@ -53,14 +53,27 @@ class DuckDBService {
     );
   }
 
-  async executeQuery(sql: string, limit?: number): Promise<QueryResult> {
+  private async withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => {
+        reject(new Error(`Query timed out after ${timeoutMs / 1000} seconds`));
+      }, timeoutMs);
+    });
+
+    return Promise.race([promise, timeoutPromise]).finally(() => {
+      clearTimeout(timeoutId);
+    });
+  }
+
+  async executeQuery(sql: string, limit?: number, timeoutMs = 30000): Promise<QueryResult> {
     if (!this.conn) throw new Error('DuckDB not initialized');
 
     try {
       // Strip trailing semicolons and whitespace for subquery wrapping
       const cleanedSql = sql.trim().replace(/;+$/, '');
       const finalSql = limit ? `SELECT * FROM (${cleanedSql}) LIMIT ${limit}` : cleanedSql;
-      const result = await this.conn.query(finalSql);
+      const result = await this.withTimeout(this.conn.query(finalSql), timeoutMs);
 
       const columns = result.schema.fields.map((f) => f.name);
       const rows: unknown[][] = [];

@@ -24,20 +24,40 @@ function sortRows(rows: unknown[][]): unknown[][] {
   });
 }
 
+function reorderRowsByColumns(
+  rows: unknown[][],
+  columns: string[],
+  targetOrder: string[]
+): unknown[][] {
+  // Create mapping from current column index to target column index
+  const indexMap = columns.map((col) =>
+    targetOrder.findIndex((target) => target === col)
+  );
+
+  return rows.map((row) => indexMap.map((newIndex) => row[newIndex]));
+}
+
 function compareResults(expected: QueryResult, actual: QueryResult): boolean {
-  // Compare columns (case-insensitive)
+  // Compare columns (case-insensitive, order-independent)
   const expectedCols = normalizeColumns(expected.columns);
   const actualCols = normalizeColumns(actual.columns);
 
   if (expectedCols.length !== actualCols.length) return false;
-  if (!expectedCols.every((col, i) => col === actualCols[i])) return false;
+
+  // Check that both have the same columns (regardless of order)
+  const expectedColsSorted = [...expectedCols].sort();
+  const actualColsSorted = [...actualCols].sort();
+  if (!expectedColsSorted.every((col, i) => col === actualColsSorted[i])) return false;
 
   // Compare row count
   if (expected.rows.length !== actual.rows.length) return false;
 
+  // Reorder actual rows to match expected column order for comparison
+  const reorderedActualRows = reorderRowsByColumns(actual.rows, actualCols, expectedCols);
+
   // Sort and compare rows
   const expectedRows = sortRows(expected.rows);
-  const actualRows = sortRows(actual.rows);
+  const actualRows = sortRows(reorderedActualRows);
 
   for (let i = 0; i < expectedRows.length; i++) {
     const expectedRow = expectedRows[i];
