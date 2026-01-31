@@ -28,3 +28,7 @@ public/questions/
 
 # Claude Code local settings
 .claude/
+.vercel
+
+# Build artifacts
+tsconfig.tsbuildinfo
