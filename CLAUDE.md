@@ -1,168 +1,95 @@
-# DataDrill - Claude Code Instructions
+# DataDrill
 
-## Project Purpose
+**Purpose:** Empower data engineers to ace any interview at senior/staff level with hands-on practice and instant feedback.
 
-DataDrill is an interactive practice platform designed to **empower data engineers to ace any data engineering interview at senior/staff level**. The app provides hands-on practice with instant feedback across multiple skill tracks that mirror real interview scenarios.
+**Live:** https://thedatadrill.vercel.app
 
-**Live at:** https://thedatadrill.vercel.app
+## Workflow: After Adding Features
+
+```bash
+npm run build                 # Verify build passes
+git add -A && git commit -m "Your message"
+git push
+npx vercel --prod             # Deploy to https://thedatadrill.vercel.app
+```
 
 ## Tech Stack
 
-- **Frontend:** React 18 + TypeScript + Vite
-- **Styling:** Tailwind CSS
-- **State Management:** Zustand
-- **Code Editor:** Monaco Editor
-- **SQL Execution:** DuckDB-WASM (runs entirely in browser)
-- **Python Execution:** Pyodide (WebAssembly Python runtime)
-- **Routing:** React Router v7
-- **Build:** Vite + TSX for scripts
-- **Deployment:** Vercel
+React 18 + TypeScript + Vite + Tailwind + Zustand + Monaco Editor
 
-## Architecture Overview
+- **SQL Execution:** DuckDB-WASM (browser)
+- **Python/PySpark:** Pyodide (WebAssembly)
+- **Deployment:** Vercel (static, no backend)
+
+## Project Structure
 
 ```
 src/
-├── components/           # React components
-│   ├── architecture/     # Architecture skill components
-│   ├── editor/           # Code editor and output panel
-│   ├── layout/           # App layout, header, error boundary
-│   ├── question-view/    # Question display components
-│   └── questions/        # Question list, cards, filters
-├── hooks/                # Custom React hooks
-│   ├── useExecutor.ts    # Code execution hook
-│   └── useValidation.ts  # Answer validation hook
-├── pages/                # Route pages
-│   ├── HomePage.tsx      # Skill selection
-│   ├── SkillPage.tsx     # Question list for a skill
-│   └── QuestionPage.tsx  # Individual question view
-├── services/             # Business logic
-│   ├── duckdb/           # DuckDB-WASM service
-│   ├── executors/        # Code execution (SQL, PySpark)
-│   ├── pyspark/          # Pyodide PySpark simulation
-│   └── validation/       # Answer validation
-├── stores/               # Zustand state stores
-│   ├── questionStore.ts  # Questions and filters
-│   ├── editorStore.ts    # Editor state
-│   └── architectureStore.ts # Architecture skill state
-└── types/                # TypeScript types
+├── components/          # UI components by feature
+├── pages/               # HomePage, SkillPage, QuestionPage
+├── services/            # DuckDB, PySpark, validators
+├── stores/              # Zustand: questionStore, editorStore, architectureStore
+├── hooks/               # useExecutor, useValidation
+└── types/index.ts       # All interfaces + type guards
 
-questions/                # Question markdown files (source of truth)
-├── sql/
+questions/               # Markdown source files
+├── sql/easy|medium|hard/
 ├── pyspark/
 ├── debug/
 └── architecture/
 
-scripts/
-└── processQuestions.ts   # Builds questions from markdown to JSON
-
-public/questions/         # Generated JSON (gitignored, built at deploy)
+scripts/processQuestions.ts  # Converts markdown → JSON at build time
 ```
 
-## Skill Types
+## Skills
 
-1. **SQL** - Write queries from scratch against sample tables
-2. **PySpark** - Write DataFrame transformations (executed via Pyodide)
-3. **Debug** - Fix broken SQL or PySpark code
-4. **Architecture** - Select clarifying questions, then choose an architecture based on revealed constraints
+| Skill | Description | Validation |
+|-------|-------------|------------|
+| SQL | Write queries from scratch | Run against hidden datasets |
+| PySpark | DataFrame transformations | Run against hidden datasets |
+| Debug | Fix broken code | Run against hidden datasets |
+| Architecture | Select questions → choose architecture | Scoring: crucial +10, helpful +5, irrelevant -5 |
 
-## Key Patterns
+## Adding a New Skill
 
-### Adding a New Skill Type
+1. `src/types/index.ts` - Add to `SkillType`, create interface, add type guard
+2. `src/stores/questionStore.ts` - Add to initial state
+3. `src/pages/HomePage.tsx` - Add to SKILLS array
+4. `src/pages/SkillPage.tsx` - Add name/description
+5. `src/pages/QuestionPage.tsx` - Handle rendering
+6. `scripts/processQuestions.ts` - Parse new format
+7. `questions/<skill>/` - Create markdown files
 
-1. Add to `SkillType` union in `src/types/index.ts`
-2. Create question interface extending base or create new structure
-3. Add type guard function (`isXxxQuestion`)
-4. Update `questionStore.ts` initial state
-5. Update `HomePage.tsx` SKILLS array
-6. Update `SkillPage.tsx` SKILL_NAMES and SKILL_DESCRIPTIONS
-7. Update `QuestionPage.tsx` to handle the new skill
-8. Update `processQuestions.ts` to parse the new format
-9. Create question markdown files in `questions/<skill>/`
+## Adding Questions
 
-### Question Format
+1. Create `questions/<skill>/<difficulty>/<name>.md`
+2. Use YAML frontmatter (see existing questions for format)
+3. `npm run dev` to test
+4. Commit, push, deploy
 
-Questions are authored in Markdown with YAML frontmatter. See:
-- `questions/sql/medium/top-customers.md` for SQL/PySpark/Debug format
-- `questions/architecture/README.md` for Architecture format
+## Key Files
 
-The build script (`npm run process-questions`) converts these to JSON in `public/questions/`.
-
-### Validation Flow
-
-For code-based skills (SQL, PySpark, Debug):
-1. User writes code in Monaco editor
-2. "Run" executes against visible data, shows results
-3. "Submit" validates against visible + hidden datasets
-4. All datasets must pass for success
-
-For Architecture skill:
-1. User selects N clarifying questions
-2. Constraints are revealed based on selections
-3. User chooses an architecture
-4. Scoring: crucial (+10), helpful (+5), irrelevant (-5)
-
-### State Management
-
-- `questionStore` - Questions list, current question, filters
-- `editorStore` - Code editor content
-- `architectureStore` - Architecture skill phase and selections
+| File | Purpose |
+|------|---------|
+| `src/types/index.ts` | All TypeScript types |
+| `src/pages/QuestionPage.tsx` | Main routing logic |
+| `src/services/validation/ResultValidator.ts` | SQL/PySpark/Debug scoring |
+| `src/services/validation/ArchitectureValidator.ts` | Architecture scoring |
+| `scripts/processQuestions.ts` | Build script |
 
 ## Commands
 
 ```bash
-npm run dev              # Start dev server (processes questions first)
-npm run build            # Production build
-npm run process-questions # Convert markdown questions to JSON
-npm run lint             # ESLint
-npx vercel --prod        # Deploy to production
+npm run dev       # Dev server
+npm run build     # Production build
+npm run lint      # ESLint
+npx vercel --prod # Deploy to production
 ```
 
-## Code Style
+## Code Conventions
 
-- Functional React components with hooks
-- TypeScript strict mode
-- Tailwind for all styling (no CSS files)
-- Zustand for state (no Redux, no Context for global state)
-- Discriminated unions for question types
-- Type guards for narrowing question types
-
-## Testing Questions Locally
-
-1. Create/edit markdown in `questions/<skill>/<difficulty>/`
-2. Run `npm run dev`
-3. Navigate to the skill and question
-4. Verify all phases work correctly
-
-## Important Files
-
-- `src/types/index.ts` - All TypeScript interfaces and type guards
-- `scripts/processQuestions.ts` - Question build script
-- `src/services/duckdb/DuckDBService.ts` - SQL execution engine
-- `src/services/pyspark/PySparkService.ts` - Python/PySpark execution
-- `src/pages/QuestionPage.tsx` - Main question routing logic
-
-## Common Tasks
-
-### Add a new question
-1. Create markdown file in appropriate `questions/<skill>/<difficulty>/` folder
-2. Follow existing format (check similar questions)
-3. Run `npm run dev` to test
-4. Commit and deploy
-
-### Modify scoring logic
-- SQL/PySpark/Debug: `src/services/validation/ResultValidator.ts`
-- Architecture: `src/services/validation/ArchitectureValidator.ts`
-
-### Change UI layout
-- Question view: `src/components/question-view/QuestionViewLayout.tsx`
-- Architecture view: `src/components/architecture/ArchitectureQuestionView.tsx`
-
-## Deployment
-
-The app deploys to Vercel. The build process:
-1. Runs `process-questions` to generate JSON from markdown
-2. TypeScript compilation
-3. Vite production build
-4. Static files served from `dist/`
-
-All execution happens client-side (DuckDB-WASM, Pyodide) - no backend needed.
+- Functional components + hooks
+- Tailwind only (no CSS files)
+- Zustand for global state
+- Discriminated unions + type guards for question types
+- All execution client-side (no backend)
