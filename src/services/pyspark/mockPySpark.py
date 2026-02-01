@@ -3,6 +3,12 @@
 
 from typing import List, Dict, Any, Optional, Callable, Union
 import json
+import builtins
+
+# Save references to Python's built-in functions before they might be shadowed
+_builtin_sum = builtins.sum
+_builtin_min = builtins.min
+_builtin_max = builtins.max
 
 class Column:
     """Represents a column expression in a DataFrame."""
@@ -179,7 +185,7 @@ def sum(column: Union[str, Column]) -> Column:
     """Sum aggregation."""
     col_name = column if isinstance(column, str) else column._name
     agg_col = Column(f"sum({col_name})")
-    agg_col._agg_func = lambda vals: __builtins__['sum']([v for v in vals if v is not None])
+    agg_col._agg_func = lambda vals: _builtin_sum([v for v in vals if v is not None])
     agg_col._agg_col = col_name
     return agg_col
 
@@ -190,7 +196,7 @@ def avg(column: Union[str, Column]) -> Column:
     agg_col = Column(f"avg({col_name})")
     def avg_func(vals):
         non_null = [v for v in vals if v is not None]
-        return __builtins__['sum'](non_null) / len(non_null) if non_null else None
+        return _builtin_sum(non_null) / len(non_null) if non_null else None
     agg_col._agg_func = avg_func
     agg_col._agg_col = col_name
     return agg_col
@@ -200,7 +206,7 @@ def max(column: Union[str, Column]) -> Column:
     """Max aggregation."""
     col_name = column if isinstance(column, str) else column._name
     agg_col = Column(f"max({col_name})")
-    agg_col._agg_func = lambda vals: __builtins__['max']([v for v in vals if v is not None]) if vals else None
+    agg_col._agg_func = lambda vals: _builtin_max([v for v in vals if v is not None]) if vals else None
     agg_col._agg_col = col_name
     return agg_col
 
@@ -209,7 +215,7 @@ def min(column: Union[str, Column]) -> Column:
     """Min aggregation."""
     col_name = column if isinstance(column, str) else column._name
     agg_col = Column(f"min({col_name})")
-    agg_col._agg_func = lambda vals: __builtins__['min']([v for v in vals if v is not None]) if vals else None
+    agg_col._agg_func = lambda vals: _builtin_min([v for v in vals if v is not None]) if vals else None
     agg_col._agg_col = col_name
     return agg_col
 

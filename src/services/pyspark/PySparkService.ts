@@ -17,22 +17,13 @@ class PySparkService {
 
   private async doInitialize(): Promise<void> {
     this.pyodide = await loadPyodide({
-      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/',
+      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.29.3/full/',
     });
 
     // Install the mock PySpark module
-    await this.pyodide.runPythonAsync(`
-${mockPySparkCode}
-
-# Make functions available in global scope
-__builtins__['col'] = col
-__builtins__['lit'] = lit
-__builtins__['count'] = count
-__builtins__['sum'] = sum
-__builtins__['avg'] = avg
-__builtins__['max'] = max
-__builtins__['min'] = min
-`);
+    // Functions (col, lit, count, sum, avg, max, min) are defined in mockPySparkCode
+    // and will be available in the global namespace for user code
+    await this.pyodide.runPythonAsync(mockPySparkCode);
   }
 
   async createDataFrame(name: string, csvData: string): Promise<void> {
@@ -108,10 +99,7 @@ if _result is None:
             break
 
 # Output the result
-if _result is not None:
-    _result.toJSON()
-else:
-    json.dumps({"columns": [], "data": [], "error": "No result DataFrame found. Assign your result to a variable named 'result'."})
+_result.toJSON() if _result is not None else json.dumps({"columns": [], "data": [], "error": "No result DataFrame found. Assign your result to a variable named 'result'."})
 `;
 
       const resultJson = await this.pyodide.runPythonAsync(wrappedCode);
