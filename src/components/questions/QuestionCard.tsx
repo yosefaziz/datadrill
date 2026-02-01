@@ -15,11 +15,13 @@ const difficultyColors = {
 const questionTypeColors = {
   constraints: 'bg-blue-100 text-blue-800',
   canvas: 'bg-purple-100 text-purple-800',
+  quiz: 'bg-indigo-100 text-indigo-800',
 };
 
 const questionTypeLabels = {
   constraints: 'Constraints',
   canvas: 'Canvas',
+  quiz: 'Quiz',
 };
 
 export function QuestionCard({ question, skill }: QuestionCardProps) {

@@ -7,7 +7,8 @@ import { useValidation } from '@/hooks/useValidation';
 import { QuestionViewLayout } from '@/components/question-view/QuestionViewLayout';
 import { ArchitectureQuestionView } from '@/components/architecture/ArchitectureQuestionView';
 import { CanvasQuestionView } from '@/components/architecture/canvas/CanvasQuestionView';
-import { SkillType, getInitialCode, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion } from '@/types';
+import { QuizQuestionView } from '@/components/architecture/quiz/QuizQuestionView';
+import { SkillType, getInitialCode, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion } from '@/types';
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
   return skill === 'sql' || skill === 'pyspark' || skill === 'debug' || skill === 'architecture';
@@ -129,6 +130,10 @@ export function QuestionPage() {
   // Render architecture questions with their specialized views
   if (isCanvasQuestion(currentQuestion)) {
     return <CanvasQuestionView question={currentQuestion} />;
+  }
+
+  if (isQuizQuestion(currentQuestion)) {
+    return <QuizQuestionView question={currentQuestion} />;
   }
 
   if (isConstraintsQuestion(currentQuestion)) {

@@ -43,7 +43,7 @@ export interface DebugQuestion extends BaseQuestion {
 }
 
 // Architecture question types
-export type ArchitectureQuestionType = 'constraints' | 'canvas';
+export type ArchitectureQuestionType = 'constraints' | 'canvas' | 'quiz';
 export type ClarifyingQuestionCategory = 'crucial' | 'helpful' | 'irrelevant';
 
 export interface ClarifyingQuestion {
@@ -130,8 +130,44 @@ export interface CanvasValidationResult {
   stepResults: CanvasStepResult[];
 }
 
+// Quiz question types
+export interface QuizAnswer {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+  explanation?: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  skill: 'architecture';
+  questionType: 'quiz';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  question: string;
+  description: string;
+  answers: QuizAnswer[];
+  multiSelect: boolean; // true if multiple answers can be correct
+  explanation?: string; // Overall explanation shown after answering
+}
+
+export interface QuizValidationResult {
+  passed: boolean;
+  selectedAnswers: string[];
+  correctAnswers: string[];
+  answerResults: {
+    answerId: string;
+    answerText: string;
+    wasSelected: boolean;
+    isCorrect: boolean;
+    explanation?: string;
+  }[];
+  overallExplanation?: string;
+}
+
 // Union of architecture question types
-export type ArchitectureQuestion = ConstraintsQuestion | CanvasQuestion;
+export type ArchitectureQuestion = ConstraintsQuestion | CanvasQuestion | QuizQuestion;
 
 export interface ArchitectureValidationResult {
   passed: boolean;
@@ -207,6 +243,10 @@ export function isConstraintsQuestion(question: Question): question is Constrain
 
 export function isCanvasQuestion(question: Question): question is CanvasQuestion {
   return question.skill === 'architecture' && (question as ArchitectureQuestion).questionType === 'canvas';
+}
+
+export function isQuizQuestion(question: Question): question is QuizQuestion {
+  return question.skill === 'architecture' && (question as ArchitectureQuestion).questionType === 'quiz';
 }
 
 // Helper to get tables from any question type (not applicable to architecture questions)

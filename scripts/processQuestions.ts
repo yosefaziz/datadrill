@@ -6,7 +6,7 @@ import { marked } from 'marked';
 
 type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
-type ArchitectureQuestionType = 'constraints' | 'canvas';
+type ArchitectureQuestionType = 'constraints' | 'canvas' | 'quiz';
 
 interface TableFrontmatter {
   name: string;
@@ -83,6 +83,24 @@ interface CanvasFrontmatter {
   prompt: string;
   available_components: string[];
   steps: CanvasStepFrontmatter[];
+}
+
+// Quiz question frontmatter types
+interface QuizAnswerFrontmatter {
+  id: string;
+  text: string;
+  correct: boolean;
+  explanation?: string;
+}
+
+interface QuizFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  question: string;
+  multi_select: boolean;
+  answers: QuizAnswerFrontmatter[];
+  explanation?: string;
 }
 
 interface ProcessedTable {
@@ -165,7 +183,28 @@ interface CanvasProcessedQuestion {
   guidance?: string;
 }
 
-type ArchitectureProcessedQuestion = ConstraintsProcessedQuestion | CanvasProcessedQuestion;
+interface QuizAnswer {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+  explanation?: string;
+}
+
+interface QuizProcessedQuestion {
+  id: string;
+  skill: 'architecture';
+  questionType: 'quiz';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  question: string;
+  description: string;
+  answers: QuizAnswer[];
+  multiSelect: boolean;
+  explanation?: string;
+}
+
+type ArchitectureProcessedQuestion = ConstraintsProcessedQuestion | CanvasProcessedQuestion | QuizProcessedQuestion;
 
 type ProcessedQuestion =
   | SqlProcessedQuestion
@@ -261,6 +300,34 @@ async function processCanvasQuestion(
   };
 }
 
+async function processQuizQuestion(
+  id: string,
+  frontmatter: QuizFrontmatter,
+  markdownContent: string
+): Promise<QuizProcessedQuestion> {
+  // Parse markdown content for description
+  const description = markdownContent.trim() ? await marked(markdownContent.trim()) : '';
+
+  return {
+    id,
+    skill: 'architecture',
+    questionType: 'quiz',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    question: frontmatter.question,
+    description,
+    answers: frontmatter.answers.map((a) => ({
+      id: a.id,
+      text: a.text,
+      isCorrect: a.correct,
+      explanation: a.explanation,
+    })),
+    multiSelect: frontmatter.multi_select,
+    explanation: frontmatter.explanation,
+  };
+}
+
 async function processQuestion(
   filePath: string,
   skill: SkillType,
@@ -274,6 +341,8 @@ async function processQuestion(
   if (skill === 'architecture') {
     if (architectureType === 'canvas') {
       return processCanvasQuestion(id, data as CanvasFrontmatter, markdownContent);
+    } else if (architectureType === 'quiz') {
+      return processQuizQuestion(id, data as QuizFrontmatter, markdownContent);
     } else {
       // Default to constraints
       return processConstraintsQuestion(id, data as ConstraintsFrontmatter, markdownContent);
@@ -377,6 +446,8 @@ async function processQuestions() {
       if (skill === 'architecture') {
         if (file.startsWith('canvas/')) {
           architectureType = 'canvas';
+        } else if (file.startsWith('quiz/')) {
+          architectureType = 'quiz';
         } else if (file.startsWith('constraints/')) {
           architectureType = 'constraints';
         } else {
