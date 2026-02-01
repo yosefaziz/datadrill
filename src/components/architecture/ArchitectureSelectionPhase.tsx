@@ -1,9 +1,9 @@
-import { ArchitectureQuestion } from '@/types';
+import { ConstraintsQuestion } from '@/types';
 import { useArchitectureStore } from '@/stores/architectureStore';
 import { validateArchitectureQuestion } from '@/services/validation/ArchitectureValidator';
 
 interface ArchitectureSelectionPhaseProps {
-  question: ArchitectureQuestion;
+  question: ConstraintsQuestion;
 }
 
 export function ArchitectureSelectionPhase({ question }: ArchitectureSelectionPhaseProps) {

@@ -43,6 +43,7 @@ export interface DebugQuestion extends BaseQuestion {
 }
 
 // Architecture question types
+export type ArchitectureQuestionType = 'constraints' | 'canvas';
 export type ClarifyingQuestionCategory = 'crucial' | 'helpful' | 'irrelevant';
 
 export interface ClarifyingQuestion {
@@ -68,9 +69,11 @@ export interface ArchitectureOption {
   feedback_if_wrong: string;
 }
 
-export interface ArchitectureQuestion {
+// Constraints question (existing architecture question type)
+export interface ConstraintsQuestion {
   id: string;
   skill: 'architecture';
+  questionType: 'constraints';
   title: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   tags: string[];
@@ -81,6 +84,54 @@ export interface ArchitectureQuestion {
   maxQuestions: number;
   guidance?: string;
 }
+
+// Canvas question types
+export interface CanvasStepChoice {
+  componentId: string;
+  feedback: string;
+}
+
+export interface CanvasStep {
+  id: string;
+  name: string;
+  description: string;
+  validChoices: CanvasStepChoice[];
+  invalidChoices: CanvasStepChoice[];
+  partialChoices?: CanvasStepChoice[];
+}
+
+export interface CanvasQuestion {
+  id: string;
+  skill: 'architecture';
+  questionType: 'canvas';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  prompt: string;
+  description: string;
+  steps: CanvasStep[];
+  availableComponents: string[];
+  guidance?: string;
+}
+
+export interface CanvasStepResult {
+  stepId: string;
+  stepName: string;
+  selectedComponent: string | null;
+  status: 'correct' | 'partial' | 'wrong' | 'missing';
+  feedback: string;
+  points: number;
+}
+
+export interface CanvasValidationResult {
+  passed: boolean;
+  totalScore: number;
+  maxScore: number;
+  stepResults: CanvasStepResult[];
+}
+
+// Union of architecture question types
+export type ArchitectureQuestion = ConstraintsQuestion | CanvasQuestion;
 
 export interface ArchitectureValidationResult {
   passed: boolean;
@@ -105,6 +156,7 @@ export type Question = SqlQuestion | PySparkQuestion | DebugQuestion | Architect
 export interface QuestionMeta {
   id: string;
   skill: SkillType;
+  questionType?: ArchitectureQuestionType; // Only for architecture questions
   title: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   tags: string[];
@@ -147,6 +199,14 @@ export function isDebugQuestion(question: Question): question is DebugQuestion {
 
 export function isArchitectureQuestion(question: Question): question is ArchitectureQuestion {
   return question.skill === 'architecture';
+}
+
+export function isConstraintsQuestion(question: Question): question is ConstraintsQuestion {
+  return question.skill === 'architecture' && (question as ArchitectureQuestion).questionType === 'constraints';
+}
+
+export function isCanvasQuestion(question: Question): question is CanvasQuestion {
+  return question.skill === 'architecture' && (question as ArchitectureQuestion).questionType === 'canvas';
 }
 
 // Helper to get tables from any question type (not applicable to architecture questions)

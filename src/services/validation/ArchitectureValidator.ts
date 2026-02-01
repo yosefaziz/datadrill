@@ -1,5 +1,5 @@
 import {
-  ArchitectureQuestion,
+  ConstraintsQuestion,
   ArchitectureValidationResult,
 } from '@/types';
 
@@ -10,7 +10,7 @@ const POINTS = {
 } as const;
 
 export function validateArchitectureQuestion(
-  question: ArchitectureQuestion,
+  question: ConstraintsQuestion,
   selectedQuestionIds: string[],
   selectedArchitectureId: string
 ): ArchitectureValidationResult {

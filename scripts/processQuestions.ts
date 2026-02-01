@@ -6,6 +6,7 @@ import { marked } from 'marked';
 
 type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
+type ArchitectureQuestionType = 'constraints' | 'canvas';
 
 interface TableFrontmatter {
   name: string;
@@ -31,7 +32,7 @@ interface DebugFrontmatter extends BaseFrontmatter {
   hint?: string;
 }
 
-// Architecture question frontmatter types
+// Architecture constraints question frontmatter types
 interface ClarifyingQuestionFrontmatter {
   id: string;
   text: string;
@@ -50,7 +51,7 @@ interface ArchitectureOptionFrontmatter {
   feedback_if_wrong: string;
 }
 
-interface ArchitectureFrontmatter {
+interface ConstraintsFrontmatter {
   title: string;
   difficulty: Difficulty;
   tags: string[];
@@ -58,6 +59,30 @@ interface ArchitectureFrontmatter {
   clarifying_questions: ClarifyingQuestionFrontmatter[];
   architecture_options: ArchitectureOptionFrontmatter[];
   max_questions: number;
+}
+
+// Architecture canvas question frontmatter types
+interface CanvasStepChoiceFrontmatter {
+  component: string;
+  feedback: string;
+}
+
+interface CanvasStepFrontmatter {
+  id: string;
+  name: string;
+  description: string;
+  valid_choices: CanvasStepChoiceFrontmatter[];
+  invalid_choices: CanvasStepChoiceFrontmatter[];
+  partial_choices?: CanvasStepChoiceFrontmatter[];
+}
+
+interface CanvasFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  prompt: string;
+  available_components: string[];
+  steps: CanvasStepFrontmatter[];
 }
 
 interface ProcessedTable {
@@ -97,9 +122,10 @@ interface DebugProcessedQuestion extends BaseProcessedQuestion {
   hint?: string;
 }
 
-interface ArchitectureProcessedQuestion {
+interface ConstraintsProcessedQuestion {
   id: string;
   skill: 'architecture';
+  questionType: 'constraints';
   title: string;
   difficulty: Difficulty;
   tags: string[];
@@ -111,11 +137,46 @@ interface ArchitectureProcessedQuestion {
   guidance?: string;
 }
 
-type ProcessedQuestion = SqlProcessedQuestion | PySparkProcessedQuestion | DebugProcessedQuestion | ArchitectureProcessedQuestion;
+interface CanvasStepChoice {
+  componentId: string;
+  feedback: string;
+}
+
+interface CanvasStep {
+  id: string;
+  name: string;
+  description: string;
+  validChoices: CanvasStepChoice[];
+  invalidChoices: CanvasStepChoice[];
+  partialChoices?: CanvasStepChoice[];
+}
+
+interface CanvasProcessedQuestion {
+  id: string;
+  skill: 'architecture';
+  questionType: 'canvas';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  prompt: string;
+  description: string;
+  steps: CanvasStep[];
+  availableComponents: string[];
+  guidance?: string;
+}
+
+type ArchitectureProcessedQuestion = ConstraintsProcessedQuestion | CanvasProcessedQuestion;
+
+type ProcessedQuestion =
+  | SqlProcessedQuestion
+  | PySparkProcessedQuestion
+  | DebugProcessedQuestion
+  | ArchitectureProcessedQuestion;
 
 interface QuestionMeta {
   id: string;
   skill: SkillType;
+  questionType?: ArchitectureQuestionType;
   title: string;
   difficulty: Difficulty;
   tags: string[];
@@ -131,36 +192,92 @@ function processTable(table: TableFrontmatter): ProcessedTable {
   };
 }
 
+function processCanvasStepChoice(choice: CanvasStepChoiceFrontmatter): CanvasStepChoice {
+  return {
+    componentId: choice.component,
+    feedback: choice.feedback,
+  };
+}
+
+function processCanvasStep(step: CanvasStepFrontmatter): CanvasStep {
+  return {
+    id: step.id,
+    name: step.name,
+    description: step.description,
+    validChoices: step.valid_choices.map(processCanvasStepChoice),
+    invalidChoices: step.invalid_choices.map(processCanvasStepChoice),
+    partialChoices: step.partial_choices?.map(processCanvasStepChoice),
+  };
+}
+
+async function processConstraintsQuestion(
+  id: string,
+  frontmatter: ConstraintsFrontmatter,
+  markdownContent: string
+): Promise<ConstraintsProcessedQuestion> {
+  // Parse markdown content for description and optional guidance
+  const guidanceParts = markdownContent.split(/^## Guidance$/m);
+  const description = await marked(guidanceParts[0].trim());
+  const guidance = guidanceParts[1] ? await marked(guidanceParts[1].trim()) : undefined;
+
+  return {
+    id,
+    skill: 'architecture',
+    questionType: 'constraints',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    prompt: frontmatter.prompt,
+    description,
+    clarifyingQuestions: frontmatter.clarifying_questions,
+    architectureOptions: frontmatter.architecture_options,
+    maxQuestions: frontmatter.max_questions,
+    guidance,
+  };
+}
+
+async function processCanvasQuestion(
+  id: string,
+  frontmatter: CanvasFrontmatter,
+  markdownContent: string
+): Promise<CanvasProcessedQuestion> {
+  // Parse markdown content for description and optional guidance
+  const guidanceParts = markdownContent.split(/^## Guidance$/m);
+  const description = await marked(guidanceParts[0].trim());
+  const guidance = guidanceParts[1] ? await marked(guidanceParts[1].trim()) : undefined;
+
+  return {
+    id,
+    skill: 'architecture',
+    questionType: 'canvas',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    prompt: frontmatter.prompt,
+    description,
+    steps: frontmatter.steps.map(processCanvasStep),
+    availableComponents: frontmatter.available_components,
+    guidance,
+  };
+}
+
 async function processQuestion(
   filePath: string,
   skill: SkillType,
-  content: string
+  content: string,
+  architectureType?: ArchitectureQuestionType
 ): Promise<ProcessedQuestion> {
   const { data, content: markdownContent } = matter(content);
   const id = path.basename(filePath, '.md');
 
-  // Handle architecture questions differently
+  // Handle architecture questions differently based on type
   if (skill === 'architecture') {
-    const frontmatter = data as ArchitectureFrontmatter;
-
-    // Parse markdown content for description and optional guidance
-    const guidanceParts = markdownContent.split(/^## Guidance$/m);
-    const description = await marked(guidanceParts[0].trim());
-    const guidance = guidanceParts[1] ? await marked(guidanceParts[1].trim()) : undefined;
-
-    return {
-      id,
-      skill: 'architecture',
-      title: frontmatter.title,
-      difficulty: frontmatter.difficulty,
-      tags: frontmatter.tags,
-      prompt: frontmatter.prompt,
-      description,
-      clarifyingQuestions: frontmatter.clarifying_questions,
-      architectureOptions: frontmatter.architecture_options,
-      maxQuestions: frontmatter.max_questions,
-      guidance,
-    };
+    if (architectureType === 'canvas') {
+      return processCanvasQuestion(id, data as CanvasFrontmatter, markdownContent);
+    } else {
+      // Default to constraints
+      return processConstraintsQuestion(id, data as ConstraintsFrontmatter, markdownContent);
+    }
   }
 
   // Parse markdown content
@@ -255,8 +372,21 @@ async function processQuestions() {
       const filePath = path.join(skillDir, file);
       const content = fs.readFileSync(filePath, 'utf-8');
 
+      // Determine architecture question type from path
+      let architectureType: ArchitectureQuestionType | undefined;
+      if (skill === 'architecture') {
+        if (file.startsWith('canvas/')) {
+          architectureType = 'canvas';
+        } else if (file.startsWith('constraints/')) {
+          architectureType = 'constraints';
+        } else {
+          // Default to constraints for backwards compatibility
+          architectureType = 'constraints';
+        }
+      }
+
       try {
-        const question = await processQuestion(filePath, skill, content);
+        const question = await processQuestion(filePath, skill, content, architectureType);
 
         // Write individual question file
         fs.writeFileSync(
@@ -272,6 +402,12 @@ async function processQuestions() {
           difficulty: question.difficulty,
           tags: question.tags,
         };
+
+        // Add questionType for architecture questions
+        if (skill === 'architecture' && 'questionType' in question) {
+          meta.questionType = question.questionType;
+        }
+
         skillQuestionsMeta.push(meta);
         allQuestionsMeta.push(meta);
 

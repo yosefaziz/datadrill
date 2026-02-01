@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArchitectureQuestion } from '@/types';
+import { ConstraintsQuestion } from '@/types';
 import { useArchitectureStore } from '@/stores/architectureStore';
 import { QuestionSelectionPhase } from './QuestionSelectionPhase';
 import { ArchitectureSelectionPhase } from './ArchitectureSelectionPhase';
 import { ArchitectureFeedback } from './ArchitectureFeedback';
 
 interface ArchitectureQuestionViewProps {
-  question: ArchitectureQuestion;
+  question: ConstraintsQuestion;
 }
 
 export function ArchitectureQuestionView({ question }: ArchitectureQuestionViewProps) {
