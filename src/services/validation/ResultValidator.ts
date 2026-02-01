@@ -1,5 +1,5 @@
 import { duckDBService } from '@/services/duckdb/DuckDBService';
-import { Question, QueryResult, ValidationResult } from '@/types';
+import { Question, QueryResult, ValidationResult, isArchitectureQuestion } from '@/types';
 
 function normalizeValue(value: unknown): string {
   if (value === null || value === undefined) return 'NULL';
@@ -79,6 +79,16 @@ export async function validateAnswer(
   question: Question,
   userQuery: string
 ): Promise<ValidationResult> {
+  // Architecture questions don't use this validator
+  if (isArchitectureQuestion(question)) {
+    return {
+      passed: false,
+      totalDatasets: 0,
+      passedDatasets: 0,
+      error: 'Architecture questions use a different validation flow',
+    };
+  }
+
   const datasets = [
     question.tables.map((t) => ({ name: t.name, data: t.visibleData })),
     ...question.tables[0].hiddenDatasets.map((_, datasetIndex) =>

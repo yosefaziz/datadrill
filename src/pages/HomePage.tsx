@@ -28,6 +28,12 @@ const SKILLS: SkillConfig[] = [
     icon: '🔧',
     description: 'Fix broken pipelines and identify bugs in SQL or PySpark code',
   },
+  {
+    skill: 'architecture',
+    name: 'Data Architecture',
+    icon: '🏗️',
+    description: 'Practice asking the right questions before choosing an architecture',
+  },
 ];
 
 export function HomePage() {
@@ -35,12 +41,13 @@ export function HomePage() {
     sql: 0,
     pyspark: 0,
     debug: 0,
+    architecture: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCounts() {
-      const counts: Record<SkillType, number> = { sql: 0, pyspark: 0, debug: 0 };
+      const counts: Record<SkillType, number> = { sql: 0, pyspark: 0, debug: 0, architecture: 0 };
 
       for (const skill of SKILLS) {
         try {

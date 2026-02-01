@@ -4,7 +4,7 @@ import * as path from 'path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
 
-type SkillType = 'sql' | 'pyspark' | 'debug';
+type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
 interface TableFrontmatter {
@@ -29,6 +29,35 @@ interface DebugFrontmatter extends BaseFrontmatter {
   language: 'sql' | 'pyspark';
   broken_code: string;
   hint?: string;
+}
+
+// Architecture question frontmatter types
+interface ClarifyingQuestionFrontmatter {
+  id: string;
+  text: string;
+  category: 'crucial' | 'helpful' | 'irrelevant';
+  reveals?: {
+    constraint: string;
+    value: string;
+  };
+}
+
+interface ArchitectureOptionFrontmatter {
+  id: string;
+  name: string;
+  description: string;
+  valid_when: { constraint: string; value: string }[];
+  feedback_if_wrong: string;
+}
+
+interface ArchitectureFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  prompt: string;
+  clarifying_questions: ClarifyingQuestionFrontmatter[];
+  architecture_options: ArchitectureOptionFrontmatter[];
+  max_questions: number;
 }
 
 interface ProcessedTable {
@@ -68,7 +97,21 @@ interface DebugProcessedQuestion extends BaseProcessedQuestion {
   hint?: string;
 }
 
-type ProcessedQuestion = SqlProcessedQuestion | PySparkProcessedQuestion | DebugProcessedQuestion;
+interface ArchitectureProcessedQuestion {
+  id: string;
+  skill: 'architecture';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  prompt: string;
+  description: string;
+  clarifyingQuestions: ClarifyingQuestionFrontmatter[];
+  architectureOptions: ArchitectureOptionFrontmatter[];
+  maxQuestions: number;
+  guidance?: string;
+}
+
+type ProcessedQuestion = SqlProcessedQuestion | PySparkProcessedQuestion | DebugProcessedQuestion | ArchitectureProcessedQuestion;
 
 interface QuestionMeta {
   id: string;
@@ -78,7 +121,7 @@ interface QuestionMeta {
   tags: string[];
 }
 
-const SKILL_DIRS: SkillType[] = ['sql', 'pyspark', 'debug'];
+const SKILL_DIRS: SkillType[] = ['sql', 'pyspark', 'debug', 'architecture'];
 
 function processTable(table: TableFrontmatter): ProcessedTable {
   return {
@@ -95,6 +138,30 @@ async function processQuestion(
 ): Promise<ProcessedQuestion> {
   const { data, content: markdownContent } = matter(content);
   const id = path.basename(filePath, '.md');
+
+  // Handle architecture questions differently
+  if (skill === 'architecture') {
+    const frontmatter = data as ArchitectureFrontmatter;
+
+    // Parse markdown content for description and optional guidance
+    const guidanceParts = markdownContent.split(/^## Guidance$/m);
+    const description = await marked(guidanceParts[0].trim());
+    const guidance = guidanceParts[1] ? await marked(guidanceParts[1].trim()) : undefined;
+
+    return {
+      id,
+      skill: 'architecture',
+      title: frontmatter.title,
+      difficulty: frontmatter.difficulty,
+      tags: frontmatter.tags,
+      prompt: frontmatter.prompt,
+      description,
+      clarifyingQuestions: frontmatter.clarifying_questions,
+      architectureOptions: frontmatter.architecture_options,
+      maxQuestions: frontmatter.max_questions,
+      guidance,
+    };
+  }
 
   // Parse markdown content
   const parts = markdownContent.split(/^## Expected Output$/m);
@@ -171,8 +238,10 @@ async function processQuestions() {
       continue;
     }
 
-    // Find all markdown files for this skill
-    const files = await glob('**/*.md', { cwd: skillDir });
+    // Find all markdown files for this skill (excluding README files)
+    const files = (await glob('**/*.md', { cwd: skillDir })).filter(
+      (f) => !f.toLowerCase().includes('readme')
+    );
 
     if (files.length === 0) {
       console.log(`No questions found for ${skill}. Creating empty index.`);

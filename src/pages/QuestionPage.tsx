@@ -5,10 +5,11 @@ import { useEditorStore } from '@/stores/editorStore';
 import { useExecutor } from '@/hooks/useExecutor';
 import { useValidation } from '@/hooks/useValidation';
 import { QuestionViewLayout } from '@/components/question-view/QuestionViewLayout';
-import { SkillType, getInitialCode } from '@/types';
+import { ArchitectureQuestionView } from '@/components/architecture/ArchitectureQuestionView';
+import { SkillType, getInitialCode, isArchitectureQuestion } from '@/types';
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
-  return skill === 'sql' || skill === 'pyspark' || skill === 'debug';
+  return skill === 'sql' || skill === 'pyspark' || skill === 'debug' || skill === 'architecture';
 }
 
 export function QuestionPage() {
@@ -46,7 +47,7 @@ export function QuestionPage() {
   }, [currentQuestion, setCode]);
 
   const handleRun = async () => {
-    if (!currentQuestion || !isInitialized) return;
+    if (!currentQuestion || !isInitialized || isArchitectureQuestion(currentQuestion)) return;
     clearValidation();
     await executeCode(code, currentQuestion.tables);
   };
@@ -70,8 +71,12 @@ export function QuestionPage() {
     );
   }
 
-  if (isLoading || isExecutorLoading) {
-    const loadingMessage = isExecutorLoading
+  // Architecture questions don't need executor loading
+  const needsExecutor = skill !== 'architecture';
+  const showExecutorLoading = needsExecutor && isExecutorLoading;
+
+  if (isLoading || showExecutorLoading) {
+    const loadingMessage = showExecutorLoading
       ? skill === 'pyspark'
         ? 'Initializing Python engine...'
         : 'Initializing SQL engine...'
@@ -87,11 +92,12 @@ export function QuestionPage() {
     );
   }
 
-  if (error || executorError) {
+  const displayError = error || (needsExecutor ? executorError : null);
+  if (displayError) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg text-red-600 mb-4">{error || executorError}</div>
+          <div className="text-lg text-red-600 mb-4">{displayError}</div>
           <Link
             to={`/${skill}`}
             className="text-blue-600 hover:text-blue-800 underline"
@@ -117,6 +123,11 @@ export function QuestionPage() {
         </div>
       </div>
     );
+  }
+
+  // Render architecture questions with their specialized view
+  if (isArchitectureQuestion(currentQuestion)) {
+    return <ArchitectureQuestionView question={currentQuestion} />;
   }
 
   return (

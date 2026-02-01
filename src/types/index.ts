@@ -1,5 +1,5 @@
 // Skill types
-export type SkillType = 'sql' | 'pyspark' | 'debug';
+export type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture';
 
 export interface TableData {
   name: string;
@@ -42,8 +42,64 @@ export interface DebugQuestion extends BaseQuestion {
   hint?: string; // Optional hint for the bug
 }
 
+// Architecture question types
+export type ClarifyingQuestionCategory = 'crucial' | 'helpful' | 'irrelevant';
+
+export interface ClarifyingQuestion {
+  id: string;
+  text: string;
+  category: ClarifyingQuestionCategory;
+  reveals?: {
+    constraint: string;
+    value: string;
+  };
+}
+
+export interface ArchitectureOptionCondition {
+  constraint: string;
+  value: string;
+}
+
+export interface ArchitectureOption {
+  id: string;
+  name: string;
+  description: string;
+  valid_when: ArchitectureOptionCondition[];
+  feedback_if_wrong: string;
+}
+
+export interface ArchitectureQuestion {
+  id: string;
+  skill: 'architecture';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  prompt: string;
+  description: string;
+  clarifyingQuestions: ClarifyingQuestion[];
+  architectureOptions: ArchitectureOption[];
+  maxQuestions: number;
+  guidance?: string;
+}
+
+export interface ArchitectureValidationResult {
+  passed: boolean;
+  totalScore: number;
+  questionScores: {
+    questionId: string;
+    questionText: string;
+    category: ClarifyingQuestionCategory;
+    points: number;
+  }[];
+  revealedConstraints: { constraint: string; value: string }[];
+  architectureCorrect: boolean;
+  architectureFeedback: string;
+  missedCrucialQuestions: ClarifyingQuestion[];
+  irrelevantQuestionsSelected: ClarifyingQuestion[];
+}
+
 // Discriminated union of all question types
-export type Question = SqlQuestion | PySparkQuestion | DebugQuestion;
+export type Question = SqlQuestion | PySparkQuestion | DebugQuestion | ArchitectureQuestion;
 
 // Metadata for question listings (minimal data for index)
 export interface QuestionMeta {
@@ -89,13 +145,23 @@ export function isDebugQuestion(question: Question): question is DebugQuestion {
   return question.skill === 'debug';
 }
 
-// Helper to get tables from any question type
+export function isArchitectureQuestion(question: Question): question is ArchitectureQuestion {
+  return question.skill === 'architecture';
+}
+
+// Helper to get tables from any question type (not applicable to architecture questions)
 export function getQuestionTables(question: Question): TableData[] {
+  if (isArchitectureQuestion(question)) {
+    return [];
+  }
   return question.tables;
 }
 
-// Helper to get expected query from any question type
+// Helper to get expected query from any question type (not applicable to architecture questions)
 export function getExpectedQuery(question: Question): string {
+  if (isArchitectureQuestion(question)) {
+    return '';
+  }
   return question.expectedOutputQuery;
 }
 

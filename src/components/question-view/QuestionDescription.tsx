@@ -1,4 +1,4 @@
-import { Question, isDebugQuestion } from '@/types';
+import { Question, isDebugQuestion, isArchitectureQuestion } from '@/types';
 
 interface QuestionDescriptionProps {
   question: Question;
@@ -14,6 +14,7 @@ const skillBadges = {
   sql: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'SQL' },
   pyspark: { bg: 'bg-orange-100', text: 'text-orange-800', label: 'PySpark' },
   debug: { bg: 'bg-purple-100', text: 'text-purple-800', label: 'Debug' },
+  architecture: { bg: 'bg-teal-100', text: 'text-teal-800', label: 'Architecture' },
 };
 
 export function QuestionDescription({ question }: QuestionDescriptionProps) {
@@ -70,33 +71,36 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
         </div>
       )}
 
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-lg font-semibold text-slate-800 mb-3">
-            {question.skill === 'pyspark' ? 'DataFrames' : 'Tables'}
-          </h2>
-          {question.tables.map((table) => (
-            <div key={table.name} className="mb-4">
-              <h3 className="font-mono text-sm font-semibold text-slate-700 mb-2">
-                {table.name}
-              </h3>
-              <div className="overflow-x-auto">
-                <Table csvData={table.visibleData} />
+      {/* Tables and Expected Output only for non-architecture questions */}
+      {!isArchitectureQuestion(question) && (
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-800 mb-3">
+              {question.skill === 'pyspark' ? 'DataFrames' : 'Tables'}
+            </h2>
+            {question.tables.map((table) => (
+              <div key={table.name} className="mb-4">
+                <h3 className="font-mono text-sm font-semibold text-slate-700 mb-2">
+                  {table.name}
+                </h3>
+                <div className="overflow-x-auto">
+                  <Table csvData={table.visibleData} />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div>
-          <h2 className="text-lg font-semibold text-slate-800 mb-3">
-            Expected Output
-          </h2>
-          <div
-            className="prose prose-slate max-w-none"
-            dangerouslySetInnerHTML={{ __html: question.expectedOutput }}
-          />
+          <div>
+            <h2 className="text-lg font-semibold text-slate-800 mb-3">
+              Expected Output
+            </h2>
+            <div
+              className="prose prose-slate max-w-none"
+              dangerouslySetInnerHTML={{ __html: question.expectedOutput }}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
