@@ -72,8 +72,6 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
         <ScoreBars
           storageScore={result.storageScore}
           queryCostScore={result.queryCostScore}
-          maxStorage={result.maxStorageScore}
-          maxQueryCost={result.maxQueryCostScore}
           storageThresholds={thresholds.storage}
           queryCostThresholds={thresholds.queryCost}
         />

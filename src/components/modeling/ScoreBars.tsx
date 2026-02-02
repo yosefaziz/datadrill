@@ -3,13 +3,11 @@ interface ScoreBarProps {
   score: number;
   maxScore: number;
   thresholds: { green: number; yellow: number };
-  icon: string;
 }
 
-function ScoreBar({ label, score, maxScore, thresholds, icon }: ScoreBarProps) {
+function ScoreBar({ label, score, maxScore, thresholds }: ScoreBarProps) {
+  // Equal zones: 33% green, 33% yellow, 33% red
   const percentage = Math.min((score / maxScore) * 100, 100);
-  const greenPercentage = (thresholds.green / maxScore) * 100;
-  const yellowPercentage = (thresholds.yellow / maxScore) * 100;
 
   const status =
     score <= thresholds.green ? 'green' : score <= thresholds.yellow ? 'yellow' : 'red';
@@ -27,12 +25,9 @@ function ScoreBar({ label, score, maxScore, thresholds, icon }: ScoreBarProps) {
   };
 
   return (
-    <div className="mb-4 last:mb-0">
+    <div className="flex-1">
       <div className="flex items-center justify-between mb-1">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">{icon}</span>
-          <span className="text-sm font-medium text-slate-700">{label}</span>
-        </div>
+        <span className="text-sm font-medium text-slate-700">{label}</span>
         <div className="flex items-center gap-2">
           <span className="text-sm font-mono text-slate-600">{score}</span>
           <span
@@ -49,21 +44,12 @@ function ScoreBar({ label, score, maxScore, thresholds, icon }: ScoreBarProps) {
         </div>
       </div>
 
-      {/* Bar background with zones */}
-      <div className="h-4 rounded-full bg-slate-100 relative overflow-hidden">
-        {/* Zone indicators */}
-        <div
-          className="absolute inset-y-0 left-0 bg-green-200 opacity-50"
-          style={{ width: `${greenPercentage}%` }}
-        />
-        <div
-          className="absolute inset-y-0 bg-yellow-200 opacity-50"
-          style={{ left: `${greenPercentage}%`, width: `${yellowPercentage - greenPercentage}%` }}
-        />
-        <div
-          className="absolute inset-y-0 right-0 bg-red-200 opacity-50"
-          style={{ left: `${yellowPercentage}%` }}
-        />
+      {/* Bar background with equal zones */}
+      <div className="h-3 rounded-full bg-slate-100 relative overflow-hidden">
+        {/* Equal zone indicators: 33% each */}
+        <div className="absolute inset-y-0 left-0 bg-green-200 opacity-50 w-1/3" />
+        <div className="absolute inset-y-0 left-1/3 bg-yellow-200 opacity-50 w-1/3" />
+        <div className="absolute inset-y-0 left-2/3 bg-red-200 opacity-50 w-1/3" />
 
         {/* Actual score bar */}
         <div
@@ -72,16 +58,9 @@ function ScoreBar({ label, score, maxScore, thresholds, icon }: ScoreBarProps) {
         />
 
         {/* Threshold markers */}
-        <div
-          className="absolute inset-y-0 w-0.5 bg-green-600 opacity-60"
-          style={{ left: `${greenPercentage}%` }}
-        />
-        <div
-          className="absolute inset-y-0 w-0.5 bg-yellow-600 opacity-60"
-          style={{ left: `${yellowPercentage}%` }}
-        />
+        <div className="absolute inset-y-0 left-1/3 w-0.5 bg-slate-300" />
+        <div className="absolute inset-y-0 left-2/3 w-0.5 bg-slate-300" />
       </div>
-
     </div>
   );
 }
@@ -89,8 +68,6 @@ function ScoreBar({ label, score, maxScore, thresholds, icon }: ScoreBarProps) {
 interface ScoreBarsProps {
   storageScore: number;
   queryCostScore: number;
-  maxStorage: number;
-  maxQueryCost: number;
   storageThresholds: { green: number; yellow: number };
   queryCostThresholds: { green: number; yellow: number };
 }
@@ -98,26 +75,26 @@ interface ScoreBarsProps {
 export function ScoreBars({
   storageScore,
   queryCostScore,
-  maxStorage,
-  maxQueryCost,
   storageThresholds,
   queryCostThresholds,
 }: ScoreBarsProps) {
+  // Max score is 3x the yellow threshold (so red zone is the last third)
+  const maxStorage = storageThresholds.yellow * 1.5;
+  const maxQueryCost = queryCostThresholds.yellow * 1.5;
+
   return (
-    <div>
+    <div className="flex gap-6">
       <ScoreBar
-        label="Storage Cost"
+        label="Storage"
         score={storageScore}
         maxScore={maxStorage}
         thresholds={storageThresholds}
-        icon="💾"
       />
       <ScoreBar
         label="Query Cost"
         score={queryCostScore}
         maxScore={maxQueryCost}
         thresholds={queryCostThresholds}
-        icon="⚡"
       />
     </div>
   );

@@ -166,15 +166,10 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
             {/* Live Score - Top right */}
             {!isSubmitted && (
               <div className="bg-white rounded-lg shadow-md p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg">📊</span>
-                  <h3 className="text-sm font-semibold text-slate-700">Live Score</h3>
-                </div>
+                <h3 className="text-sm font-semibold text-slate-700 mb-3">Live Score</h3>
                 <ScoreBars
                   storageScore={liveResult?.storageScore || 0}
                   queryCostScore={liveResult?.queryCostScore || 0}
-                  maxStorage={question.scoreThresholds.storage.yellow * 1.5}
-                  maxQueryCost={question.scoreThresholds.queryCost.yellow * 1.5}
                   storageThresholds={question.scoreThresholds.storage}
                   queryCostThresholds={question.scoreThresholds.queryCost}
                 />
