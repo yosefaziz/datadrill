@@ -69,9 +69,13 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
     reset();
   };
 
-  // Get assigned field IDs
-  const assignedFieldIds = new Set(tables.flatMap((t) => t.fieldIds));
-  const unassignedFields = question.fields.filter((f) => !assignedFieldIds.has(f.id));
+  // Count how many times each field is used
+  const fieldUsageCounts = new Map<string, number>();
+  tables.forEach((t) => {
+    t.fieldIds.forEach((fieldId) => {
+      fieldUsageCounts.set(fieldId, (fieldUsageCounts.get(fieldId) || 0) + 1);
+    });
+  });
   const hasTablesWithFields = tables.some((t) => t.fieldIds.length > 0);
 
   // Calculate live scores for preview
@@ -142,11 +146,12 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
               <h3 className="text-sm font-semibold text-slate-700 mb-3">
                 Available Fields
                 <span className="ml-2 text-xs font-normal text-slate-400">
-                  {unassignedFields.length} remaining
+                  {question.fields.length} fields (drag to tables)
                 </span>
               </h3>
               <FieldSoup
-                fields={unassignedFields}
+                fields={question.fields}
+                usageCounts={fieldUsageCounts}
                 disabled={isSubmitted}
               />
             </div>

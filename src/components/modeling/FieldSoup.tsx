@@ -20,10 +20,11 @@ const TYPE_ICONS: Record<FieldDataType, string> = {
 
 interface DraggableFieldProps {
   field: ModelingField;
+  usageCount: number;
   disabled?: boolean;
 }
 
-function DraggableField({ field, disabled = false }: DraggableFieldProps) {
+function DraggableField({ field, usageCount, disabled = false }: DraggableFieldProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: field.id,
     data: { field },
@@ -40,13 +41,18 @@ function DraggableField({ field, disabled = false }: DraggableFieldProps) {
       style={style}
       {...listeners}
       {...attributes}
-      className={`px-3 py-2 rounded-lg border-2 transition-all select-none ${TYPE_COLORS[field.dataType]} ${
+      className={`relative px-3 py-2 rounded-lg border-2 transition-all select-none ${TYPE_COLORS[field.dataType]} ${
         isDragging
           ? 'opacity-50 shadow-lg scale-105'
           : 'hover:shadow-md'
       } ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-grab active:cursor-grabbing'}`}
       title={`${field.description}\nCardinality: ${field.cardinality}`}
     >
+      {usageCount > 0 && (
+        <div className="absolute -top-2 -right-2 w-5 h-5 bg-blue-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+          {usageCount}
+        </div>
+      )}
       <div className="flex items-center gap-2">
         <span className="text-xs font-mono opacity-60">{TYPE_ICONS[field.dataType]}</span>
         <span className="font-medium text-sm">{field.name}</span>
@@ -62,23 +68,21 @@ function DraggableField({ field, disabled = false }: DraggableFieldProps) {
 
 interface FieldSoupProps {
   fields: ModelingField[];
+  usageCounts: Map<string, number>;
   disabled?: boolean;
 }
 
-export function FieldSoup({ fields, disabled = false }: FieldSoupProps) {
-  if (fields.length === 0) {
-    return (
-      <div className="flex-1 flex items-center justify-center text-slate-400 text-sm">
-        All fields assigned!
-      </div>
-    );
-  }
-
+export function FieldSoup({ fields, usageCounts, disabled = false }: FieldSoupProps) {
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-3 pt-1">
         {fields.map((field) => (
-          <DraggableField key={field.id} field={field} disabled={disabled} />
+          <DraggableField
+            key={field.id}
+            field={field}
+            usageCount={usageCounts.get(field.id) || 0}
+            disabled={disabled}
+          />
         ))}
       </div>
 
