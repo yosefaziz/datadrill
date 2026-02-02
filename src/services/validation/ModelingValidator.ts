@@ -1,24 +1,30 @@
 import { ModelingQuestion, ModelingValidationResult, UserTable } from '@/types';
 
-// Storage cost multipliers
-const STORAGE_COST = {
-  fact: 10, // Fact tables have billions of rows
-  dimension: 1, // Dimension tables are small
+// Fact tables have billions of rows - field type matters a lot
+// Integers (4 bytes) are fine, strings (variable, avg 50 bytes) are expensive
+const FACT_FIELD_COST = {
+  integer: 2,    // 4 bytes, expected in fact tables (IDs, counts)
+  decimal: 3,    // 8 bytes, expected for measures (revenue, amounts)
+  boolean: 1,    // tiny
+  string: 25,    // EXPENSIVE - storing "John Doe" billions of times wastes TBs
+  timestamp: 3,  // 8 bytes
 };
 
-// Field type storage costs (relative)
-const FIELD_STORAGE = {
+// Dimension tables are small (thousands to millions of rows)
+// Storage cost is negligible - put all descriptive fields here
+const DIMENSION_FIELD_COST = {
   integer: 1,
-  decimal: 2,
+  decimal: 1,
   boolean: 0.5,
-  string: 3,
-  timestamp: 2,
+  string: 2,    // Strings are cheap when stored once per entity
+  timestamp: 1,
 };
 
-// Cardinality multipliers for fact tables
-const CARDINALITY_MULTIPLIER = {
-  low: 0.5,
-  medium: 1,
+// String cardinality multiplier for fact tables
+// High-cardinality strings (like user_email) are even worse
+const STRING_CARDINALITY_MULTIPLIER = {
+  low: 1,
+  medium: 1.5,
   high: 2,
 };
 
@@ -31,14 +37,15 @@ export function validateModelingQuestion(
   // Calculate storage score
   let storageScore = 0;
   userTables.forEach((table) => {
-    const tableCost = STORAGE_COST[table.type];
+    const costTable = table.type === 'fact' ? FACT_FIELD_COST : DIMENSION_FIELD_COST;
     table.fieldIds.forEach((fieldId) => {
       const field = fieldMap.get(fieldId);
       if (field) {
-        let fieldCost = FIELD_STORAGE[field.dataType] * tableCost;
-        // High cardinality in fact tables is expensive
-        if (table.type === 'fact') {
-          fieldCost *= CARDINALITY_MULTIPLIER[field.cardinality];
+        let fieldCost = costTable[field.dataType];
+        // String fields in fact tables get cardinality penalty
+        // (high-cardinality strings like user_email are even more wasteful)
+        if (table.type === 'fact' && field.dataType === 'string') {
+          fieldCost *= STRING_CARDINALITY_MULTIPLIER[field.cardinality];
         }
         storageScore += fieldCost;
       }
@@ -103,16 +110,16 @@ export function validateModelingQuestion(
       }
     }
 
-    // Warn about high-cardinality fields in fact tables
+    // Warn about STRING fields in fact tables (the real storage problem)
     if (table.type === 'fact') {
-      const highCardFields = table.fieldIds.filter(
-        (fid) => fieldMap.get(fid)?.cardinality === 'high'
+      const stringFields = table.fieldIds.filter(
+        (fid) => fieldMap.get(fid)?.dataType === 'string'
       );
-      if (highCardFields.length > 0) {
-        const fieldNames = highCardFields
+      if (stringFields.length > 0) {
+        const fieldNames = stringFields
           .map((fid) => fieldMap.get(fid)?.name || fid)
           .join(', ');
-        issues.push(`High-cardinality fields in Fact table increase storage: ${fieldNames}`);
+        issues.push(`String fields in Fact table waste storage: ${fieldNames}. Move to dimension tables.`);
       }
     }
 

@@ -86,8 +86,8 @@ expected_tables:
 
 score_thresholds:
   storage:
-    green: 50
-    yellow: 80
+    green: 30
+    yellow: 60
   query_cost:
     green: 30
     yellow: 45
