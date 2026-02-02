@@ -1,5 +1,5 @@
 // Skill types
-export type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture';
+export type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture' | 'modeling';
 
 export interface TableData {
   name: string;
@@ -169,6 +169,72 @@ export interface QuizValidationResult {
 // Union of architecture question types
 export type ArchitectureQuestion = ConstraintsQuestion | CanvasQuestion | QuizQuestion;
 
+// Data Modeling question types
+export type FieldDataType = 'integer' | 'string' | 'timestamp' | 'decimal' | 'boolean';
+export type TableType = 'fact' | 'dimension';
+
+export interface ModelingField {
+  id: string;
+  name: string;
+  dataType: FieldDataType;
+  description: string;
+  cardinality: 'low' | 'medium' | 'high'; // How many unique values (affects storage)
+  sampleValues?: string[];
+}
+
+export interface ModelingTableConfig {
+  type: TableType;
+  name: string;
+  requiredFields: string[]; // Field IDs that should be in this table
+  optionalFields: string[]; // Field IDs that are acceptable
+  feedback: string;
+}
+
+export interface ModelingScoreThresholds {
+  storage: { green: number; yellow: number }; // Under green = good, under yellow = ok, above = bad
+  queryCost: { green: number; yellow: number };
+}
+
+export interface ModelingQuestion {
+  id: string;
+  skill: 'modeling';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  description: string;
+  prompt: string;
+  constraint: string; // e.g., "Star Schema for fast aggregation"
+  fields: ModelingField[];
+  expectedTables: ModelingTableConfig[];
+  scoreThresholds: ModelingScoreThresholds;
+  guidance?: string;
+}
+
+export interface UserTable {
+  id: string;
+  type: TableType;
+  name: string;
+  fieldIds: string[];
+}
+
+export interface ModelingValidationResult {
+  passed: boolean;
+  storageScore: number;
+  queryCostScore: number;
+  maxStorageScore: number;
+  maxQueryCostScore: number;
+  storageStatus: 'green' | 'yellow' | 'red';
+  queryCostStatus: 'green' | 'yellow' | 'red';
+  tableResults: {
+    tableName: string;
+    tableType: TableType;
+    fieldCount: number;
+    feedback: string;
+    issues: string[];
+  }[];
+  overallFeedback: string;
+}
+
 export interface ArchitectureValidationResult {
   passed: boolean;
   totalScore: number;
@@ -186,7 +252,7 @@ export interface ArchitectureValidationResult {
 }
 
 // Discriminated union of all question types
-export type Question = SqlQuestion | PySparkQuestion | DebugQuestion | ArchitectureQuestion;
+export type Question = SqlQuestion | PySparkQuestion | DebugQuestion | ArchitectureQuestion | ModelingQuestion;
 
 // Metadata for question listings (minimal data for index)
 export interface QuestionMeta {
@@ -249,17 +315,21 @@ export function isQuizQuestion(question: Question): question is QuizQuestion {
   return question.skill === 'architecture' && (question as ArchitectureQuestion).questionType === 'quiz';
 }
 
-// Helper to get tables from any question type (not applicable to architecture questions)
+export function isModelingQuestion(question: Question): question is ModelingQuestion {
+  return question.skill === 'modeling';
+}
+
+// Helper to get tables from any question type (not applicable to architecture/modeling questions)
 export function getQuestionTables(question: Question): TableData[] {
-  if (isArchitectureQuestion(question)) {
+  if (isArchitectureQuestion(question) || isModelingQuestion(question)) {
     return [];
   }
   return question.tables;
 }
 
-// Helper to get expected query from any question type (not applicable to architecture questions)
+// Helper to get expected query from any question type (not applicable to architecture/modeling questions)
 export function getExpectedQuery(question: Question): string {
-  if (isArchitectureQuestion(question)) {
+  if (isArchitectureQuestion(question) || isModelingQuestion(question)) {
     return '';
   }
   return question.expectedOutputQuery;

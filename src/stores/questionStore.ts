@@ -33,6 +33,7 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     pyspark: [],
     debug: [],
     architecture: [],
+    modeling: [],
   },
   currentQuestion: null,
   currentSkill: null,

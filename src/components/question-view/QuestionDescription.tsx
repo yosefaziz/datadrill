@@ -1,4 +1,4 @@
-import { Question, isDebugQuestion, isArchitectureQuestion } from '@/types';
+import { Question, isDebugQuestion, isArchitectureQuestion, isModelingQuestion } from '@/types';
 
 interface QuestionDescriptionProps {
   question: Question;
@@ -15,6 +15,7 @@ const skillBadges = {
   pyspark: { bg: 'bg-orange-100', text: 'text-orange-800', label: 'PySpark' },
   debug: { bg: 'bg-purple-100', text: 'text-purple-800', label: 'Debug' },
   architecture: { bg: 'bg-teal-100', text: 'text-teal-800', label: 'Architecture' },
+  modeling: { bg: 'bg-indigo-100', text: 'text-indigo-800', label: 'Modeling' },
 };
 
 export function QuestionDescription({ question }: QuestionDescriptionProps) {
@@ -71,8 +72,8 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
         </div>
       )}
 
-      {/* Tables and Expected Output only for non-architecture questions */}
-      {!isArchitectureQuestion(question) && (
+      {/* Tables and Expected Output only for code-based questions */}
+      {!isArchitectureQuestion(question) && !isModelingQuestion(question) && (
         <div className="space-y-6">
           <div>
             <h2 className="text-lg font-semibold text-slate-800 mb-3">

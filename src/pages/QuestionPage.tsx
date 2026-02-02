@@ -8,10 +8,11 @@ import { QuestionViewLayout } from '@/components/question-view/QuestionViewLayou
 import { ArchitectureQuestionView } from '@/components/architecture/ArchitectureQuestionView';
 import { CanvasQuestionView } from '@/components/architecture/canvas/CanvasQuestionView';
 import { QuizQuestionView } from '@/components/architecture/quiz/QuizQuestionView';
-import { SkillType, getInitialCode, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion } from '@/types';
+import { ModelingQuestionView } from '@/components/modeling/ModelingQuestionView';
+import { SkillType, getInitialCode, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion, isModelingQuestion } from '@/types';
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
-  return skill === 'sql' || skill === 'pyspark' || skill === 'debug' || skill === 'architecture';
+  return skill === 'sql' || skill === 'pyspark' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
 }
 
 export function QuestionPage() {
@@ -49,7 +50,7 @@ export function QuestionPage() {
   }, [currentQuestion, setCode]);
 
   const handleRun = async () => {
-    if (!currentQuestion || !isInitialized || isArchitectureQuestion(currentQuestion)) return;
+    if (!currentQuestion || !isInitialized || isArchitectureQuestion(currentQuestion) || isModelingQuestion(currentQuestion)) return;
     clearValidation();
     await executeCode(code, currentQuestion.tables);
   };
@@ -73,8 +74,8 @@ export function QuestionPage() {
     );
   }
 
-  // Architecture questions don't need executor loading
-  const needsExecutor = skill !== 'architecture';
+  // Architecture and modeling questions don't need executor loading
+  const needsExecutor = skill !== 'architecture' && skill !== 'modeling';
   const showExecutorLoading = needsExecutor && isExecutorLoading;
 
   if (isLoading || showExecutorLoading) {
@@ -125,6 +126,11 @@ export function QuestionPage() {
         </div>
       </div>
     );
+  }
+
+  // Render modeling questions
+  if (isModelingQuestion(currentQuestion)) {
+    return <ModelingQuestionView question={currentQuestion} />;
   }
 
   // Render architecture questions with their specialized views

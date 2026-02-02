@@ -4,7 +4,7 @@ import * as path from 'path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
 
-type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture';
+type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture' | 'modeling';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
 type ArchitectureQuestionType = 'constraints' | 'canvas' | 'quiz';
 
@@ -101,6 +101,43 @@ interface QuizFrontmatter {
   multi_select: boolean;
   answers: QuizAnswerFrontmatter[];
   explanation?: string;
+}
+
+// Modeling question frontmatter types
+type FieldDataType = 'integer' | 'string' | 'timestamp' | 'decimal' | 'boolean';
+type TableType = 'fact' | 'dimension';
+
+interface ModelingFieldFrontmatter {
+  id: string;
+  name: string;
+  data_type: FieldDataType;
+  description: string;
+  cardinality: 'low' | 'medium' | 'high';
+  sample_values?: string[];
+}
+
+interface ModelingTableConfigFrontmatter {
+  type: TableType;
+  name: string;
+  required_fields: string[];
+  optional_fields: string[];
+  feedback: string;
+}
+
+interface ModelingScoreThresholdsFrontmatter {
+  storage: { green: number; yellow: number };
+  query_cost: { green: number; yellow: number };
+}
+
+interface ModelingFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  prompt: string;
+  constraint: string;
+  fields: ModelingFieldFrontmatter[];
+  expected_tables: ModelingTableConfigFrontmatter[];
+  score_thresholds: ModelingScoreThresholdsFrontmatter;
 }
 
 interface ProcessedTable {
@@ -206,11 +243,50 @@ interface QuizProcessedQuestion {
 
 type ArchitectureProcessedQuestion = ConstraintsProcessedQuestion | CanvasProcessedQuestion | QuizProcessedQuestion;
 
+// Modeling processed types
+interface ModelingField {
+  id: string;
+  name: string;
+  dataType: FieldDataType;
+  description: string;
+  cardinality: 'low' | 'medium' | 'high';
+  sampleValues?: string[];
+}
+
+interface ModelingTableConfig {
+  type: TableType;
+  name: string;
+  requiredFields: string[];
+  optionalFields: string[];
+  feedback: string;
+}
+
+interface ModelingScoreThresholds {
+  storage: { green: number; yellow: number };
+  queryCost: { green: number; yellow: number };
+}
+
+interface ModelingProcessedQuestion {
+  id: string;
+  skill: 'modeling';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  description: string;
+  prompt: string;
+  constraint: string;
+  fields: ModelingField[];
+  expectedTables: ModelingTableConfig[];
+  scoreThresholds: ModelingScoreThresholds;
+  guidance?: string;
+}
+
 type ProcessedQuestion =
   | SqlProcessedQuestion
   | PySparkProcessedQuestion
   | DebugProcessedQuestion
-  | ArchitectureProcessedQuestion;
+  | ArchitectureProcessedQuestion
+  | ModelingProcessedQuestion;
 
 interface QuestionMeta {
   id: string;
@@ -221,7 +297,7 @@ interface QuestionMeta {
   tags: string[];
 }
 
-const SKILL_DIRS: SkillType[] = ['sql', 'pyspark', 'debug', 'architecture'];
+const SKILL_DIRS: SkillType[] = ['sql', 'pyspark', 'debug', 'architecture', 'modeling'];
 
 function processTable(table: TableFrontmatter): ProcessedTable {
   return {
@@ -328,6 +404,48 @@ async function processQuizQuestion(
   };
 }
 
+async function processModelingQuestion(
+  id: string,
+  frontmatter: ModelingFrontmatter,
+  markdownContent: string
+): Promise<ModelingProcessedQuestion> {
+  // Parse markdown content for description and optional guidance
+  const guidanceParts = markdownContent.split(/^## Guidance$/m);
+  const description = await marked(guidanceParts[0].trim());
+  const guidance = guidanceParts[1] ? await marked(guidanceParts[1].trim()) : undefined;
+
+  return {
+    id,
+    skill: 'modeling',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    description,
+    prompt: frontmatter.prompt,
+    constraint: frontmatter.constraint,
+    fields: frontmatter.fields.map((f) => ({
+      id: f.id,
+      name: f.name,
+      dataType: f.data_type,
+      description: f.description,
+      cardinality: f.cardinality,
+      sampleValues: f.sample_values,
+    })),
+    expectedTables: frontmatter.expected_tables.map((t) => ({
+      type: t.type,
+      name: t.name,
+      requiredFields: t.required_fields,
+      optionalFields: t.optional_fields,
+      feedback: t.feedback,
+    })),
+    scoreThresholds: {
+      storage: frontmatter.score_thresholds.storage,
+      queryCost: frontmatter.score_thresholds.query_cost,
+    },
+    guidance,
+  };
+}
+
 async function processQuestion(
   filePath: string,
   skill: SkillType,
@@ -347,6 +465,11 @@ async function processQuestion(
       // Default to constraints
       return processConstraintsQuestion(id, data as ConstraintsFrontmatter, markdownContent);
     }
+  }
+
+  // Handle modeling questions
+  if (skill === 'modeling') {
+    return processModelingQuestion(id, data as ModelingFrontmatter, markdownContent);
   }
 
   // Parse markdown content

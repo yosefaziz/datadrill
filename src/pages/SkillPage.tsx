@@ -9,6 +9,7 @@ const SKILL_NAMES: Record<SkillType, string> = {
   pyspark: 'PySpark',
   debug: 'Debug',
   architecture: 'Data Architecture',
+  modeling: 'Data Modeling',
 };
 
 const SKILL_DESCRIPTIONS: Record<SkillType, string> = {
@@ -16,10 +17,11 @@ const SKILL_DESCRIPTIONS: Record<SkillType, string> = {
   pyspark: 'Write PySpark DataFrame transformations',
   debug: 'Fix broken SQL or PySpark pipelines',
   architecture: 'Practice asking the right questions before choosing an architecture',
+  modeling: 'Design schemas by assigning fields to Fact and Dimension tables',
 };
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
-  return skill === 'sql' || skill === 'pyspark' || skill === 'debug' || skill === 'architecture';
+  return skill === 'sql' || skill === 'pyspark' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
 }
 
 export function SkillPage() {
