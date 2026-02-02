@@ -82,13 +82,6 @@ function ScoreBar({ label, score, maxScore, thresholds, icon }: ScoreBarProps) {
         />
       </div>
 
-      {/* Labels */}
-      <div className="flex justify-between text-xs text-slate-400 mt-1">
-        <span>0</span>
-        <span style={{ marginLeft: `${greenPercentage - 5}%` }}>Green</span>
-        <span style={{ marginLeft: `${yellowPercentage - greenPercentage - 10}%` }}>Yellow</span>
-        <span>Red</span>
-      </div>
     </div>
   );
 }
