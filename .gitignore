@@ -32,3 +32,6 @@ public/questions/
 
 # Build artifacts
 tsconfig.tsbuildinfo
+
+# Git worktrees
+.worktrees/
