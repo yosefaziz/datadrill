@@ -14,7 +14,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   }, [initializeTheme]);
 
   return (
-    <div className="h-screen bg-bg-primary flex flex-col overflow-hidden">
+    <div className="min-h-screen lg:h-screen bg-bg-primary flex flex-col overflow-auto">
       <Header />
       <main className="flex-1 flex flex-col min-h-0">{children}</main>
     </div>

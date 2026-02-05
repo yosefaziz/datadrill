@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TableType } from '@/types';
 
 interface AddTableModalProps {
@@ -17,17 +17,27 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-        <div className="px-6 py-4 border-b border-slate-200">
-          <h2 className="text-lg font-semibold text-slate-800">Add New Table</h2>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={onClose}>
+      <div className="bg-surface rounded-lg shadow-xl w-full max-w-md mx-4" onClick={(e) => e.stopPropagation()}>
+        <div className="px-6 py-4 border-b border-border">
+          <h2 className="text-lg font-semibold text-text-primary">Add New Table</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
           {/* Table Type Selection */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-text-primary mb-2">
               Table Type
             </label>
             <div className="flex gap-3">
@@ -36,19 +46,19 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
                 onClick={() => setType('fact')}
                 className={`flex-1 p-3 rounded-lg border-2 transition-all ${
                   type === 'fact'
-                    ? 'border-orange-500 bg-orange-50'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-warning bg-warning/10'
+                    : 'border-border hover:border-text-muted'
                 }`}
               >
                 <div className="text-center">
                   <div
                     className={`text-sm font-semibold ${
-                      type === 'fact' ? 'text-orange-700' : 'text-slate-700'
+                      type === 'fact' ? 'text-warning' : 'text-text-primary'
                     }`}
                   >
                     Fact Table
                   </div>
-                  <div className="text-xs text-slate-500 mt-1">
+                  <div className="text-xs text-text-secondary mt-1">
                     Billions of rows, stores metrics
                   </div>
                 </div>
@@ -58,19 +68,19 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
                 onClick={() => setType('dimension')}
                 className={`flex-1 p-3 rounded-lg border-2 transition-all ${
                   type === 'dimension'
-                    ? 'border-sky-500 bg-sky-50'
-                    : 'border-slate-200 hover:border-slate-300'
+                    ? 'border-info bg-info/10'
+                    : 'border-border hover:border-text-muted'
                 }`}
               >
                 <div className="text-center">
                   <div
                     className={`text-sm font-semibold ${
-                      type === 'dimension' ? 'text-sky-700' : 'text-slate-700'
+                      type === 'dimension' ? 'text-info' : 'text-text-primary'
                     }`}
                   >
                     Dimension Table
                   </div>
-                  <div className="text-xs text-slate-500 mt-1">
+                  <div className="text-xs text-text-secondary mt-1">
                     Small lookup table, descriptive
                   </div>
                 </div>
@@ -80,7 +90,7 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
 
           {/* Table Name */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-text-primary mb-2">
               Table Name
             </label>
             <input
@@ -88,7 +98,7 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={type === 'fact' ? 'e.g., Fact_Orders' : 'e.g., Dim_Users'}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-border rounded-lg bg-bg-primary text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               autoFocus
             />
           </div>
@@ -98,7 +108,7 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-medium text-text-primary hover:bg-bg-secondary rounded-lg transition-colors"
             >
               Cancel
             </button>
@@ -107,8 +117,8 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
               disabled={!name.trim()}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                 name.trim()
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                  ? 'bg-primary text-white hover:bg-primary-hover'
+                  : 'bg-border text-text-muted cursor-not-allowed'
               }`}
             >
               Add Table

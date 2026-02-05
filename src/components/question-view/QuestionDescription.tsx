@@ -81,7 +81,7 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
             </h2>
             {question.tables.map((table) => (
               <div key={table.name} className="mb-4">
-                <h3 className="font-mono text-sm font-semibold text-slate-700 mb-2">
+                <h3 className="font-mono text-sm font-semibold text-text-primary mb-2">
                   {table.name}
                 </h3>
                 <div className="overflow-x-auto">

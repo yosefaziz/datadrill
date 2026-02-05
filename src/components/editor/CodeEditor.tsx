@@ -1,5 +1,6 @@
 import Editor from '@monaco-editor/react';
 import { useEditorStore } from '@/stores/editorStore';
+import { useThemeStore } from '@/stores/themeStore';
 
 interface CodeEditorProps {
   language: 'sql' | 'python';
@@ -11,20 +12,22 @@ interface CodeEditorProps {
 
 export function CodeEditor({ language, onRun, onSubmit, isExecuting, isValidating }: CodeEditorProps) {
   const { code, setCode } = useEditorStore();
+  const { theme } = useThemeStore();
 
   const runLabel = language === 'python' ? 'Run Code' : 'Run Query';
   const runningLabel = language === 'python' ? 'Running...' : 'Running...';
+  const editorTheme = theme === 'dark' ? 'vs-dark' : 'light';
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 border border-border rounded-t-lg overflow-hidden">
+      <div className="flex-1 rounded-t-lg overflow-hidden">
         <Editor
           height="100%"
           defaultLanguage={language}
           language={language}
           value={code}
           onChange={(value) => setCode(value || '')}
-          theme="vs-dark"
+          theme={editorTheme}
           options={{
             minimap: { enabled: false },
             fontSize: 14,
@@ -40,14 +43,14 @@ export function CodeEditor({ language, onRun, onSubmit, isExecuting, isValidatin
         <button
           onClick={onRun}
           disabled={isExecuting || isValidating || !code.trim()}
-          className="px-4 py-2 bg-primary text-text-primary rounded-md hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isExecuting ? runningLabel : runLabel}
         </button>
         <button
           onClick={onSubmit}
           disabled={isExecuting || isValidating || !code.trim()}
-          className="px-4 py-2 bg-success text-text-primary rounded-md hover:bg-success disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-success text-white rounded-md hover:bg-success disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isValidating ? 'Validating...' : 'Submit'}
         </button>
