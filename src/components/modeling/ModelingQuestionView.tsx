@@ -120,7 +120,7 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
                   </span>
                 ))}
               </div>
-              <div className="mt-3 p-3 bg-warning/10 border border-warning/30 rounded-lg">
+              <div className="mt-3 p-3 bg-warning/10 rounded-lg ring-1 ring-warning/20">
                 <div className="text-sm font-semibold text-warning">Constraint</div>
                 <div className="text-sm text-text-secondary">{question.constraint}</div>
               </div>
@@ -128,7 +128,7 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
             </div>
 
             {/* Available Fields - Interactive area */}
-            <div className="flex-1 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg shadow-md p-4 overflow-hidden flex flex-col border-2 border-dashed border-primary/30">
+            <div className="flex-1 bg-gradient-to-br from-primary/10 to-accent/5 rounded-xl shadow-lg p-4 overflow-hidden flex flex-col ring-1 ring-primary/20">
               <div className="flex items-center gap-2 mb-3">
                 <Puzzle className="w-5 h-5 text-primary" />
                 <h3 className="text-sm font-semibold text-text-primary">
@@ -149,13 +149,13 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
             {!isSubmitted && (
               <button
                 onClick={() => setShowAddTableModal(true)}
-                className="p-4 rounded-lg border-2 border-dashed border-indigo-300 bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 hover:border-indigo-400 transition-all group"
+                className="p-4 rounded-xl bg-gradient-to-r from-accent/20 to-primary/20 hover:from-accent/30 hover:to-primary/30 transition-all group ring-1 ring-accent/30 hover:ring-accent/50 shadow-lg"
               >
                 <div className="flex items-center justify-center gap-3">
-                  <span className="text-3xl text-indigo-700 group-hover:scale-110 transition-transform">+</span>
+                  <span className="text-3xl text-accent group-hover:scale-110 transition-transform">+</span>
                   <div className="text-left">
-                    <div className="font-semibold text-indigo-700">Create Table</div>
-                    <div className="text-xs text-indigo-500">Add a Fact or Dimension table</div>
+                    <div className="font-semibold text-text-primary">Create Table</div>
+                    <div className="text-xs text-text-secondary">Add a Fact or Dimension table</div>
                   </div>
                 </div>
               </button>

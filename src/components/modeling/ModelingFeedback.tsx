@@ -12,10 +12,10 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
     <div className="space-y-6" role="region" aria-label="Validation results">
       {/* Overall Result */}
       <div
-        className={`p-4 rounded-lg border-2 ${
+        className={`p-4 rounded-xl shadow-lg ${
           result.passed
-            ? 'bg-success/10 border-success'
-            : 'bg-error/10 border-error'
+            ? 'bg-success/10 ring-1 ring-success/30'
+            : 'bg-error/10 ring-1 ring-error/30'
         }`}
         role="status"
         aria-live="polite"
@@ -72,7 +72,7 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
       </div>
 
       {/* Score Bars */}
-      <div className="bg-surface border border-border rounded-lg p-4">
+      <div className="bg-surface rounded-xl shadow-md ring-1 ring-white/5 p-4">
         <h3 className="text-sm font-semibold text-text-primary mb-4">Final Scores</h3>
         <ScoreBars
           storageScore={result.storageScore}
@@ -83,16 +83,16 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
       </div>
 
       {/* Table-by-Table Feedback */}
-      <div className="bg-surface border border-border rounded-lg p-4">
+      <div className="bg-surface rounded-xl shadow-md ring-1 ring-white/5 p-4">
         <h3 className="text-sm font-semibold text-text-primary mb-3">Table Analysis</h3>
         <div className="space-y-3">
           {result.tableResults.map((table, index) => (
             <div
               key={index}
-              className={`p-3 rounded-lg border ${
+              className={`p-3 rounded-lg ${
                 table.issues.length === 0
-                  ? 'bg-success/10 border-success/30'
-                  : 'bg-warning/10 border-warning/30'
+                  ? 'bg-success/10 ring-1 ring-success/20'
+                  : 'bg-warning/10 ring-1 ring-warning/20'
               }`}
             >
               <div className="flex items-center gap-2 mb-1">
@@ -138,7 +138,7 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
       </div>
 
       {/* Educational Tips */}
-      <div className="bg-bg-secondary border border-border rounded-lg p-4">
+      <div className="bg-bg-secondary rounded-xl ring-1 ring-white/5 p-4">
         <h3 className="text-sm font-semibold text-text-primary mb-2 flex items-center gap-2">
           <Lightbulb className="w-4 h-4 text-warning" />
           Remember

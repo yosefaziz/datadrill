@@ -5,19 +5,14 @@ import { SkillType } from '@/types';
 
 function SkeletonCard() {
   return (
-    <div className="bg-surface rounded-lg p-4 border border-border animate-pulse">
+    <div className="bg-surface rounded-lg p-5 shadow-md ring-1 ring-white/5 animate-pulse">
       <div className="flex items-center justify-between mb-3">
-        <div className="h-5 w-16 bg-border rounded" />
-        <div className="h-4 w-12 bg-border rounded" />
-      </div>
-      <div className="h-6 bg-border rounded w-3/4 mb-2" />
-      <div className="space-y-2">
-        <div className="h-4 bg-border rounded w-full" />
-        <div className="h-4 bg-border rounded w-2/3" />
+        <div className="h-6 w-32 bg-white/10 rounded" />
+        <div className="h-5 w-14 bg-white/10 rounded-full" />
       </div>
       <div className="mt-3 flex gap-2">
-        <div className="h-5 w-14 bg-border rounded" />
-        <div className="h-5 w-14 bg-border rounded" />
+        <div className="h-5 w-16 bg-white/5 rounded" />
+        <div className="h-5 w-16 bg-white/5 rounded" />
       </div>
     </div>
   );

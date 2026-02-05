@@ -35,8 +35,8 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
       aria-modal="true"
       aria-labelledby="add-table-modal-title"
     >
-      <div className="bg-surface rounded-lg shadow-xl w-full max-w-md mx-4" onClick={(e) => e.stopPropagation()}>
-        <div className="px-6 py-4 border-b border-border">
+      <div className="bg-surface rounded-xl shadow-2xl w-full max-w-md mx-4 ring-1 ring-white/10" onClick={(e) => e.stopPropagation()}>
+        <div className="px-6 py-4 border-b border-white/10">
           <h2 id="add-table-modal-title" className="text-lg font-semibold text-text-primary">Add New Table</h2>
         </div>
 
@@ -52,10 +52,10 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
                 onClick={() => setType('fact')}
                 role="radio"
                 aria-checked={type === 'fact'}
-                className={`flex-1 p-3 rounded-lg border-2 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                className={`flex-1 p-3 rounded-xl transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                   type === 'fact'
-                    ? 'border-warning bg-warning/10'
-                    : 'border-border hover:border-text-muted'
+                    ? 'ring-2 ring-warning bg-warning/10'
+                    : 'ring-1 ring-white/10 hover:ring-white/20'
                 }`}
               >
                 <div className="text-center">
@@ -76,10 +76,10 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
                 onClick={() => setType('dimension')}
                 role="radio"
                 aria-checked={type === 'dimension'}
-                className={`flex-1 p-3 rounded-lg border-2 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                className={`flex-1 p-3 rounded-xl transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                   type === 'dimension'
-                    ? 'border-info bg-info/10'
-                    : 'border-border hover:border-text-muted'
+                    ? 'ring-2 ring-info bg-info/10'
+                    : 'ring-1 ring-white/10 hover:ring-white/20'
                 }`}
               >
                 <div className="text-center">
@@ -109,7 +109,7 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={type === 'fact' ? 'e.g., Fact_Orders' : 'e.g., Dim_Users'}
-              className="w-full px-3 py-2 border border-border rounded-lg bg-bg-primary text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-3 py-2 rounded-lg bg-bg-primary text-text-primary placeholder:text-text-muted ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
               autoFocus
             />
           </div>

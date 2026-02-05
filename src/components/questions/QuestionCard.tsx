@@ -29,7 +29,7 @@ export function QuestionCard({ question, skill, className = '' }: QuestionCardPr
   return (
     <Link
       to={`/${skill}/question/${question.id}`}
-      className={`block bg-surface rounded-lg shadow-md hover:shadow-lg transition-shadow p-5 border border-border neon-glow-hover ${className}`}
+      className={`block bg-surface rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-5 ring-1 ring-white/5 hover:ring-primary/30 ${className}`}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-2">

@@ -112,30 +112,32 @@ function Table({ csvData }: { csvData: string }) {
   const rows = lines.slice(1).map((line) => line.split(','));
 
   return (
-    <table className="w-full text-sm border border-border rounded">
-      <thead className="bg-bg-secondary">
-        <tr>
-          {headers.map((header, i) => (
-            <th
-              key={i}
-              className="px-3 py-2 text-left font-semibold text-text-primary border-b border-border"
-            >
-              {header.trim()}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, i) => (
-          <tr key={i}>
-            {row.map((cell, j) => (
-              <td key={j} className="px-3 py-2 text-text-secondary border-b border-border">
-                {cell.trim()}
-              </td>
+    <div className="rounded-lg overflow-hidden ring-1 ring-white/10">
+      <table className="w-full text-sm">
+        <thead className="bg-bg-secondary">
+          <tr>
+            {headers.map((header, i) => (
+              <th
+                key={i}
+                className="px-3 py-2 text-left font-semibold text-text-primary"
+              >
+                {header.trim()}
+              </th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className="divide-y divide-white/5">
+          {rows.map((row, i) => (
+            <tr key={i} className="hover:bg-white/5 transition-colors">
+              {row.map((cell, j) => (
+                <td key={j} className="px-3 py-2 text-text-secondary">
+                  {cell.trim()}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

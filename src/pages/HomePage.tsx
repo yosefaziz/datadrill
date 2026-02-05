@@ -5,16 +5,16 @@ import { SkillType } from '@/types';
 
 function SkeletonCard() {
   return (
-    <div className="bg-surface rounded-lg p-6 border border-border animate-pulse">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-lg bg-border" />
-        <div className="h-6 w-24 bg-border rounded" />
+    <div className="bg-surface rounded-xl p-6 shadow-lg ring-1 ring-white/5 animate-pulse">
+      <div className="flex items-center justify-center mb-4">
+        <div className="w-10 h-10 rounded-lg bg-white/10" />
       </div>
       <div className="space-y-2">
-        <div className="h-4 bg-border rounded w-full" />
-        <div className="h-4 bg-border rounded w-3/4" />
+        <div className="h-6 bg-white/10 rounded w-2/3 mx-auto" />
+        <div className="h-4 bg-white/5 rounded w-full" />
+        <div className="h-4 bg-white/5 rounded w-3/4 mx-auto" />
       </div>
-      <div className="mt-4 h-4 bg-border rounded w-20" />
+      <div className="mt-4 h-4 bg-white/5 rounded w-20 mx-auto" />
     </div>
   );
 }

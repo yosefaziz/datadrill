@@ -39,18 +39,18 @@ function DroppableTable({
   return (
     <div
       ref={setNodeRef}
-      className={`rounded-lg border-2 transition-all min-w-[220px] ${
+      className={`rounded-xl transition-all min-w-[220px] shadow-lg overflow-hidden ${
         isOver
-          ? 'border-primary bg-primary/10 scale-[1.02]'
+          ? 'ring-2 ring-primary bg-primary/10 scale-[1.02]'
           : isFact
-            ? 'border-warning/50 bg-warning/10'
-            : 'border-info/50 bg-info/10'
+            ? 'bg-gradient-to-b from-warning/15 to-warning/5 ring-1 ring-warning/20'
+            : 'bg-gradient-to-b from-info/15 to-info/5 ring-1 ring-info/20'
       }`}
     >
       {/* Table Header */}
       <div
-        className={`px-3 py-2 border-b-2 flex items-center justify-between ${
-          isFact ? 'border-warning/50 bg-warning/20' : 'border-info/50 bg-info/20'
+        className={`px-3 py-2.5 flex items-center justify-between ${
+          isFact ? 'bg-warning/20' : 'bg-info/20'
         }`}
       >
         <div>
@@ -86,10 +86,10 @@ function DroppableTable({
       <div className="p-2 min-h-[80px]">
         {tableFields.length === 0 ? (
           <div
-            className={`p-3 border-2 border-dashed rounded text-center text-sm ${
+            className={`p-3 rounded-lg text-center text-sm transition-colors ${
               isOver
-                ? 'border-primary bg-primary/10 text-primary'
-                : 'border-border text-text-muted'
+                ? 'bg-primary/20 text-primary ring-1 ring-primary/50'
+                : 'bg-white/5 text-text-muted'
             }`}
           >
             {isOver ? 'Drop here!' : 'Drag fields here'}
@@ -135,7 +135,7 @@ function DroppableTable({
       </div>
 
       {/* Footer with field count */}
-      <div className="px-3 py-1.5 border-t border-border text-xs text-text-muted">
+      <div className="px-3 py-1.5 bg-black/10 text-xs text-text-muted">
         {tableFields.length} field{tableFields.length !== 1 ? 's' : ''}
         {isFact && tableFields.length > 0 && (
           <span className="ml-2 text-warning">

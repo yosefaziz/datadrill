@@ -27,18 +27,18 @@ export function DroppableStep({
   return (
     <div
       ref={setNodeRef}
-      className={`p-4 rounded-lg border-2 border-dashed transition-all min-h-[100px] ${
+      className={`p-4 rounded-xl transition-all min-h-[100px] shadow-md ${
         isOver
-          ? 'border-primary bg-primary/10 scale-[1.02]'
+          ? 'ring-2 ring-primary bg-primary/10 scale-[1.02]'
           : selectedComponent
-            ? 'border-info bg-info/10'
-            : 'border-border bg-bg-secondary'
+            ? 'bg-info/10 ring-1 ring-info/30'
+            : 'bg-bg-secondary ring-1 ring-white/5'
       } ${disabled ? 'opacity-60' : ''}`}
     >
       <div className="flex items-start gap-3">
         <div
           className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
-            selectedComponent ? 'bg-info text-white' : 'bg-border text-text-secondary'
+            selectedComponent ? 'bg-info text-white' : 'bg-white/10 text-text-secondary'
           }`}
         >
           {index + 1}
@@ -48,7 +48,7 @@ export function DroppableStep({
           <div className="text-sm text-text-secondary mt-0.5">{step.description}</div>
 
           {selectedComponent ? (
-            <div className="mt-3 p-2 bg-surface rounded border border-info/50 flex items-center justify-between">
+            <div className="mt-3 p-2 bg-surface rounded-lg ring-1 ring-info/30 flex items-center justify-between">
               <div>
                 <div className="font-medium text-sm text-info">{selectedComponent.name}</div>
                 <div className="text-xs text-text-secondary">{selectedComponent.description}</div>
@@ -73,10 +73,10 @@ export function DroppableStep({
             </div>
           ) : (
             <div
-              className={`mt-3 p-3 rounded border-2 border-dashed text-center text-sm ${
+              className={`mt-3 p-3 rounded-lg text-center text-sm transition-colors ${
                 isOver
-                  ? 'border-primary bg-primary/20 text-primary'
-                  : 'border-border text-text-muted'
+                  ? 'bg-primary/20 text-primary ring-1 ring-primary/50'
+                  : 'bg-white/5 text-text-muted'
               }`}
             >
               {isOver ? 'Drop here!' : 'Drag a component here'}

@@ -15,7 +15,7 @@ export function Filters() {
           id="difficulty-filter"
           value={filters.difficulty || ''}
           onChange={(e) => setDifficultyFilter(e.target.value || null)}
-          className="px-3 py-2 border border-border rounded-md bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+          className="px-3 py-2 rounded-lg bg-surface text-text-primary ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">All</option>
           <option value="Easy">Easy</option>
@@ -31,7 +31,7 @@ export function Filters() {
           id="topic-filter"
           value={filters.tag || ''}
           onChange={(e) => setTagFilter(e.target.value || null)}
-          className="px-3 py-2 border border-border rounded-md bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+          className="px-3 py-2 rounded-lg bg-surface text-text-primary ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">All Topics</option>
           {tags.map((tag) => (

@@ -15,7 +15,7 @@ export function SkillCard({ skill, name, Icon, description, questionCount, class
   return (
     <Link
       to={`/${skill}`}
-      className={`block bg-surface rounded-xl shadow-md hover:shadow-xl transition-all duration-200 p-6 border border-border hover:border-primary hover:-translate-y-1 neon-glow-hover ${className}`}
+      className={`block bg-surface rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 hover:-translate-y-1 ring-1 ring-white/5 hover:ring-primary/50 ${className}`}
     >
       <div className="text-center">
         <div className="flex justify-center mb-3">

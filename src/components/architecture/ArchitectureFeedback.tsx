@@ -53,10 +53,10 @@ export function ArchitectureFeedback() {
               key={qs.questionId}
               className={`p-3 rounded-lg flex justify-between items-center ${
                 qs.points > 0
-                  ? 'bg-success/10 border border-success/20'
+                  ? 'bg-success/10 ring-1 ring-success/20'
                   : qs.points < 0
-                    ? 'bg-error/10 border border-error/20'
-                    : 'bg-bg-secondary border border-border'
+                    ? 'bg-error/10 ring-1 ring-error/20'
+                    : 'bg-bg-secondary ring-1 ring-white/5'
               }`}
             >
               <div>

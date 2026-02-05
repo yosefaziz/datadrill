@@ -232,7 +232,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
             </div>
 
             {isSubmitted && validationResult?.overallExplanation && (
-              <div className="mt-6 p-4 bg-bg-secondary rounded-lg border border-border">
+              <div className="mt-6 p-4 bg-bg-secondary rounded-lg ring-1 ring-white/10">
                 <h4 className="font-semibold text-text-primary mb-2">Explanation</h4>
                 <p className="text-text-secondary">{validationResult.overallExplanation}</p>
               </div>
