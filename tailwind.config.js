@@ -6,6 +6,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'sans': ['Inter', 'system-ui', 'sans-serif'],
+        'mono': ['JetBrains Mono', 'monospace'],
+        'display': ['JetBrains Mono', 'monospace'],
+      },
       colors: {
         'bg-primary': 'var(--bg-primary)',
         'bg-secondary': 'var(--bg-secondary)',

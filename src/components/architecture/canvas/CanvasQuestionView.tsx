@@ -68,7 +68,7 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex-1 p-4 h-full">
+      <div className="flex-1 p-4 h-full overflow-hidden">
         <div className="h-full min-h-0 flex gap-4">
           {/* Left Panel - Question Description */}
           <div className="w-2/5 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
@@ -142,7 +142,7 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
                     disabled={!allStepsSelected}
                     className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
                       allStepsSelected
-                        ? 'bg-primary text-text-primary hover:bg-primary-hover'
+                        ? 'bg-primary text-white hover:bg-primary-hover'
                         : 'bg-border text-text-muted cursor-not-allowed'
                     }`}
                   >

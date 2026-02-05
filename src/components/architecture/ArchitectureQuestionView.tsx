@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ConstraintsQuestion } from '@/types';
-import { useArchitectureStore } from '@/stores/architectureStore';
+import { useArchitectureStore, ArchitecturePhase } from '@/stores/architectureStore';
 import { QuestionSelectionPhase } from './QuestionSelectionPhase';
 import { ArchitectureSelectionPhase } from './ArchitectureSelectionPhase';
 import { ArchitectureFeedback } from './ArchitectureFeedback';
@@ -10,16 +10,57 @@ interface ArchitectureQuestionViewProps {
   question: ConstraintsQuestion;
 }
 
+const phases: ArchitecturePhase[] = ['questions', 'architecture', 'feedback'];
+const phaseLabels: Record<ArchitecturePhase, string> = {
+  questions: 'Ask Questions',
+  architecture: 'Choose Architecture',
+  feedback: 'Review Feedback',
+};
+
 export function ArchitectureQuestionView({ question }: ArchitectureQuestionViewProps) {
-  const { phase, reset } = useArchitectureStore();
+  const { phase, setPhase, reset, selectedQuestionIds, validationResult } = useArchitectureStore();
 
   // Reset state when question changes
   useEffect(() => {
     reset();
   }, [question.id, reset]);
 
+  const currentPhaseIndex = phases.indexOf(phase);
+
+  // Determine which phases are accessible (can navigate back to)
+  const canNavigateToPhase = (targetPhase: ArchitecturePhase): boolean => {
+    const targetIndex = phases.indexOf(targetPhase);
+
+    // Can always go to current phase
+    if (targetPhase === phase) return false;
+
+    // Can go back to previous phases if they've been completed
+    if (targetIndex < currentPhaseIndex) {
+      // Can go back to questions if we've moved past it
+      if (targetPhase === 'questions') return true;
+      // Can go back to architecture if we've moved past it and questions were selected
+      if (targetPhase === 'architecture' && selectedQuestionIds.length === question.maxQuestions) return true;
+    }
+
+    // Can go forward to architecture if questions are complete
+    if (targetPhase === 'architecture' && phase === 'questions' && selectedQuestionIds.length === question.maxQuestions) {
+      return true;
+    }
+
+    // Can go to feedback only if we have a validation result
+    if (targetPhase === 'feedback' && validationResult) return true;
+
+    return false;
+  };
+
+  const handlePhaseClick = (targetPhase: ArchitecturePhase) => {
+    if (canNavigateToPhase(targetPhase)) {
+      setPhase(targetPhase);
+    }
+  };
+
   return (
-    <div className="flex-1 p-4">
+    <div className="flex-1 p-4 h-full overflow-hidden">
       <div className="h-full flex gap-4">
         {/* Left Panel - Question Description */}
         <div className="w-2/5 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
@@ -77,53 +118,57 @@ export function ArchitectureQuestionView({ question }: ArchitectureQuestionViewP
           {/* Phase Indicator */}
           <div className="px-6 py-3 border-b border-border bg-bg-secondary">
             <div className="flex items-center gap-4">
-              {(['questions', 'architecture', 'feedback'] as const).map((p, idx) => (
-                <div key={p} className="flex items-center gap-2">
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium ${
-                      phase === p
-                        ? 'bg-primary text-text-primary'
-                        : idx <
-                            ['questions', 'architecture', 'feedback'].indexOf(phase)
-                          ? 'bg-success text-text-primary'
-                          : 'bg-border text-text-muted'
-                    }`}
-                  >
-                    {idx <
-                    ['questions', 'architecture', 'feedback'].indexOf(phase) ? (
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    ) : (
-                      idx + 1
+              {phases.map((p, idx) => {
+                const isCurrentPhase = phase === p;
+                const isCompletedPhase = idx < currentPhaseIndex;
+                const isClickable = canNavigateToPhase(p);
+
+                return (
+                  <div key={p} className="flex items-center gap-2">
+                    <button
+                      onClick={() => handlePhaseClick(p)}
+                      disabled={!isClickable}
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
+                        isCurrentPhase
+                          ? 'bg-primary text-white'
+                          : isCompletedPhase
+                            ? 'bg-success text-white'
+                            : 'bg-border text-text-muted'
+                      } ${isClickable ? 'cursor-pointer hover:opacity-80' : ''}`}
+                    >
+                      {isCompletedPhase ? (
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      ) : (
+                        idx + 1
+                      )}
+                    </button>
+                    <button
+                      onClick={() => handlePhaseClick(p)}
+                      disabled={!isClickable}
+                      className={`text-sm transition-colors ${
+                        isCurrentPhase ? 'text-text-primary font-medium' : 'text-text-muted'
+                      } ${isClickable ? 'cursor-pointer hover:text-text-primary' : ''}`}
+                    >
+                      {phaseLabels[p]}
+                    </button>
+                    {idx < 2 && (
+                      <div className="w-8 h-px bg-border ml-2" />
                     )}
                   </div>
-                  <span
-                    className={`text-sm ${
-                      phase === p ? 'text-text-primary font-medium' : 'text-text-muted'
-                    }`}
-                  >
-                    {p === 'questions'
-                      ? 'Ask Questions'
-                      : p === 'architecture'
-                        ? 'Choose Architecture'
-                        : 'Review Feedback'}
-                  </span>
-                  {idx < 2 && (
-                    <div className="w-8 h-px bg-border ml-2" />
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 

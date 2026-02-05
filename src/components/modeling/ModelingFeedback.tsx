@@ -1,3 +1,4 @@
+import { AlertTriangle, Lightbulb, Check } from 'lucide-react';
 import { ModelingValidationResult, ModelingScoreThresholds } from '@/types';
 import { ScoreBars } from './ScoreBars';
 
@@ -114,7 +115,7 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
                 <ul className="text-sm space-y-1">
                   {table.issues.map((issue, i) => (
                     <li key={i} className="flex items-start gap-2 text-warning">
-                      <span className="mt-1">⚠️</span>
+                      <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                       <span>{issue}</span>
                     </li>
                   ))}
@@ -123,7 +124,7 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
 
               {table.issues.length === 0 && (
                 <div className="text-sm text-success flex items-center gap-1">
-                  <span>✓</span>
+                  <Check className="w-4 h-4" />
                   <span>Well structured</span>
                 </div>
               )}
@@ -134,7 +135,10 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
 
       {/* Educational Tips */}
       <div className="bg-bg-secondary border border-border rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-text-primary mb-2">💡 Remember</h3>
+        <h3 className="text-sm font-semibold text-text-primary mb-2 flex items-center gap-2">
+          <Lightbulb className="w-4 h-4 text-warning" />
+          Remember
+        </h3>
         <ul className="text-sm text-text-secondary space-y-1">
           <li>
             • <strong>Fact tables</strong> have billions of rows — every field adds significant

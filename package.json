@@ -15,6 +15,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@duckdb/duckdb-wasm": "^1.29.0",
     "@monaco-editor/react": "^4.6.0",
+    "lucide-react": "^0.563.0",
     "pyodide": "^0.29.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

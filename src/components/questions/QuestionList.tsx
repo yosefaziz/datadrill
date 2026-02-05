@@ -36,8 +36,13 @@ export function QuestionList({ skill }: QuestionListProps) {
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {questions.map((question) => (
-            <QuestionCard key={question.id} question={question} skill={skill} />
+          {questions.map((question, index) => (
+            <QuestionCard
+              key={question.id}
+              question={question}
+              skill={skill}
+              className={`animate-fade-in-up stagger-${Math.min(index + 1, 6)}`}
+            />
           ))}
         </div>
       )}

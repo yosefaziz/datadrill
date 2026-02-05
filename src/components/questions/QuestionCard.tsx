@@ -4,6 +4,7 @@ import { QuestionMeta, SkillType } from '@/types';
 interface QuestionCardProps {
   question: QuestionMeta;
   skill: SkillType;
+  className?: string;
 }
 
 const difficultyColors = {
@@ -24,11 +25,11 @@ const questionTypeLabels = {
   quiz: 'Quiz',
 };
 
-export function QuestionCard({ question, skill }: QuestionCardProps) {
+export function QuestionCard({ question, skill, className = '' }: QuestionCardProps) {
   return (
     <Link
       to={`/${skill}/question/${question.id}`}
-      className="block bg-surface rounded-lg shadow-md hover:shadow-lg transition-shadow p-5 border border-border neon-glow-hover"
+      className={`block bg-surface rounded-lg shadow-md hover:shadow-lg transition-shadow p-5 border border-border neon-glow-hover ${className}`}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-2">

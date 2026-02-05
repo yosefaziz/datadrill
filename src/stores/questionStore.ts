@@ -7,6 +7,8 @@ let latestQuestionRequestId = 0;
 interface QuestionState {
   // Questions by skill
   questionsBySkill: Record<SkillType, QuestionMeta[]>;
+  // Individual question cache
+  questionsById: Record<string, Question>;
   currentQuestion: Question | null;
   currentSkill: SkillType | null;
   isLoading: boolean;
@@ -35,6 +37,7 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     architecture: [],
     modeling: [],
   },
+  questionsById: {},
   currentQuestion: null,
   currentSkill: null,
   isLoading: false,
@@ -45,6 +48,13 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
   },
 
   fetchQuestionsForSkill: async (skill: SkillType) => {
+    // Check cache first - skip fetch if data already exists
+    const existingQuestions = get().questionsBySkill[skill];
+    if (existingQuestions.length > 0) {
+      set({ currentSkill: skill, isLoading: false, error: null });
+      return;
+    }
+
     set({ isLoading: true, error: null, currentSkill: skill });
     try {
       const response = await fetch(`/questions/${skill}/index.json`);
@@ -66,15 +76,32 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
   },
 
   fetchQuestion: async (skill: SkillType, id: string) => {
+    const cacheKey = `${skill}/${id}`;
+    const cachedQuestion = get().questionsById[cacheKey];
+
+    // Check cache first - skip fetch if question already loaded
+    if (cachedQuestion) {
+      set({ currentQuestion: cachedQuestion, currentSkill: skill, isLoading: false, error: null });
+      return;
+    }
+
     const requestId = ++latestQuestionRequestId;
-    set({ isLoading: true, error: null, currentQuestion: null, currentSkill: skill });
+    // Don't reset currentQuestion to null - prevents flash on navigation
+    set({ isLoading: true, error: null, currentSkill: skill });
     try {
       const response = await fetch(`/questions/${skill}/${id}.json`);
       if (!response.ok) throw new Error('Failed to fetch question');
       const question = await response.json();
       // Only update state if this is still the latest request
       if (requestId === latestQuestionRequestId) {
-        set({ currentQuestion: question, isLoading: false });
+        set((state) => ({
+          currentQuestion: question,
+          questionsById: {
+            ...state.questionsById,
+            [cacheKey]: question,
+          },
+          isLoading: false,
+        }));
       }
     } catch (error) {
       // Only update error state if this is still the latest request

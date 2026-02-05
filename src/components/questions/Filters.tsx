@@ -5,7 +5,7 @@ export function Filters() {
   const tags = getAllTags();
 
   return (
-    <div className="flex flex-wrap gap-4 mb-6">
+    <div className="flex flex-wrap gap-4 mb-6 animate-fade-in">
       <div>
         <label className="block text-sm font-medium text-text-primary mb-1">
           Difficulty

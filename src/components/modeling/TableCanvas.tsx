@@ -1,12 +1,13 @@
 import { useDroppable } from '@dnd-kit/core';
+import { BarChart3 } from 'lucide-react';
 import { UserTable, ModelingField, FieldDataType } from '@/types';
 
 const TYPE_COLORS: Record<FieldDataType, string> = {
-  integer: 'bg-blue-50 text-blue-700',
-  string: 'bg-green-50 text-green-700',
-  timestamp: 'bg-purple-50 text-purple-700',
-  decimal: 'bg-amber-50 text-amber-700',
-  boolean: 'bg-pink-50 text-pink-700',
+  integer: 'bg-info/20 text-info',
+  string: 'bg-success/20 text-success',
+  timestamp: 'bg-accent/20 text-accent',
+  decimal: 'bg-warning/20 text-warning',
+  boolean: 'bg-error/20 text-error',
 };
 
 interface DroppableTableProps {
@@ -40,32 +41,32 @@ function DroppableTable({
       ref={setNodeRef}
       className={`rounded-lg border-2 transition-all min-w-[220px] ${
         isOver
-          ? 'border-blue-500 bg-blue-50 scale-[1.02]'
+          ? 'border-primary bg-primary/10 scale-[1.02]'
           : isFact
-            ? 'border-orange-300 bg-orange-50'
-            : 'border-sky-300 bg-sky-50'
+            ? 'border-warning/50 bg-warning/10'
+            : 'border-info/50 bg-info/10'
       }`}
     >
       {/* Table Header */}
       <div
         className={`px-3 py-2 border-b-2 flex items-center justify-between ${
-          isFact ? 'border-orange-300 bg-orange-100' : 'border-sky-300 bg-sky-100'
+          isFact ? 'border-warning/50 bg-warning/20' : 'border-info/50 bg-info/20'
         }`}
       >
         <div>
           <span
             className={`text-xs font-medium px-1.5 py-0.5 rounded ${
-              isFact ? 'bg-orange-200 text-orange-800' : 'bg-sky-200 text-sky-800'
+              isFact ? 'bg-warning/30 text-warning' : 'bg-info/30 text-info'
             }`}
           >
             {isFact ? 'FACT' : 'DIM'}
           </span>
-          <span className="ml-2 font-semibold text-slate-800">{table.name}</span>
+          <span className="ml-2 font-semibold text-text-primary">{table.name}</span>
         </div>
         {!disabled && (
           <button
             onClick={() => onRemoveTable(table.id)}
-            className="p-1 hover:bg-red-100 rounded text-slate-400 hover:text-red-500 transition-colors"
+            className="p-1 hover:bg-error/20 rounded text-text-muted hover:text-error transition-colors"
             title="Remove table"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -86,8 +87,8 @@ function DroppableTable({
           <div
             className={`p-3 border-2 border-dashed rounded text-center text-sm ${
               isOver
-                ? 'border-blue-400 bg-blue-100 text-blue-600'
-                : 'border-slate-300 text-slate-400'
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-border text-text-muted'
             }`}
           >
             {isOver ? 'Drop here!' : 'Drag fields here'}
@@ -106,7 +107,7 @@ function DroppableTable({
                 {!disabled && (
                   <button
                     onClick={() => onRemoveField(table.id, field.id)}
-                    className="opacity-0 group-hover:opacity-100 p-0.5 hover:bg-red-100 rounded text-slate-400 hover:text-red-500 transition-all"
+                    className="opacity-0 group-hover:opacity-100 p-0.5 hover:bg-error/20 rounded text-text-muted hover:text-error transition-all"
                     title="Remove field"
                   >
                     <svg
@@ -131,10 +132,10 @@ function DroppableTable({
       </div>
 
       {/* Footer with field count */}
-      <div className="px-3 py-1.5 border-t border-slate-200 text-xs text-slate-500">
+      <div className="px-3 py-1.5 border-t border-border text-xs text-text-muted">
         {tableFields.length} field{tableFields.length !== 1 ? 's' : ''}
         {isFact && tableFields.length > 0 && (
-          <span className="ml-2 text-orange-600">
+          <span className="ml-2 text-warning">
             (high storage cost)
           </span>
         )}
@@ -161,8 +162,8 @@ export function TableCanvas({
   if (tables.length === 0) {
     return (
       <div className="h-full flex items-center justify-center">
-        <div className="text-center text-slate-400">
-          <div className="text-4xl mb-3">📊</div>
+        <div className="text-center text-text-muted">
+          <BarChart3 className="w-12 h-12 mx-auto mb-3 text-text-muted" />
           <div className="text-lg font-medium">No tables yet</div>
           <div className="text-sm">Click "Add Table" to start building your schema</div>
         </div>

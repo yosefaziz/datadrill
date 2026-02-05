@@ -34,7 +34,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
   const hasSelection = selectedAnswers.length > 0;
 
   return (
-    <div className="flex-1 p-4 h-full">
+    <div className="flex-1 p-4 h-full overflow-hidden">
       <div className="h-full min-h-0 flex gap-4">
         {/* Left Panel - Question */}
         <div className="w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
@@ -113,7 +113,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                   disabled={!hasSelection}
                   className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
                     hasSelection
-                      ? 'bg-primary text-text-primary hover:bg-primary-hover'
+                      ? 'bg-primary text-white hover:bg-primary-hover'
                       : 'bg-border text-text-muted cursor-not-allowed'
                   }`}
                 >
@@ -122,7 +122,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
               ) : (
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 rounded-lg font-medium text-sm bg-accent text-text-primary hover:bg-accent-hover transition-colors"
+                  className="px-4 py-2 rounded-lg font-medium text-sm bg-accent text-white hover:bg-accent-hover transition-colors"
                 >
                   Try Again
                 </button>
@@ -184,7 +184,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                           // Checkbox style - checkmark for multi-select
                           (isSelected || (isSubmitted && result?.isCorrect)) && (
                             <svg
-                              className={`w-4 h-4 ${isSelected ? 'text-text-primary' : 'text-success'}`}
+                              className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-success'}`}
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -203,7 +203,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                             <div
                               className={`w-3 h-3 rounded-full ${
                                 isSelected
-                                  ? 'bg-text-primary'
+                                  ? 'bg-white'
                                   : 'bg-success'
                               }`}
                             />

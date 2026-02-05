@@ -27,23 +27,23 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-md p-8 max-w-md w-full text-center">
-            <div className="text-red-500 text-5xl mb-4">⚠️</div>
-            <h1 className="text-xl font-bold text-slate-800 mb-2">
+        <div className="min-h-screen bg-bg-primary flex items-center justify-center p-4">
+          <div className="bg-bg-secondary rounded-lg shadow-md p-8 max-w-md w-full text-center">
+            <div className="text-error text-5xl mb-4">⚠️</div>
+            <h1 className="text-xl font-bold text-text-primary mb-2">
               Something went wrong
             </h1>
-            <p className="text-slate-600 mb-4">
+            <p className="text-text-secondary mb-4">
               An unexpected error occurred. Please try refreshing the page.
             </p>
             {this.state.error && (
-              <pre className="bg-slate-100 p-3 rounded text-sm text-left overflow-auto mb-4 text-red-600">
+              <pre className="bg-bg-primary p-3 rounded text-sm text-left overflow-auto mb-4 text-error">
                 {this.state.error.message}
               </pre>
             )}
             <button
               onClick={this.handleReset}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
+              className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded transition-colors"
             >
               Go to Home
             </button>

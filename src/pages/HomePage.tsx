@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Database, Zap, Bug, Network, Table2, LucideIcon } from 'lucide-react';
 import { SkillCard } from '@/components/questions/SkillCard';
 import { SkillType } from '@/types';
 
 interface SkillConfig {
   skill: SkillType;
   name: string;
-  icon: string;
+  Icon: LucideIcon;
   description: string;
 }
 
@@ -13,31 +14,31 @@ const SKILLS: SkillConfig[] = [
   {
     skill: 'sql',
     name: 'SQL',
-    icon: '🔍',
+    Icon: Database,
     description: 'Write queries from scratch to retrieve and manipulate data',
   },
   {
     skill: 'pyspark',
     name: 'PySpark',
-    icon: '⚡',
+    Icon: Zap,
     description: 'Write DataFrame transformations for distributed data processing',
   },
   {
     skill: 'debug',
     name: 'Debug',
-    icon: '🔧',
+    Icon: Bug,
     description: 'Fix broken pipelines and identify bugs in SQL or PySpark code',
   },
   {
     skill: 'architecture',
     name: 'Data Architecture',
-    icon: '🏗️',
+    Icon: Network,
     description: 'Practice asking the right questions before choosing an architecture',
   },
   {
     skill: 'modeling',
     name: 'Data Modeling',
-    icon: '📊',
+    Icon: Table2,
     description: 'Design schemas by assigning fields to Fact and Dimension tables',
   },
 ];
@@ -54,19 +55,26 @@ export function HomePage() {
 
   useEffect(() => {
     async function fetchCounts() {
-      const counts: Record<SkillType, number> = { sql: 0, pyspark: 0, debug: 0, architecture: 0, modeling: 0 };
-
-      for (const skill of SKILLS) {
-        try {
-          const response = await fetch(`/questions/${skill.skill}/index.json`);
-          if (response.ok) {
-            const questions = await response.json();
-            counts[skill.skill] = questions.length;
+      // Fetch all skill counts in parallel
+      const results = await Promise.all(
+        SKILLS.map(async ({ skill }) => {
+          try {
+            const response = await fetch(`/questions/${skill}/index.json`);
+            if (response.ok) {
+              const questions = await response.json();
+              return { skill, count: questions.length };
+            }
+          } catch {
+            // Keep count at 0 if fetch fails
           }
-        } catch {
-          // Keep count at 0 if fetch fails
-        }
-      }
+          return { skill, count: 0 };
+        })
+      );
+
+      const counts: Record<SkillType, number> = { sql: 0, pyspark: 0, debug: 0, architecture: 0, modeling: 0 };
+      results.forEach(({ skill, count }) => {
+        counts[skill] = count;
+      });
 
       setQuestionCounts(counts);
       setIsLoading(false);
@@ -77,14 +85,16 @@ export function HomePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-text-primary mb-3">DataDrill</h1>
-        <p className="text-lg text-text-secondary">
+      <div className="text-center mb-12 hero-glow">
+        <h1 className="text-4xl font-bold text-text-primary mb-3 animate-fade-in">
+          DataDrill
+        </h1>
+        <p className="text-lg text-text-secondary animate-fade-in stagger-2">
           Practice data engineering skills with instant feedback
         </p>
       </div>
 
-      <h2 className="text-xl font-semibold text-text-primary mb-6 text-center">
+      <h2 className="text-xl font-semibold text-text-primary mb-6 text-center animate-fade-in stagger-3">
         Choose your skill track
       </h2>
 
@@ -94,14 +104,15 @@ export function HomePage() {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-3">
-          {SKILLS.map((skillConfig) => (
+          {SKILLS.map((skillConfig, index) => (
             <SkillCard
               key={skillConfig.skill}
               skill={skillConfig.skill}
               name={skillConfig.name}
-              icon={skillConfig.icon}
+              Icon={skillConfig.Icon}
               description={skillConfig.description}
               questionCount={questionCounts[skillConfig.skill]}
+              className={`animate-fade-in-up stagger-${index + 1}`}
             />
           ))}
         </div>

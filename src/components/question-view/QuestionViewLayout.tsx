@@ -26,7 +26,7 @@ export function QuestionViewLayout({
   const language = getEditorLanguage(question);
 
   return (
-    <div className="flex-1 p-4">
+    <div className="flex-1 p-4 h-full overflow-hidden">
       <PanelGroup direction="horizontal" className="h-full">
         <Panel defaultSize={40} minSize={25}>
           <div className="h-full bg-surface rounded-lg shadow-md overflow-hidden">
@@ -37,7 +37,7 @@ export function QuestionViewLayout({
         <PanelResizeHandle className="w-2 bg-border hover:bg-border-focus transition-colors mx-1 rounded" />
 
         <Panel defaultSize={60} minSize={30}>
-          <PanelGroup direction="vertical">
+          <PanelGroup direction="vertical" className="h-full">
             <Panel defaultSize={60} minSize={30}>
               <CodeEditor
                 language={language}
@@ -51,7 +51,9 @@ export function QuestionViewLayout({
             <PanelResizeHandle className="h-2 bg-border hover:bg-border-focus transition-colors my-1 rounded" />
 
             <Panel defaultSize={40} minSize={20}>
-              <OutputPanel result={result} validationResult={validationResult} isLoading={isExecuting || isValidating} />
+              <div className="h-full">
+                <OutputPanel result={result} validationResult={validationResult} isLoading={isExecuting || isValidating} />
+              </div>
             </Panel>
           </PanelGroup>
         </Panel>

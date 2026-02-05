@@ -13,9 +13,9 @@ function ScoreBar({ label, score, maxScore, thresholds }: ScoreBarProps) {
     score <= thresholds.green ? 'green' : score <= thresholds.yellow ? 'yellow' : 'red';
 
   const statusColors = {
-    green: 'bg-green-500',
-    yellow: 'bg-yellow-500',
-    red: 'bg-red-500',
+    green: 'bg-success',
+    yellow: 'bg-warning',
+    red: 'bg-error',
   };
 
   const statusLabels = {
@@ -47,9 +47,9 @@ function ScoreBar({ label, score, maxScore, thresholds }: ScoreBarProps) {
       {/* Bar background with equal zones */}
       <div className="h-3 rounded-full bg-bg-secondary relative overflow-hidden">
         {/* Equal zone indicators: 33% each */}
-        <div className="absolute inset-y-0 left-0 bg-success/30 opacity-50 w-1/3" />
-        <div className="absolute inset-y-0 left-1/3 bg-warning/30 opacity-50 w-1/3" />
-        <div className="absolute inset-y-0 left-2/3 bg-error/30 opacity-50 w-1/3" />
+        <div className="absolute inset-y-0 left-0 bg-success/40 w-1/3" />
+        <div className="absolute inset-y-0 left-1/3 bg-warning/40 w-1/3" />
+        <div className="absolute inset-y-0 left-2/3 bg-error/40 w-1/3" />
 
         {/* Actual score bar */}
         <div

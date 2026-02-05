@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
+import { Puzzle, ClipboardList } from 'lucide-react';
 import { ModelingQuestion, ModelingField, TableType } from '@/types';
 import { useModelingStore } from '@/stores/modelingStore';
 import { validateModelingQuestion } from '@/services/validation/ModelingValidator';
@@ -129,7 +130,7 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
             {/* Available Fields - Interactive area */}
             <div className="flex-1 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg shadow-md p-4 overflow-hidden flex flex-col border-2 border-dashed border-primary/30">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xl">🧩</span>
+                <Puzzle className="w-5 h-5 text-primary" />
                 <h3 className="text-sm font-semibold text-text-primary">
                   Drag Fields to Tables
                 </h3>
@@ -197,7 +198,7 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
                 ) : tables.length === 0 ? (
                   <div className="h-full flex items-center justify-center text-text-muted">
                     <div className="text-center">
-                      <div className="text-4xl mb-2">📋</div>
+                      <ClipboardList className="w-12 h-12 mx-auto mb-2 text-text-muted" />
                       <div>No tables yet</div>
                       <div className="text-sm">Click "Create Table" on the left to start</div>
                     </div>

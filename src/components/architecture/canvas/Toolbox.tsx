@@ -53,19 +53,19 @@ export function Toolbox({
   };
 
   const categoryColors: Record<string, string> = {
-    ingestion: 'bg-blue-100 text-blue-700',
-    processing: 'bg-purple-100 text-purple-700',
-    storage: 'bg-amber-100 text-amber-700',
-    serving: 'bg-green-100 text-green-700',
+    ingestion: 'bg-info/20 text-info',
+    processing: 'bg-accent/20 text-accent',
+    storage: 'bg-warning/20 text-warning',
+    serving: 'bg-success/20 text-success',
   };
 
   const categoryOrder = ['ingestion', 'processing', 'storage', 'serving'];
 
   return (
     <div className="h-full flex flex-col">
-      <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-3">
+      <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide mb-3">
         Component Library
-        <span className="ml-2 text-xs font-normal text-slate-400">Drag to add</span>
+        <span className="ml-2 text-xs font-normal text-text-muted">Drag to add</span>
       </h3>
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-wrap gap-4">

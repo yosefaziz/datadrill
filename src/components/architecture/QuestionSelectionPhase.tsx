@@ -14,15 +14,15 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-slate-800 mb-2">
+        <h2 className="text-xl font-semibold text-text-primary mb-2">
           Phase 1: Ask Clarifying Questions
         </h2>
-        <p className="text-slate-600">
+        <p className="text-text-secondary">
           Before choosing an architecture, gather requirements by asking the right questions.
           Select exactly {question.maxQuestions} questions.
         </p>
         {remainingSelections > 0 && (
-          <p className="text-sm text-amber-600 mt-2">
+          <p className="text-sm text-warning mt-2">
             Select {remainingSelections} more question{remainingSelections !== 1 ? 's' : ''}
           </p>
         )}
@@ -40,16 +40,16 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
               disabled={isDisabled}
               className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
                 isSelected
-                  ? 'border-blue-500 bg-blue-50'
+                  ? 'border-primary bg-primary/10'
                   : isDisabled
-                    ? 'border-slate-200 bg-slate-50 opacity-50 cursor-not-allowed'
-                    : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
+                    ? 'border-border bg-bg-secondary opacity-50 cursor-not-allowed'
+                    : 'border-border hover:border-primary hover:bg-bg-secondary'
               }`}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                    isSelected ? 'border-blue-500 bg-blue-500' : 'border-slate-300'
+                    isSelected ? 'border-primary bg-primary' : 'border-border'
                   }`}
                 >
                   {isSelected && (
@@ -68,7 +68,7 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
                     </svg>
                   )}
                 </div>
-                <span className="text-slate-700">{cq.text}</span>
+                <span className="text-text-primary">{cq.text}</span>
               </div>
             </button>
           );
@@ -81,8 +81,8 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
           disabled={!canProceed}
           className={`px-6 py-2 rounded-lg font-medium transition-colors ${
             canProceed
-              ? 'bg-blue-600 text-white hover:bg-blue-700'
-              : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+              ? 'bg-primary text-white hover:bg-primary-hover'
+              : 'bg-border text-text-muted cursor-not-allowed'
           }`}
         >
           Continue to Architecture Selection

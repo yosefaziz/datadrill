@@ -16,7 +16,7 @@ export function PipelineBuilder({
 }: PipelineBuilderProps) {
   return (
     <div className="h-full flex flex-col">
-      <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-3">
+      <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide mb-3">
         Pipeline Steps
       </h3>
       <div className="flex-1 flex items-center gap-4 overflow-x-auto pb-2">
@@ -34,7 +34,7 @@ export function PipelineBuilder({
             {/* Arrow connector */}
             {index < steps.length - 1 && (
               <svg
-                className="w-8 h-8 text-slate-300 flex-shrink-0"
+                className="w-8 h-8 text-text-muted flex-shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
