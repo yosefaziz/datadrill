@@ -58,7 +58,7 @@ export function ArchitectureSelectionPhase({ question }: ArchitectureSelectionPh
         </div>
       )}
 
-      <div className="space-y-3 mb-6">
+      <div className="space-y-3 mb-6" role="radiogroup" aria-label="Select architecture">
         {question.architectureOptions.map((opt) => {
           const isSelected = selectedArchitectureId === opt.id;
 
@@ -66,7 +66,9 @@ export function ArchitectureSelectionPhase({ question }: ArchitectureSelectionPh
             <button
               key={opt.id}
               onClick={() => selectArchitecture(opt.id)}
-              className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+              role="radio"
+              aria-checked={isSelected}
+              className={`w-full text-left p-4 rounded-lg border-2 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                 isSelected
                   ? 'border-primary bg-primary/10'
                   : 'border-border hover:border-primary hover:bg-bg-secondary'
@@ -77,6 +79,7 @@ export function ArchitectureSelectionPhase({ question }: ArchitectureSelectionPh
                   className={`mt-1 w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
                     isSelected ? 'border-primary bg-primary' : 'border-border'
                   }`}
+                  aria-hidden="true"
                 >
                   {isSelected && (
                     <div className="w-2 h-2 rounded-full bg-white" />
@@ -95,14 +98,14 @@ export function ArchitectureSelectionPhase({ question }: ArchitectureSelectionPh
       <div className="flex justify-between">
         <button
           onClick={() => setPhase('questions')}
-          className="px-4 py-2 text-text-secondary hover:text-text-primary transition-colors"
+          className="px-4 py-2 text-text-secondary hover:text-text-primary transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-lg"
         >
           Back to Questions
         </button>
         <button
           onClick={handleSubmit}
           disabled={!selectedArchitectureId}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-6 py-2 rounded-lg font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
             selectedArchitectureId
               ? 'bg-success text-white hover:bg-success'
               : 'bg-border text-text-muted cursor-not-allowed'

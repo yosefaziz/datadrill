@@ -9,9 +9,9 @@ interface OutputPanelProps {
 export function OutputPanel({ result, validationResult, isLoading }: OutputPanelProps) {
   if (isLoading) {
     return (
-      <div className="h-full flex items-center justify-center bg-surface rounded-lg">
+      <div className="h-full flex items-center justify-center bg-surface rounded-lg" role="status" aria-live="polite">
         <div className="flex flex-col items-center gap-3 text-text-secondary">
-          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-border border-t-primary rounded-full animate-spin" aria-hidden="true" />
           <span className="text-sm">Executing query...</span>
         </div>
       </div>
@@ -20,7 +20,7 @@ export function OutputPanel({ result, validationResult, isLoading }: OutputPanel
 
   if (validationResult) {
     return (
-      <div className="h-full overflow-auto bg-surface rounded-lg p-4">
+      <div className="h-full overflow-auto bg-surface rounded-lg p-4" role="status" aria-live="polite">
         <div
           className={`text-center p-6 rounded-lg ${
             validationResult.passed
@@ -74,12 +74,13 @@ export function OutputPanel({ result, validationResult, isLoading }: OutputPanel
 
   return (
     <div className="h-full overflow-auto bg-surface rounded-lg">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm" aria-label="Query results">
         <thead className="bg-bg-secondary sticky top-0">
           <tr>
             {result.columns.map((col, i) => (
               <th
                 key={i}
+                scope="col"
                 className="px-4 py-2 text-left font-semibold text-text-primary border-b border-border"
               >
                 {col}

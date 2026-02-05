@@ -66,10 +66,11 @@ function DroppableTable({
         {!disabled && (
           <button
             onClick={() => onRemoveTable(table.id)}
-            className="p-1 hover:bg-error/20 rounded text-text-muted hover:text-error transition-colors"
+            className="p-1 hover:bg-error/20 rounded text-text-muted hover:text-error transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             title="Remove table"
+            aria-label={`Remove table ${table.name}`}
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -107,14 +108,16 @@ function DroppableTable({
                 {!disabled && (
                   <button
                     onClick={() => onRemoveField(table.id, field.id)}
-                    className="opacity-0 group-hover:opacity-100 p-0.5 hover:bg-error/20 rounded text-text-muted hover:text-error transition-all"
+                    className="opacity-0 group-hover:opacity-100 focus:opacity-100 p-0.5 hover:bg-error/20 rounded text-text-muted hover:text-error transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                     title="Remove field"
+                    aria-label={`Remove field ${field.name} from ${table.name}`}
                   >
                     <svg
                       className="w-3.5 h-3.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"

@@ -43,14 +43,14 @@ export function CodeEditor({ language, onRun, onSubmit, isExecuting, isValidatin
         <button
           onClick={onRun}
           disabled={isExecuting || isValidating || !code.trim()}
-          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           {isExecuting ? runningLabel : runLabel}
         </button>
         <button
           onClick={onSubmit}
           disabled={isExecuting || isValidating || !code.trim()}
-          className="px-4 py-2 bg-success text-white rounded-md hover:bg-success disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-success text-white rounded-md hover:bg-success disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-success"
         >
           {isValidating ? 'Validating...' : 'Submit'}
         </button>

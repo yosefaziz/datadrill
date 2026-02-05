@@ -111,7 +111,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                 <button
                   onClick={handleSubmit}
                   disabled={!hasSelection}
-                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                     hasSelection
                       ? 'bg-primary text-white hover:bg-primary-hover'
                       : 'bg-border text-text-muted cursor-not-allowed'
@@ -122,7 +122,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
               ) : (
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 rounded-lg font-medium text-sm bg-accent text-white hover:bg-accent-hover transition-colors"
+                  className="px-4 py-2 rounded-lg font-medium text-sm bg-accent text-white hover:bg-accent-hover transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   Try Again
                 </button>
@@ -131,7 +131,11 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
           </div>
 
           <div className="flex-1 overflow-y-auto p-6">
-            <div className="space-y-3">
+            <div
+              className="space-y-3"
+              role={question.multiSelect ? 'group' : 'radiogroup'}
+              aria-label={question.multiSelect ? 'Select all correct answers' : 'Select the correct answer'}
+            >
               {question.answers.map((answer) => {
                 const isSelected = selectedAnswers.includes(answer.id);
                 const result = validationResult?.answerResults.find(
@@ -162,7 +166,9 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                     key={answer.id}
                     onClick={() => toggleAnswer(answer.id, question.multiSelect)}
                     disabled={isSubmitted}
-                    className={`w-full p-4 rounded-lg border-2 text-left transition-all ${borderColor} ${bgColor} ${
+                    role={question.multiSelect ? 'checkbox' : 'radio'}
+                    aria-checked={isSelected}
+                    className={`w-full p-4 rounded-lg border-2 text-left transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${borderColor} ${bgColor} ${
                       isSubmitted ? 'cursor-default' : 'hover:border-primary cursor-pointer'
                     }`}
                   >
@@ -179,6 +185,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                               ? 'border-success'
                               : 'border-border'
                         }`}
+                        aria-hidden="true"
                       >
                         {question.multiSelect ? (
                           // Checkbox style - checkmark for multi-select

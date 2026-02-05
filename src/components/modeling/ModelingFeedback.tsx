@@ -9,7 +9,7 @@ interface ModelingFeedbackProps {
 
 export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" role="region" aria-label="Validation results">
       {/* Overall Result */}
       <div
         className={`p-4 rounded-lg border-2 ${
@@ -17,6 +17,8 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
             ? 'bg-success/10 border-success'
             : 'bg-error/10 border-error'
         }`}
+        role="status"
+        aria-live="polite"
       >
         <div className="flex items-center gap-3">
           <div
@@ -30,6 +32,7 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -44,6 +47,7 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"

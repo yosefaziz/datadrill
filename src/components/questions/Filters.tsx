@@ -5,12 +5,14 @@ export function Filters() {
   const tags = getAllTags();
 
   return (
-    <div className="flex flex-wrap gap-4 mb-6 animate-fade-in">
+    <fieldset className="flex flex-wrap gap-4 mb-6 animate-fade-in border-none p-0">
+      <legend className="sr-only">Filter questions</legend>
       <div>
-        <label className="block text-sm font-medium text-text-primary mb-1">
+        <label htmlFor="difficulty-filter" className="block text-sm font-medium text-text-primary mb-1">
           Difficulty
         </label>
         <select
+          id="difficulty-filter"
           value={filters.difficulty || ''}
           onChange={(e) => setDifficultyFilter(e.target.value || null)}
           className="px-3 py-2 border border-border rounded-md bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
@@ -22,10 +24,11 @@ export function Filters() {
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-text-primary mb-1">
+        <label htmlFor="topic-filter" className="block text-sm font-medium text-text-primary mb-1">
           Topic
         </label>
         <select
+          id="topic-filter"
           value={filters.tag || ''}
           onChange={(e) => setTagFilter(e.target.value || null)}
           className="px-3 py-2 border border-border rounded-md bg-surface text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
@@ -38,6 +41,6 @@ export function Filters() {
           ))}
         </select>
       </div>
-    </div>
+    </fieldset>
   );
 }

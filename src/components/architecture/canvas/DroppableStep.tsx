@@ -56,10 +56,11 @@ export function DroppableStep({
               {!disabled && onRemove && (
                 <button
                   onClick={onRemove}
-                  className="p-1 hover:bg-error/20 rounded text-text-muted hover:text-error transition-colors"
+                  className="p-1 hover:bg-error/20 rounded text-text-muted hover:text-error transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   title="Remove component"
+                  aria-label={`Remove ${selectedComponent?.name || 'component'} from ${step.name}`}
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"

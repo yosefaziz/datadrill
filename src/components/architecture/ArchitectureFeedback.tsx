@@ -20,7 +20,7 @@ export function ArchitectureFeedback() {
   } = validationResult;
 
   return (
-    <div className="p-6 overflow-y-auto">
+    <div className="p-6 overflow-y-auto" role="region" aria-label="Architecture feedback">
       {/* Overall Result */}
       <div
         className={`mb-6 p-4 rounded-lg border-2 ${
@@ -28,9 +28,11 @@ export function ArchitectureFeedback() {
             ? 'bg-success/10 border-success/30'
             : 'bg-error/10 border-error/30'
         }`}
+        role="status"
+        aria-live="polite"
       >
         <div className="flex items-center gap-3">
-          <span className="text-3xl">{passed ? '✓' : '✗'}</span>
+          <span className="text-3xl" aria-hidden="true">{passed ? '✓' : '✗'}</span>
           <div>
             <div className={`text-xl font-bold ${passed ? 'text-success' : 'text-error'}`}>
               {passed ? 'Great Job!' : 'Not Quite Right'}
@@ -173,13 +175,13 @@ export function ArchitectureFeedback() {
             reset();
             setPhase('questions');
           }}
-          className="px-4 py-2 text-primary hover:text-primary-hover transition-colors"
+          className="px-4 py-2 text-primary hover:text-primary-hover transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded-lg"
         >
           Try Again
         </button>
         <Link
           to="/architecture"
-          className="px-6 py-2 bg-bg-secondary text-text-primary rounded-lg hover:bg-border transition-colors"
+          className="px-6 py-2 bg-bg-secondary text-text-primary rounded-lg hover:bg-border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           Back to Questions
         </Link>

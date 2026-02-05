@@ -80,10 +80,12 @@ export function CanvasFeedback({ result, onReset }: CanvasFeedbackProps) {
   const scorePercentage = Math.round((result.totalScore / result.maxScore) * 100);
 
   return (
-    <div className="p-6 space-y-6 overflow-y-auto">
+    <div className="p-6 space-y-6 overflow-y-auto" role="region" aria-label="Pipeline feedback">
       {/* Score summary */}
       <div
         className={`p-4 rounded-lg ${result.passed ? 'bg-success/10 border border-success/20' : 'bg-error/10 border border-error/20'}`}
+        role="status"
+        aria-live="polite"
       >
         <div className="flex items-center justify-between">
           <div>
@@ -154,7 +156,7 @@ export function CanvasFeedback({ result, onReset }: CanvasFeedbackProps) {
       <div className="pt-4">
         <button
           onClick={onReset}
-          className="w-full py-3 px-4 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors"
+          className="w-full py-3 px-4 bg-primary text-white font-medium rounded-lg hover:bg-primary-hover transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           Try Again
         </button>

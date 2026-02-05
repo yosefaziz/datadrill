@@ -28,23 +28,31 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={onClose}>
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-table-modal-title"
+    >
       <div className="bg-surface rounded-lg shadow-xl w-full max-w-md mx-4" onClick={(e) => e.stopPropagation()}>
         <div className="px-6 py-4 border-b border-border">
-          <h2 className="text-lg font-semibold text-text-primary">Add New Table</h2>
+          <h2 id="add-table-modal-title" className="text-lg font-semibold text-text-primary">Add New Table</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
           {/* Table Type Selection */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-text-primary mb-2">
+          <fieldset className="mb-4 border-none p-0">
+            <legend className="block text-sm font-medium text-text-primary mb-2">
               Table Type
-            </label>
-            <div className="flex gap-3">
+            </legend>
+            <div className="flex gap-3" role="radiogroup" aria-label="Table type">
               <button
                 type="button"
                 onClick={() => setType('fact')}
-                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                role="radio"
+                aria-checked={type === 'fact'}
+                className={`flex-1 p-3 rounded-lg border-2 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                   type === 'fact'
                     ? 'border-warning bg-warning/10'
                     : 'border-border hover:border-text-muted'
@@ -66,7 +74,9 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
               <button
                 type="button"
                 onClick={() => setType('dimension')}
-                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                role="radio"
+                aria-checked={type === 'dimension'}
+                className={`flex-1 p-3 rounded-lg border-2 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                   type === 'dimension'
                     ? 'border-info bg-info/10'
                     : 'border-border hover:border-text-muted'
@@ -86,14 +96,15 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
                 </div>
               </button>
             </div>
-          </div>
+          </fieldset>
 
           {/* Table Name */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-text-primary mb-2">
+            <label htmlFor="table-name" className="block text-sm font-medium text-text-primary mb-2">
               Table Name
             </label>
             <input
+              id="table-name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -108,14 +119,14 @@ export function AddTableModal({ onAdd, onClose }: AddTableModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-text-primary hover:bg-bg-secondary rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-medium text-text-primary hover:bg-bg-secondary rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!name.trim()}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                 name.trim()
                   ? 'bg-primary text-white hover:bg-primary-hover'
                   : 'bg-border text-text-muted cursor-not-allowed'

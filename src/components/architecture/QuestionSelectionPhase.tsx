@@ -28,7 +28,7 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
         )}
       </div>
 
-      <div className="space-y-3 mb-6">
+      <div className="space-y-3 mb-6" role="group" aria-label="Select clarifying questions">
         {question.clarifyingQuestions.map((cq) => {
           const isSelected = selectedQuestionIds.includes(cq.id);
           const isDisabled = !isSelected && selectedQuestionIds.length >= question.maxQuestions;
@@ -38,7 +38,9 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
               key={cq.id}
               onClick={() => toggleQuestion(cq.id, question.maxQuestions)}
               disabled={isDisabled}
-              className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+              role="checkbox"
+              aria-checked={isSelected}
+              className={`w-full text-left p-4 rounded-lg border-2 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                 isSelected
                   ? 'border-primary bg-primary/10'
                   : isDisabled
@@ -51,6 +53,7 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                     isSelected ? 'border-primary bg-primary' : 'border-border'
                   }`}
+                  aria-hidden="true"
                 >
                   {isSelected && (
                     <svg
@@ -79,7 +82,7 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
         <button
           onClick={() => setPhase('architecture')}
           disabled={!canProceed}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-6 py-2 rounded-lg font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
             canProceed
               ? 'bg-primary text-white hover:bg-primary-hover'
               : 'bg-border text-text-muted cursor-not-allowed'
