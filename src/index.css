@@ -28,7 +28,7 @@
   --info: #0284c7;
 }
 
-[data-theme="dark"] {
+:root.dark {
   /* Dark Mode - Neon Aesthetic */
   /* Backgrounds - darker for contrast */
   --bg-primary: #0a0e1a;
