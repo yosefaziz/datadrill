@@ -78,19 +78,19 @@ export function HomePage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-slate-800 mb-3">DataDrill</h1>
-        <p className="text-lg text-slate-600">
+        <h1 className="text-4xl font-bold text-text-primary mb-3">DataDrill</h1>
+        <p className="text-lg text-text-secondary">
           Practice data engineering skills with instant feedback
         </p>
       </div>
 
-      <h2 className="text-xl font-semibold text-slate-700 mb-6 text-center">
+      <h2 className="text-xl font-semibold text-text-primary mb-6 text-center">
         Choose your skill track
       </h2>
 
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="text-slate-600">Loading...</div>
+          <div className="text-text-secondary">Loading...</div>
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-3">

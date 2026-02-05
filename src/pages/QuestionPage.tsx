@@ -65,8 +65,8 @@ export function QuestionPage() {
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg text-slate-600 mb-4">Invalid skill: {skill}</div>
-          <Link to="/" className="text-blue-600 hover:text-blue-800 underline">
+          <div className="text-lg text-text-secondary mb-4">Invalid skill: {skill}</div>
+          <Link to="/" className="text-primary hover:text-primary-hover transition-colors duration-200">
             Back to home
           </Link>
         </div>
@@ -88,8 +88,8 @@ export function QuestionPage() {
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg text-slate-600 mb-2">{loadingMessage}</div>
-          <div className="text-sm text-slate-500">This may take a moment</div>
+          <div className="text-lg text-text-secondary mb-2">{loadingMessage}</div>
+          <div className="text-sm text-text-muted">This may take a moment</div>
         </div>
       </div>
     );
@@ -100,10 +100,10 @@ export function QuestionPage() {
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg text-red-600 mb-4">{displayError}</div>
+          <div className="text-lg text-error mb-4">{displayError}</div>
           <Link
             to={`/${skill}`}
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-primary hover:text-primary-hover transition-colors duration-200"
           >
             Back to questions
           </Link>
@@ -116,10 +116,10 @@ export function QuestionPage() {
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg text-slate-600 mb-4">Question not found</div>
+          <div className="text-lg text-text-secondary mb-4">Question not found</div>
           <Link
             to={`/${skill}`}
-            className="text-blue-600 hover:text-blue-800 underline"
+            className="text-primary hover:text-primary-hover transition-colors duration-200"
           >
             Back to questions
           </Link>

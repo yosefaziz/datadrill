@@ -17,7 +17,7 @@ export function CodeEditor({ language, onRun, onSubmit, isExecuting, isValidatin
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 border border-slate-300 rounded-t-lg overflow-hidden">
+      <div className="flex-1 border border-border rounded-t-lg overflow-hidden">
         <Editor
           height="100%"
           defaultLanguage={language}
@@ -36,18 +36,18 @@ export function CodeEditor({ language, onRun, onSubmit, isExecuting, isValidatin
           }}
         />
       </div>
-      <div className="flex gap-2 p-3 bg-slate-200 rounded-b-lg">
+      <div className="flex gap-2 p-3 bg-bg-secondary rounded-b-lg">
         <button
           onClick={onRun}
           disabled={isExecuting || isValidating || !code.trim()}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-primary text-text-primary rounded-md hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isExecuting ? runningLabel : runLabel}
         </button>
         <button
           onClick={onSubmit}
           disabled={isExecuting || isValidating || !code.trim()}
-          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-success text-text-primary rounded-md hover:bg-success disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isValidating ? 'Validating...' : 'Submit'}
         </button>

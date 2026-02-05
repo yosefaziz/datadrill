@@ -5,17 +5,17 @@ interface QuestionDescriptionProps {
 }
 
 const difficultyColors = {
-  Easy: 'bg-green-100 text-green-800',
-  Medium: 'bg-yellow-100 text-yellow-800',
-  Hard: 'bg-red-100 text-red-800',
+  Easy: 'bg-success/20 text-success',
+  Medium: 'bg-warning/20 text-warning',
+  Hard: 'bg-error/20 text-error',
 };
 
 const skillBadges = {
-  sql: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'SQL' },
-  pyspark: { bg: 'bg-orange-100', text: 'text-orange-800', label: 'PySpark' },
-  debug: { bg: 'bg-purple-100', text: 'text-purple-800', label: 'Debug' },
-  architecture: { bg: 'bg-teal-100', text: 'text-teal-800', label: 'Architecture' },
-  modeling: { bg: 'bg-indigo-100', text: 'text-indigo-800', label: 'Modeling' },
+  sql: { bg: 'bg-info/20', text: 'text-info', label: 'SQL' },
+  pyspark: { bg: 'bg-warning/20', text: 'text-warning', label: 'PySpark' },
+  debug: { bg: 'bg-accent/20', text: 'text-accent', label: 'Debug' },
+  architecture: { bg: 'bg-primary/20', text: 'text-primary', label: 'Architecture' },
+  modeling: { bg: 'bg-success/20', text: 'text-success', label: 'Modeling' },
 };
 
 export function QuestionDescription({ question }: QuestionDescriptionProps) {
@@ -25,7 +25,7 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
   return (
     <div className="h-full overflow-auto p-6">
       <div className="flex items-start justify-between gap-4 mb-4">
-        <h1 className="text-2xl font-bold text-slate-800">{question.title}</h1>
+        <h1 className="text-2xl font-bold text-text-primary">{question.title}</h1>
         <div className="flex gap-2">
           <span
             className={`px-3 py-1 rounded-full text-sm font-medium ${skillBadge.bg} ${skillBadge.text}`}
@@ -47,7 +47,7 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
         {question.tags.map((tag) => (
           <span
             key={tag}
-            className="px-2 py-1 bg-slate-200 text-slate-700 rounded text-sm"
+            className="px-2 py-1 bg-bg-secondary text-text-secondary rounded text-sm"
           >
             {tag}
           </span>
@@ -55,18 +55,18 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
       </div>
 
       <div
-        className="prose prose-slate max-w-none mb-6"
+        className="prose prose-slate max-w-none mb-6 prose-invert"
         dangerouslySetInnerHTML={{ __html: question.description }}
       />
 
       {/* Show hint for debug questions */}
       {isDebug && question.hint && (
-        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+        <div className="mb-6 p-4 bg-warning/10 border border-warning/30 rounded-lg">
           <div className="flex items-start gap-2">
-            <span className="text-amber-600 text-lg">💡</span>
+            <span className="text-warning text-lg">💡</span>
             <div>
-              <h3 className="font-semibold text-amber-800 mb-1">Hint</h3>
-              <p className="text-amber-700 text-sm">{question.hint}</p>
+              <h3 className="font-semibold text-warning mb-1">Hint</h3>
+              <p className="text-text-secondary text-sm">{question.hint}</p>
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
       {!isArchitectureQuestion(question) && !isModelingQuestion(question) && (
         <div className="space-y-6">
           <div>
-            <h2 className="text-lg font-semibold text-slate-800 mb-3">
+            <h2 className="text-lg font-semibold text-text-primary mb-3">
               {question.skill === 'pyspark' ? 'DataFrames' : 'Tables'}
             </h2>
             {question.tables.map((table) => (
@@ -92,11 +92,11 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-slate-800 mb-3">
+            <h2 className="text-lg font-semibold text-text-primary mb-3">
               Expected Output
             </h2>
             <div
-              className="prose prose-slate max-w-none"
+              className="prose prose-slate max-w-none prose-invert"
               dangerouslySetInnerHTML={{ __html: question.expectedOutput }}
             />
           </div>
@@ -112,13 +112,13 @@ function Table({ csvData }: { csvData: string }) {
   const rows = lines.slice(1).map((line) => line.split(','));
 
   return (
-    <table className="w-full text-sm border border-slate-300 rounded">
-      <thead className="bg-slate-100">
+    <table className="w-full text-sm border border-border rounded">
+      <thead className="bg-bg-secondary">
         <tr>
           {headers.map((header, i) => (
             <th
               key={i}
-              className="px-3 py-2 text-left font-semibold text-slate-700 border-b border-slate-300"
+              className="px-3 py-2 text-left font-semibold text-text-primary border-b border-border"
             >
               {header.trim()}
             </th>
@@ -129,7 +129,7 @@ function Table({ csvData }: { csvData: string }) {
         {rows.map((row, i) => (
           <tr key={i}>
             {row.map((cell, j) => (
-              <td key={j} className="px-3 py-2 border-b border-slate-200">
+              <td key={j} className="px-3 py-2 text-text-secondary border-b border-border">
                 {cell.trim()}
               </td>
             ))}

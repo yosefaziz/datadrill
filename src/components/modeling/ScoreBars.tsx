@@ -27,16 +27,16 @@ function ScoreBar({ label, score, maxScore, thresholds }: ScoreBarProps) {
   return (
     <div className="flex-1">
       <div className="flex items-center justify-between mb-1">
-        <span className="text-sm font-medium text-slate-700">{label}</span>
+        <span className="text-sm font-medium text-text-primary">{label}</span>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-mono text-slate-600">{score}</span>
+          <span className="text-sm font-mono text-text-secondary">{score}</span>
           <span
             className={`text-xs px-1.5 py-0.5 rounded ${
               status === 'green'
-                ? 'bg-green-100 text-green-700'
+                ? 'bg-success/20 text-success'
                 : status === 'yellow'
-                  ? 'bg-yellow-100 text-yellow-700'
-                  : 'bg-red-100 text-red-700'
+                  ? 'bg-warning/20 text-warning'
+                  : 'bg-error/20 text-error'
             }`}
           >
             {statusLabels[status]}
@@ -45,11 +45,11 @@ function ScoreBar({ label, score, maxScore, thresholds }: ScoreBarProps) {
       </div>
 
       {/* Bar background with equal zones */}
-      <div className="h-3 rounded-full bg-slate-100 relative overflow-hidden">
+      <div className="h-3 rounded-full bg-bg-secondary relative overflow-hidden">
         {/* Equal zone indicators: 33% each */}
-        <div className="absolute inset-y-0 left-0 bg-green-200 opacity-50 w-1/3" />
-        <div className="absolute inset-y-0 left-1/3 bg-yellow-200 opacity-50 w-1/3" />
-        <div className="absolute inset-y-0 left-2/3 bg-red-200 opacity-50 w-1/3" />
+        <div className="absolute inset-y-0 left-0 bg-success/30 opacity-50 w-1/3" />
+        <div className="absolute inset-y-0 left-1/3 bg-warning/30 opacity-50 w-1/3" />
+        <div className="absolute inset-y-0 left-2/3 bg-error/30 opacity-50 w-1/3" />
 
         {/* Actual score bar */}
         <div
@@ -58,8 +58,8 @@ function ScoreBar({ label, score, maxScore, thresholds }: ScoreBarProps) {
         />
 
         {/* Threshold markers */}
-        <div className="absolute inset-y-0 left-1/3 w-0.5 bg-slate-300" />
-        <div className="absolute inset-y-0 left-2/3 w-0.5 bg-slate-300" />
+        <div className="absolute inset-y-0 left-1/3 w-0.5 bg-border" />
+        <div className="absolute inset-y-0 left-2/3 w-0.5 bg-border" />
       </div>
     </div>
   );

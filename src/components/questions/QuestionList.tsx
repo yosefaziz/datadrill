@@ -14,7 +14,7 @@ export function QuestionList({ skill }: QuestionListProps) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-slate-600">Loading questions...</div>
+        <div className="text-text-secondary">Loading questions...</div>
       </div>
     );
   }
@@ -22,7 +22,7 @@ export function QuestionList({ skill }: QuestionListProps) {
   if (error) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-red-600">{error}</div>
+        <div className="text-error">{error}</div>
       </div>
     );
   }
@@ -31,7 +31,7 @@ export function QuestionList({ skill }: QuestionListProps) {
     <div>
       <Filters />
       {questions.length === 0 ? (
-        <div className="text-center py-12 text-slate-600">
+        <div className="text-center py-12 text-text-secondary">
           No questions match the current filters.
         </div>
       ) : (

@@ -37,33 +37,33 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
     <div className="flex-1 p-4 h-full">
       <div className="h-full min-h-0 flex gap-4">
         {/* Left Panel - Question */}
-        <div className="w-1/2 bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-slate-200">
+        <div className="w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
+          <div className="p-6 border-b border-border">
             <Link
               to="/architecture"
-              className="text-blue-600 hover:text-blue-800 text-sm mb-3 inline-block"
+              className="text-primary hover:text-primary-hover text-sm mb-3 inline-block transition-colors duration-200"
             >
               &larr; All Questions
             </Link>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-medium px-2 py-0.5 rounded bg-indigo-100 text-indigo-700">
+              <span className="text-xs font-medium px-2 py-0.5 rounded bg-info/20 text-info">
                 Quiz
               </span>
               {question.multiSelect && (
-                <span className="text-xs font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-700">
+                <span className="text-xs font-medium px-2 py-0.5 rounded bg-warning/20 text-warning">
                   Multiple Answers
                 </span>
               )}
             </div>
-            <h1 className="text-2xl font-bold text-slate-800">{question.title}</h1>
+            <h1 className="text-2xl font-bold text-text-primary">{question.title}</h1>
             <div className="flex items-center gap-3 mt-2 flex-wrap">
               <span
                 className={`text-xs font-medium px-2 py-1 rounded ${
                   question.difficulty === 'Easy'
-                    ? 'bg-green-100 text-green-700'
+                    ? 'bg-success/20 text-success'
                     : question.difficulty === 'Medium'
-                      ? 'bg-yellow-100 text-yellow-700'
-                      : 'bg-red-100 text-red-700'
+                      ? 'bg-warning/20 text-warning'
+                      : 'bg-error/20 text-error'
                 }`}
               >
                 {question.difficulty}
@@ -71,7 +71,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
               {question.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded"
+                  className="text-xs bg-bg-secondary text-text-secondary px-2 py-1 rounded"
                 >
                   {tag}
                 </span>
@@ -80,13 +80,13 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
           </div>
 
           <div className="flex-1 overflow-y-auto p-6">
-            <div className="prose prose-slate max-w-none">
-              <p className="text-lg text-slate-700 whitespace-pre-wrap">
+            <div className="prose prose-slate max-w-none prose-invert">
+              <p className="text-lg text-text-primary whitespace-pre-wrap">
                 {question.question}
               </p>
               {question.description && (
                 <div
-                  className="text-slate-600 mt-4"
+                  className="text-text-secondary mt-4"
                   dangerouslySetInnerHTML={{ __html: question.description }}
                 />
               )}
@@ -95,10 +95,10 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
         </div>
 
         {/* Right Panel - Answers */}
-        <div className="w-1/2 bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-          <div className="px-6 py-3 border-b border-slate-200 bg-slate-50 flex-shrink-0">
+        <div className="w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
+          <div className="px-6 py-3 border-b border-border bg-bg-secondary flex-shrink-0">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-slate-600">
+              <div className="text-sm text-text-secondary">
                 {isSubmitted
                   ? validationResult?.passed
                     ? 'Correct!'
@@ -113,8 +113,8 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                   disabled={!hasSelection}
                   className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
                     hasSelection
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                      ? 'bg-primary text-text-primary hover:bg-primary-hover'
+                      : 'bg-border text-text-muted cursor-not-allowed'
                   }`}
                 >
                   Submit Answer
@@ -122,7 +122,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
               ) : (
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 rounded-lg font-medium text-sm bg-slate-600 text-white hover:bg-slate-700 transition-colors"
+                  className="px-4 py-2 rounded-lg font-medium text-sm bg-accent text-text-primary hover:bg-accent-hover transition-colors"
                 >
                   Try Again
                 </button>
@@ -138,23 +138,23 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                   (r) => r.answerId === answer.id
                 );
 
-                let borderColor = 'border-slate-200';
-                let bgColor = 'bg-white';
-                let textColor = 'text-slate-800';
+                let borderColor = 'border-border';
+                let bgColor = 'bg-surface';
+                let textColor = 'text-text-primary';
 
                 if (isSubmitted && result) {
                   if (result.isCorrect) {
-                    borderColor = 'border-green-400';
-                    bgColor = result.wasSelected ? 'bg-green-50' : 'bg-green-50/50';
-                    textColor = 'text-green-800';
+                    borderColor = 'border-success';
+                    bgColor = result.wasSelected ? 'bg-success/10' : 'bg-success/5';
+                    textColor = 'text-success';
                   } else if (result.wasSelected) {
-                    borderColor = 'border-red-400';
-                    bgColor = 'bg-red-50';
-                    textColor = 'text-red-800';
+                    borderColor = 'border-error';
+                    bgColor = 'bg-error/10';
+                    textColor = 'text-error';
                   }
                 } else if (isSelected) {
-                  borderColor = 'border-blue-400';
-                  bgColor = 'bg-blue-50';
+                  borderColor = 'border-primary';
+                  bgColor = 'bg-primary/10';
                 }
 
                 return (
@@ -163,7 +163,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                     onClick={() => toggleAnswer(answer.id, question.multiSelect)}
                     disabled={isSubmitted}
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${borderColor} ${bgColor} ${
-                      isSubmitted ? 'cursor-default' : 'hover:border-blue-300 cursor-pointer'
+                      isSubmitted ? 'cursor-default' : 'hover:border-primary cursor-pointer'
                     }`}
                   >
                     <div className="flex items-start gap-3">
@@ -172,19 +172,19 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                           isSelected
                             ? isSubmitted
                               ? result?.isCorrect
-                                ? 'border-green-500 bg-green-500'
-                                : 'border-red-500 bg-red-500'
-                              : 'border-blue-500 bg-blue-500'
+                                ? 'border-success bg-success'
+                                : 'border-error bg-error'
+                              : 'border-primary bg-primary'
                             : isSubmitted && result?.isCorrect
-                              ? 'border-green-500'
-                              : 'border-slate-300'
+                              ? 'border-success'
+                              : 'border-border'
                         }`}
                       >
                         {question.multiSelect ? (
                           // Checkbox style - checkmark for multi-select
                           (isSelected || (isSubmitted && result?.isCorrect)) && (
                             <svg
-                              className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-green-500'}`}
+                              className={`w-4 h-4 ${isSelected ? 'text-text-primary' : 'text-success'}`}
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -203,8 +203,8 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                             <div
                               className={`w-3 h-3 rounded-full ${
                                 isSelected
-                                  ? 'bg-white'
-                                  : 'bg-green-500'
+                                  ? 'bg-text-primary'
+                                  : 'bg-success'
                               }`}
                             />
                           )
@@ -213,7 +213,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                       <div className="flex-1">
                         <div className={`font-medium ${textColor}`}>{answer.text}</div>
                         {isSubmitted && result?.explanation && (
-                          <div className="text-sm text-slate-600 mt-2 italic">
+                          <div className="text-sm text-text-secondary mt-2 italic">
                             {result.explanation}
                           </div>
                         )}
@@ -225,9 +225,9 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
             </div>
 
             {isSubmitted && validationResult?.overallExplanation && (
-              <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
-                <h4 className="font-semibold text-slate-800 mb-2">Explanation</h4>
-                <p className="text-slate-600">{validationResult.overallExplanation}</p>
+              <div className="mt-6 p-4 bg-bg-secondary rounded-lg border border-border">
+                <h4 className="font-semibold text-text-primary mb-2">Explanation</h4>
+                <p className="text-text-secondary">{validationResult.overallExplanation}</p>
               </div>
             )}
           </div>

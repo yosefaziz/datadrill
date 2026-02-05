@@ -90,22 +90,22 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
           {/* Left Panel - Question, Fields, Add Table */}
           <div className="w-1/3 flex flex-col gap-4">
             {/* Question/Objective Panel */}
-            <div className="bg-white rounded-lg shadow-md p-4">
+            <div className="bg-surface rounded-lg shadow-md p-4">
               <Link
                 to="/modeling"
-                className="text-blue-600 hover:text-blue-800 text-sm mb-2 inline-block"
+                className="text-primary hover:text-primary-hover text-sm mb-2 inline-block transition-colors duration-200"
               >
                 &larr; All Questions
               </Link>
-              <h1 className="text-xl font-bold text-slate-800">{question.title}</h1>
+              <h1 className="text-xl font-bold text-text-primary">{question.title}</h1>
               <div className="flex items-center gap-2 mt-2 flex-wrap">
                 <span
                   className={`text-xs font-medium px-2 py-1 rounded ${
                     question.difficulty === 'Easy'
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-success/20 text-success'
                       : question.difficulty === 'Medium'
-                        ? 'bg-yellow-100 text-yellow-700'
-                        : 'bg-red-100 text-red-700'
+                        ? 'bg-warning/20 text-warning'
+                        : 'bg-error/20 text-error'
                   }`}
                 >
                   {question.difficulty}
@@ -113,28 +113,28 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
                 {question.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded"
+                    className="text-xs bg-bg-secondary text-text-secondary px-2 py-1 rounded"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
-              <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                <div className="text-sm font-semibold text-amber-800">Constraint</div>
-                <div className="text-sm text-amber-700">{question.constraint}</div>
+              <div className="mt-3 p-3 bg-warning/10 border border-warning/30 rounded-lg">
+                <div className="text-sm font-semibold text-warning">Constraint</div>
+                <div className="text-sm text-text-secondary">{question.constraint}</div>
               </div>
-              <p className="mt-3 text-sm text-slate-600">{question.prompt}</p>
+              <p className="mt-3 text-sm text-text-secondary">{question.prompt}</p>
             </div>
 
             {/* Available Fields - Interactive area */}
-            <div className="flex-1 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-md p-4 overflow-hidden flex flex-col border-2 border-dashed border-blue-200">
+            <div className="flex-1 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg shadow-md p-4 overflow-hidden flex flex-col border-2 border-dashed border-primary/30">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-xl">🧩</span>
-                <h3 className="text-sm font-semibold text-slate-700">
+                <h3 className="text-sm font-semibold text-text-primary">
                   Drag Fields to Tables
                 </h3>
               </div>
-              <p className="text-xs text-slate-500 mb-3">
+              <p className="text-xs text-text-muted mb-3">
                 Drag these fields into the tables on the right
               </p>
               <FieldSoup
@@ -165,8 +165,8 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
           <div className="w-2/3 flex flex-col gap-4">
             {/* Live Score - Top right */}
             {!isSubmitted && (
-              <div className="bg-white rounded-lg shadow-md p-4">
-                <h3 className="text-sm font-semibold text-slate-700 mb-3">Live Score</h3>
+              <div className="bg-surface rounded-lg shadow-md p-4">
+                <h3 className="text-sm font-semibold text-text-primary mb-3">Live Score</h3>
                 <ScoreBars
                   storageScore={liveResult?.storageScore || 0}
                   queryCostScore={liveResult?.queryCostScore || 0}
@@ -177,9 +177,9 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
             )}
 
             {/* Table Canvas */}
-            <div className="flex-1 bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
-              <div className="px-6 py-3 border-b border-slate-200 bg-slate-50 flex-shrink-0">
-                <div className="text-sm text-slate-600">
+            <div className="flex-1 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
+              <div className="px-6 py-3 border-b border-border bg-bg-secondary flex-shrink-0">
+                <div className="text-sm text-text-secondary">
                   {isSubmitted
                     ? 'Review your model'
                     : tables.length === 0
@@ -195,7 +195,7 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
                     thresholds={question.scoreThresholds}
                   />
                 ) : tables.length === 0 ? (
-                  <div className="h-full flex items-center justify-center text-slate-400">
+                  <div className="h-full flex items-center justify-center text-text-muted">
                     <div className="text-center">
                       <div className="text-4xl mb-2">📋</div>
                       <div>No tables yet</div>
@@ -214,15 +214,15 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
               </div>
 
               {/* Submit button - Bottom right */}
-              <div className="px-6 py-3 border-t border-slate-200 bg-slate-50 flex justify-end">
+              <div className="px-6 py-3 border-t border-border bg-bg-secondary flex justify-end">
                 {!isSubmitted ? (
                   <button
                     onClick={handleSubmit}
                     disabled={!hasTablesWithFields}
                     className={`px-6 py-2 rounded-lg font-medium transition-colors ${
                       hasTablesWithFields
-                        ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md'
-                        : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                        ? 'bg-primary text-text-primary hover:bg-primary-hover shadow-md'
+                        : 'bg-border text-text-muted cursor-not-allowed'
                     }`}
                   >
                     Submit Model
@@ -230,7 +230,7 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
                 ) : (
                   <button
                     onClick={handleReset}
-                    className="px-6 py-2 rounded-lg font-medium bg-slate-600 text-white hover:bg-slate-700 transition-colors"
+                    className="px-6 py-2 rounded-lg font-medium bg-accent text-text-primary hover:bg-accent-hover transition-colors"
                   >
                     Try Again
                   </button>
@@ -252,9 +252,9 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
       {/* Drag Overlay */}
       <DragOverlay>
         {activeField && (
-          <div className="px-3 py-2 rounded-lg border-2 border-blue-400 bg-blue-50 shadow-xl">
-            <span className="font-medium text-sm text-slate-800">{activeField.name}</span>
-            <span className="ml-2 text-xs text-slate-500">{activeField.dataType}</span>
+          <div className="px-3 py-2 rounded-lg border-2 border-primary bg-primary/10 shadow-xl">
+            <span className="font-medium text-sm text-text-primary">{activeField.name}</span>
+            <span className="ml-2 text-xs text-text-muted">{activeField.dataType}</span>
           </div>
         )}
       </DragOverlay>

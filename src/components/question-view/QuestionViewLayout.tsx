@@ -29,12 +29,12 @@ export function QuestionViewLayout({
     <div className="flex-1 p-4">
       <PanelGroup direction="horizontal" className="h-full">
         <Panel defaultSize={40} minSize={25}>
-          <div className="h-full bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="h-full bg-surface rounded-lg shadow-md overflow-hidden">
             <QuestionDescription question={question} />
           </div>
         </Panel>
 
-        <PanelResizeHandle className="w-2 bg-slate-200 hover:bg-slate-400 transition-colors mx-1 rounded" />
+        <PanelResizeHandle className="w-2 bg-border hover:bg-border-focus transition-colors mx-1 rounded" />
 
         <Panel defaultSize={60} minSize={30}>
           <PanelGroup direction="vertical">
@@ -48,7 +48,7 @@ export function QuestionViewLayout({
               />
             </Panel>
 
-            <PanelResizeHandle className="h-2 bg-slate-200 hover:bg-slate-400 transition-colors my-1 rounded" />
+            <PanelResizeHandle className="h-2 bg-border hover:bg-border-focus transition-colors my-1 rounded" />
 
             <Panel defaultSize={40} minSize={20}>
               <OutputPanel result={result} validationResult={validationResult} isLoading={isExecuting || isValidating} />
