@@ -148,13 +148,13 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
             {!isSubmitted && (
               <button
                 onClick={() => setShowAddTableModal(true)}
-                className="p-4 rounded-lg border-2 border-dashed border-indigo-300 bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 hover:border-indigo-400 transition-all group"
+                className="p-4 rounded-lg border-2 border-dashed border-accent/30 bg-gradient-to-r from-accent/10 to-primary/10 hover:from-accent/20 hover:to-primary/20 hover:border-accent/50 transition-all group"
               >
                 <div className="flex items-center justify-center gap-3">
-                  <span className="text-3xl group-hover:scale-110 transition-transform">+</span>
+                  <span className="text-3xl text-accent group-hover:scale-110 transition-transform">+</span>
                   <div className="text-left">
-                    <div className="font-semibold text-indigo-700">Create Table</div>
-                    <div className="text-xs text-indigo-500">Add a Fact or Dimension table</div>
+                    <div className="font-semibold text-accent">Create Table</div>
+                    <div className="text-xs text-accent/70">Add a Fact or Dimension table</div>
                   </div>
                 </div>
               </button>
