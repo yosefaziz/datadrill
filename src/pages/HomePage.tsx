@@ -1,7 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Database, Zap, Bug, Network, Table2, LucideIcon } from 'lucide-react';
 import { SkillCard } from '@/components/questions/SkillCard';
 import { SkillType } from '@/types';
+
+function TypingText({ text, typingSpeed = 50 }: { text: string; typingSpeed?: number }) {
+  const [displayedText, setDisplayedText] = useState('');
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+
+  useEffect(() => {
+    if (displayedText.length < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(text.slice(0, displayedText.length + 1));
+      }, typingSpeed);
+      return () => clearTimeout(timeout);
+    } else {
+      setIsTypingComplete(true);
+    }
+  }, [displayedText, text, typingSpeed]);
+
+  return (
+    <span className="typing-text">
+      {displayedText}
+      <span className={`typing-cursor ${isTypingComplete ? 'blink' : ''}`}>|</span>
+    </span>
+  );
+}
 
 function SkeletonCard() {
   return (
@@ -68,6 +91,12 @@ export function HomePage() {
     modeling: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [hoveredCardCount, setHoveredCardCount] = useState(0);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleCardHoverChange = (isHovered: boolean) => {
+    setHoveredCardCount((prev) => (isHovered ? prev + 1 : prev - 1));
+  };
 
   useEffect(() => {
     async function fetchCounts() {
@@ -102,26 +131,22 @@ export function HomePage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
       <div className="text-center mb-12 hero-glow">
-        <h1 className="text-4xl font-bold text-text-primary mb-3 animate-fade-in">
-          DataDrill
+        <h1 className="text-3xl md:text-4xl font-semibold text-text-primary mb-2 font-mono animate-fade-in">
+          Choose your data engineering
         </h1>
-        <p className="text-lg text-text-secondary animate-fade-in stagger-2">
-          Practice data engineering skills with instant feedback
+        <p className="text-3xl md:text-4xl font-semibold font-mono text-primary">
+          <TypingText text="skill track" typingSpeed={60} />
         </p>
       </div>
 
-      <h2 className="text-xl font-semibold text-text-primary mb-6 text-center animate-fade-in stagger-3">
-        Choose your skill track
-      </h2>
-
       {isLoading ? (
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {[...Array(5)].map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <div ref={cardsContainerRef} className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {SKILLS.map((skillConfig, index) => (
             <SkillCard
               key={skillConfig.skill}
@@ -131,6 +156,9 @@ export function HomePage() {
               description={skillConfig.description}
               questionCount={questionCounts[skillConfig.skill]}
               className={`animate-fade-in-up stagger-${index + 1}`}
+              containerRef={cardsContainerRef}
+              isAnyCardHovered={hoveredCardCount > 0}
+              onHoverChange={handleCardHoverChange}
             />
           ))}
         </div>

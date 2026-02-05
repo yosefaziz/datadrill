@@ -32,6 +32,7 @@
   --border: #e2e8f0;
   --border-focus: #0369a1;
   --border-glow: rgba(3, 105, 161, 0.1);
+  --card-glow: rgba(0, 0, 0, 0.10);
 
   --success: #16a34a;
   --warning: #ea580c;
@@ -61,6 +62,8 @@
   --border: rgba(255, 255, 255, 0.06);
   --border-focus: #00d9ff;
   --border-glow: rgba(0, 217, 255, 0.25);
+  --card-glow: rgba(255, 255, 255, 0.15);
+  --icon-glow: 0 0 12px rgba(0, 217, 255, 0.8);
 
   /* Semantic colors - vibrant */
   --success: #00ff88;
@@ -102,6 +105,13 @@ body {
 .neon-text-glow {
   text-shadow: 0 0 5px currentColor,
                0 0 10px currentColor;
+}
+
+/* Icon glow effect - only in dark mode */
+@layer utilities {
+  :root.dark .icon-glow {
+    filter: drop-shadow(var(--icon-glow));
+  }
 }
 
 /* Prevent auto-linking of emails in markdown */
@@ -175,3 +185,28 @@ body {
   pointer-events: none;
   z-index: -1;
 }
+
+/* Typing animation */
+.typing-text {
+  display: inline;
+}
+
+.typing-cursor {
+  font-weight: 400;
+  color: var(--primary);
+  margin-left: 1px;
+}
+
+.typing-cursor.blink {
+  animation: cursor-blink 1s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
