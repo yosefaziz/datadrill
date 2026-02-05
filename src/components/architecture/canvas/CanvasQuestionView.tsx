@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
 import { CanvasQuestion } from '@/types';
 import { useCanvasStore } from '@/stores/canvasStore';
@@ -8,6 +7,7 @@ import { getComponentById, ToolboxComponent } from '@/data/toolbox';
 import { Toolbox } from './Toolbox';
 import { PipelineBuilder } from './PipelineBuilder';
 import { CanvasFeedback } from './CanvasFeedback';
+import { Breadcrumb } from '@/components/layout/Breadcrumb';
 
 interface CanvasQuestionViewProps {
   question: CanvasQuestion;
@@ -68,17 +68,17 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex-1 p-4 h-full overflow-hidden">
-        <div className="h-full min-h-0 flex gap-4">
+      <div className="flex-1 p-4 h-full overflow-hidden flex flex-col">
+        <Breadcrumb
+          items={[
+            { label: 'Architecture', href: '/architecture' },
+            { label: question.title },
+          ]}
+        />
+        <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4 overflow-auto lg:overflow-hidden">
           {/* Left Panel - Question Description */}
-          <div className="w-2/5 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
+          <div className="w-full lg:w-2/5 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col flex-shrink-0 lg:flex-shrink">
             <div className="p-6 border-b border-border">
-              <Link
-                to="/architecture"
-                className="text-primary hover:text-primary-hover text-sm mb-3 inline-block transition-colors duration-200"
-              >
-                &larr; All Questions
-              </Link>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-xs font-medium px-2 py-0.5 rounded bg-accent/20 text-accent">
                   Canvas
@@ -127,7 +127,7 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
           </div>
 
           {/* Right Panel - Pipeline Builder (vertical split) */}
-          <div className="w-3/5 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
+          <div className="w-full lg:w-3/5 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col flex-shrink-0 lg:flex-shrink">
             {/* Header */}
             <div className="px-6 py-3 border-b border-border bg-bg-secondary flex-shrink-0">
               <div className="flex items-center justify-between">

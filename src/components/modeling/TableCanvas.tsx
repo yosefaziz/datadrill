@@ -66,7 +66,7 @@ function DroppableTable({
         {!disabled && (
           <button
             onClick={() => onRemoveTable(table.id)}
-            className="p-1 hover:bg-error/20 rounded text-text-muted hover:text-error transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="p-2 hover:bg-error/20 rounded text-text-muted hover:text-error transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             title="Remove table"
             aria-label={`Remove table ${table.name}`}
           >
@@ -108,7 +108,7 @@ function DroppableTable({
                 {!disabled && (
                   <button
                     onClick={() => onRemoveField(table.id, field.id)}
-                    className="opacity-0 group-hover:opacity-100 focus:opacity-100 p-0.5 hover:bg-error/20 rounded text-text-muted hover:text-error transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    className="opacity-0 group-hover:opacity-100 focus:opacity-100 p-1.5 hover:bg-error/20 rounded text-text-muted hover:text-error transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                     title="Remove field"
                     aria-label={`Remove field ${field.name} from ${table.name}`}
                   >

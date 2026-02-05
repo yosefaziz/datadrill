@@ -22,7 +22,7 @@ export function PipelineBuilder({
       <div className="flex-1 flex items-center gap-4 overflow-x-auto pb-2">
         {steps.map((step, index) => (
           <div key={step.id} className="flex items-center gap-4">
-            <div className="w-64 flex-shrink-0">
+            <div className="w-48 md:w-56 lg:w-64 flex-shrink-0">
               <DroppableStep
                 step={step}
                 index={index}

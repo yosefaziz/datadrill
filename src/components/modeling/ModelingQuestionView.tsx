@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
 import { Puzzle, ClipboardList } from 'lucide-react';
 import { ModelingQuestion, ModelingField, TableType } from '@/types';
@@ -10,6 +9,7 @@ import { TableCanvas } from './TableCanvas';
 import { ScoreBars } from './ScoreBars';
 import { ModelingFeedback } from './ModelingFeedback';
 import { AddTableModal } from './AddTableModal';
+import { Breadcrumb } from '@/components/layout/Breadcrumb';
 
 interface ModelingQuestionViewProps {
   question: ModelingQuestion;
@@ -86,18 +86,18 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex-1 p-4 h-full">
-        <div className="h-full min-h-0 flex gap-4">
+      <div className="flex-1 p-4 h-full flex flex-col">
+        <Breadcrumb
+          items={[
+            { label: 'Modeling', href: '/modeling' },
+            { label: question.title },
+          ]}
+        />
+        <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4 overflow-auto lg:overflow-hidden">
           {/* Left Panel - Question, Fields, Add Table */}
-          <div className="w-1/3 flex flex-col gap-4">
+          <div className="w-full lg:w-1/3 flex flex-col gap-4 flex-shrink-0 lg:flex-shrink">
             {/* Question/Objective Panel */}
             <div className="bg-surface rounded-lg shadow-md p-4">
-              <Link
-                to="/modeling"
-                className="text-primary hover:text-primary-hover text-sm mb-2 inline-block transition-colors duration-200"
-              >
-                &larr; All Questions
-              </Link>
               <h1 className="text-xl font-bold text-text-primary">{question.title}</h1>
               <div className="flex items-center gap-2 mt-2 flex-wrap">
                 <span
@@ -163,7 +163,7 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
           </div>
 
           {/* Right Panel - Score + Tables + Submit */}
-          <div className="w-2/3 flex flex-col gap-4">
+          <div className="w-full lg:w-2/3 flex flex-col gap-4 flex-shrink-0 lg:flex-shrink">
             {/* Live Score - Top right */}
             {!isSubmitted && (
               <div className="bg-surface rounded-lg shadow-md p-4">

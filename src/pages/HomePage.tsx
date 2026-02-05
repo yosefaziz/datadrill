@@ -3,6 +3,22 @@ import { Database, Zap, Bug, Network, Table2, LucideIcon } from 'lucide-react';
 import { SkillCard } from '@/components/questions/SkillCard';
 import { SkillType } from '@/types';
 
+function SkeletonCard() {
+  return (
+    <div className="bg-surface rounded-lg p-6 border border-border animate-pulse">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-10 h-10 rounded-lg bg-border" />
+        <div className="h-6 w-24 bg-border rounded" />
+      </div>
+      <div className="space-y-2">
+        <div className="h-4 bg-border rounded w-full" />
+        <div className="h-4 bg-border rounded w-3/4" />
+      </div>
+      <div className="mt-4 h-4 bg-border rounded w-20" />
+    </div>
+  );
+}
+
 interface SkillConfig {
   skill: SkillType;
   name: string;
@@ -99,11 +115,13 @@ export function HomePage() {
       </h2>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="text-text-secondary">Loading...</div>
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+          {[...Array(5)].map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {SKILLS.map((skillConfig, index) => (
             <SkillCard
               key={skillConfig.skill}

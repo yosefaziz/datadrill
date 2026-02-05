@@ -1,8 +1,31 @@
+import { useState, useEffect } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { Question, QueryResult, ValidationResult, getEditorLanguage } from '@/types';
 import { QuestionDescription } from './QuestionDescription';
 import { CodeEditor } from '@/components/editor/CodeEditor';
 import { OutputPanel } from '@/components/editor/OutputPanel';
+import { Breadcrumb } from '@/components/layout/Breadcrumb';
+
+const skillNames: Record<string, string> = {
+  sql: 'SQL',
+  pyspark: 'PySpark',
+  debug: 'Debug',
+  architecture: 'Architecture',
+  modeling: 'Modeling',
+};
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+}
 
 interface QuestionViewLayoutProps {
   question: Question;
@@ -24,19 +47,32 @@ export function QuestionViewLayout({
   onSubmit,
 }: QuestionViewLayoutProps) {
   const language = getEditorLanguage(question);
+  const isMobile = useIsMobile();
 
   return (
-    <div className="flex-1 p-4 h-full overflow-hidden">
-      <PanelGroup direction="horizontal" className="h-full">
-        <Panel defaultSize={40} minSize={25}>
+    <div className="flex-1 p-4 h-full overflow-hidden flex flex-col">
+      <Breadcrumb
+        items={[
+          { label: skillNames[question.skill] || question.skill, href: `/${question.skill}` },
+          { label: question.title },
+        ]}
+      />
+      <PanelGroup direction={isMobile ? 'vertical' : 'horizontal'} className="flex-1 min-h-0">
+        <Panel defaultSize={isMobile ? 30 : 40} minSize={20}>
           <div className="h-full bg-surface rounded-lg shadow-md overflow-hidden">
             <QuestionDescription question={question} />
           </div>
         </Panel>
 
-        <PanelResizeHandle className="w-2 bg-border hover:bg-border-focus transition-colors mx-1 rounded" />
+        <PanelResizeHandle
+          className={
+            isMobile
+              ? 'h-2 bg-border hover:bg-border-focus transition-colors my-1 rounded'
+              : 'w-2 bg-border hover:bg-border-focus transition-colors mx-1 rounded'
+          }
+        />
 
-        <Panel defaultSize={60} minSize={30}>
+        <Panel defaultSize={isMobile ? 70 : 60} minSize={30}>
           <PanelGroup direction="vertical" className="h-full">
             <Panel defaultSize={60} minSize={30}>
               <CodeEditor

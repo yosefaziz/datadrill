@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { QuizQuestion } from '@/types';
 import { useQuizStore } from '@/stores/quizStore';
 import { validateQuizQuestion } from '@/services/validation/QuizValidator';
+import { Breadcrumb } from '@/components/layout/Breadcrumb';
 
 interface QuizQuestionViewProps {
   question: QuizQuestion;
@@ -34,17 +34,17 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
   const hasSelection = selectedAnswers.length > 0;
 
   return (
-    <div className="flex-1 p-4 h-full overflow-hidden">
-      <div className="h-full min-h-0 flex gap-4">
+    <div className="flex-1 p-4 h-full overflow-hidden flex flex-col">
+      <Breadcrumb
+        items={[
+          { label: 'Architecture', href: '/architecture' },
+          { label: question.title },
+        ]}
+      />
+      <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4 overflow-auto lg:overflow-hidden">
         {/* Left Panel - Question */}
-        <div className="w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
+        <div className="w-full lg:w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col flex-shrink-0 lg:flex-shrink">
           <div className="p-6 border-b border-border">
-            <Link
-              to="/architecture"
-              className="text-primary hover:text-primary-hover text-sm mb-3 inline-block transition-colors duration-200"
-            >
-              &larr; All Questions
-            </Link>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-medium px-2 py-0.5 rounded bg-info/20 text-info">
                 Quiz
@@ -95,7 +95,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
         </div>
 
         {/* Right Panel - Answers */}
-        <div className="w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
+        <div className="w-full lg:w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col flex-shrink-0 lg:flex-shrink">
           <div className="px-6 py-3 border-b border-border bg-bg-secondary flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="text-sm text-text-secondary">
