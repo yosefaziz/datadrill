@@ -349,3 +349,89 @@ export function getInitialCode(question: Question): string {
   }
   return '';
 }
+
+// ── Auth & User Types ──────────────────────────────────────────────
+
+export type UserRole = 'student' | 'junior' | 'mid' | 'senior' | 'staff';
+export type UserGoal = 'interview_prep' | 'skill_building' | 'career_switch';
+export type WeakestSkill = 'sql' | 'pyspark' | 'architecture' | 'modeling';
+
+export interface UserProfile {
+  id: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  role: UserRole | null;
+  primary_goal: UserGoal | null;
+  weakest_skill: WeakestSkill | null;
+  onboarding_completed: boolean;
+  pre_registration_activity: AnonymousActivity | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OnboardingSurvey {
+  role: UserRole;
+  primary_goal: UserGoal;
+  weakest_skill: WeakestSkill;
+}
+
+// ── Submission Types ───────────────────────────────────────────────
+
+export interface Submission {
+  id: string;
+  user_id: string;
+  question_id: string;
+  skill: SkillType;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  answer: string;
+  passed: boolean;
+  result_meta: Record<string, unknown> | null;
+  created_at: string;
+}
+
+export interface SubmissionInsert {
+  question_id: string;
+  skill: SkillType;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  answer: string;
+  passed: boolean;
+  result_meta?: Record<string, unknown> | null;
+}
+
+// ── Anonymous Tracking Types ───────────────────────────────────────
+
+export interface AnonymousAttempt {
+  questionId: string;
+  skill: SkillType;
+  timestamp: string;
+  passed: boolean;
+}
+
+export interface AnonymousActivity {
+  id: string;
+  questionsViewed: string[];
+  attempts: AnonymousAttempt[];
+  totalSessionTime: number;
+  firstSeen: string;
+  lastSeen: string;
+}
+
+// ── Stats Types ────────────────────────────────────────────────────
+
+export interface SkillStats {
+  skill: SkillType;
+  easySolved: number;
+  easyTotal: number;
+  mediumSolved: number;
+  mediumTotal: number;
+  hardSolved: number;
+  hardTotal: number;
+  mastery: number;
+}
+
+export interface UserStats {
+  totalSolved: number;
+  totalAttempted: number;
+  passRate: number;
+  skills: SkillStats[];
+}

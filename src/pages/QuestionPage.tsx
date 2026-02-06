@@ -4,6 +4,9 @@ import { useQuestionStore } from '@/stores/questionStore';
 import { useEditorStore } from '@/stores/editorStore';
 import { useExecutor } from '@/hooks/useExecutor';
 import { useValidation } from '@/hooks/useValidation';
+import { useAuthStore } from '@/stores/authStore';
+import { useSubmissionStore } from '@/stores/submissionStore';
+import { useAnonymousTracking } from '@/hooks/useAnonymousTracking';
 import { QuestionViewLayout } from '@/components/question-view/QuestionViewLayout';
 import { ArchitectureQuestionView } from '@/components/architecture/ArchitectureQuestionView';
 import { CanvasQuestionView } from '@/components/architecture/canvas/CanvasQuestionView';
@@ -29,6 +32,12 @@ export function QuestionPage() {
     clearResult,
   } = useExecutor(currentQuestion);
   const { validationResult, isValidating, validate, clearValidation } = useValidation();
+  const user = useAuthStore((s) => s.user);
+  const openAuth = useAuthStore((s) => s.openAuthModal);
+  const canSubmit = useSubmissionStore((s) => s.canSubmit);
+  const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
+
+  useAnonymousTracking(id);
 
   useEffect(() => {
     if (isValidSkill(skill) && id) {
@@ -57,8 +66,32 @@ export function QuestionPage() {
 
   const handleSubmit = async () => {
     if (!currentQuestion || !isInitialized) return;
+
+    // Check anonymous submission limit
+    if (!canSubmit(currentQuestion.id, !!user)) {
+      openAuth('sign_up');
+      return;
+    }
+
     clearResult();
-    await validate(currentQuestion, code);
+    const result = await validate(currentQuestion, code);
+
+    // Record submission
+    try {
+      await submitAnswer(
+        {
+          question_id: currentQuestion.id,
+          skill: currentQuestion.skill,
+          difficulty: currentQuestion.difficulty,
+          answer: code,
+          passed: result.passed,
+          result_meta: result as unknown as Record<string, unknown>,
+        },
+        user?.id || null
+      );
+    } catch {
+      // Non-critical: don't block the UI if submission recording fails
+    }
   };
 
   if (!isValidSkill(skill)) {

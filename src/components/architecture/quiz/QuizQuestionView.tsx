@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { QuizQuestion } from '@/types';
 import { useQuizStore } from '@/stores/quizStore';
+import { useAuthStore } from '@/stores/authStore';
+import { useSubmissionStore } from '@/stores/submissionStore';
 import { validateQuizQuestion } from '@/services/validation/QuizValidator';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 
@@ -17,14 +19,32 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
     setValidationResult,
     reset,
   } = useQuizStore();
+  const user = useAuthStore((s) => s.user);
+  const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
 
   useEffect(() => {
     reset();
   }, [question.id, reset]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = validateQuizQuestion(question, selectedAnswers);
     setValidationResult(result);
+
+    try {
+      await submitAnswer(
+        {
+          question_id: question.id,
+          skill: 'architecture',
+          difficulty: question.difficulty,
+          answer: JSON.stringify(selectedAnswers),
+          passed: result.passed,
+          result_meta: result as unknown as Record<string, unknown>,
+        },
+        user?.id || null
+      );
+    } catch {
+      // Non-critical
+    }
   };
 
   const handleReset = () => {

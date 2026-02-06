@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
 import { CanvasQuestion } from '@/types';
 import { useCanvasStore } from '@/stores/canvasStore';
+import { useAuthStore } from '@/stores/authStore';
+import { useSubmissionStore } from '@/stores/submissionStore';
 import { validateCanvasQuestion } from '@/services/validation/CanvasValidator';
 import { getComponentById, ToolboxComponent } from '@/data/toolbox';
 import { Toolbox } from './Toolbox';
@@ -23,6 +25,9 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
     setValidationResult,
     reset,
   } = useCanvasStore();
+
+  const user = useAuthStore((s) => s.user);
+  const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
 
   const [activeComponent, setActiveComponent] = useState<ToolboxComponent | null>(null);
 
@@ -53,9 +58,25 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
     selectComponent(stepId, componentId);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = validateCanvasQuestion(question, selections);
     setValidationResult(result);
+
+    try {
+      await submitAnswer(
+        {
+          question_id: question.id,
+          skill: 'architecture',
+          difficulty: question.difficulty,
+          answer: JSON.stringify(selections),
+          passed: result.passed,
+          result_meta: result as unknown as Record<string, unknown>,
+        },
+        user?.id || null
+      );
+    } catch {
+      // Non-critical
+    }
   };
 
   const handleReset = () => {

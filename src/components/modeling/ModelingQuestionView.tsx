@@ -3,6 +3,8 @@ import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/
 import { Puzzle, ClipboardList } from 'lucide-react';
 import { ModelingQuestion, ModelingField, TableType } from '@/types';
 import { useModelingStore } from '@/stores/modelingStore';
+import { useAuthStore } from '@/stores/authStore';
+import { useSubmissionStore } from '@/stores/submissionStore';
 import { validateModelingQuestion } from '@/services/validation/ModelingValidator';
 import { FieldSoup } from './FieldSoup';
 import { TableCanvas } from './TableCanvas';
@@ -27,6 +29,9 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
     setValidationResult,
     reset,
   } = useModelingStore();
+
+  const user = useAuthStore((s) => s.user);
+  const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
 
   const [activeField, setActiveField] = useState<ModelingField | null>(null);
   const [showAddTableModal, setShowAddTableModal] = useState(false);
@@ -61,9 +66,25 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
     setShowAddTableModal(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const result = validateModelingQuestion(question, tables);
     setValidationResult(result);
+
+    try {
+      await submitAnswer(
+        {
+          question_id: question.id,
+          skill: 'modeling',
+          difficulty: question.difficulty,
+          answer: JSON.stringify(tables),
+          passed: result.passed,
+          result_meta: result as unknown as Record<string, unknown>,
+        },
+        user?.id || null
+      );
+    } catch {
+      // Non-critical
+    }
   };
 
   const handleReset = () => {
