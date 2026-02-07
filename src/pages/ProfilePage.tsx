@@ -28,6 +28,7 @@ export function ProfilePage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   // Detect if user signed in with email/password (not OAuth)
   const isEmailUser = user?.app_metadata?.provider === 'email';
@@ -98,6 +99,20 @@ export function ProfilePage() {
     }
   }, [passwordMessage]);
 
+  // Escape key to close delete modal
+  useEffect(() => {
+    if (!showDeleteModal) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowDeleteModal(false);
+        setDeleteConfirmText('');
+        setDeleteError('');
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showDeleteModal]);
+
   const hasIdentityChanges =
     displayName !== (profile?.display_name || '') ||
     username !== (profile?.username || '');
@@ -121,7 +136,7 @@ export function ProfilePage() {
         updates.display_name = displayName.trim();
       }
       if (username !== (profile?.username || '')) {
-        updates.username = username;
+        updates.username = username.trim();
       }
       await updateProfile(updates);
       setSaveMessage({ type: 'success', text: 'Profile updated' });
@@ -166,13 +181,20 @@ export function ProfilePage() {
 
   const handleDeleteAccount = async () => {
     setIsDeleting(true);
+    setDeleteError('');
     try {
       await deleteAccount();
       navigate('/');
     } catch (err) {
-      console.error('Delete account error:', err);
+      setDeleteError(err instanceof Error ? err.message : 'Failed to delete account. Please try again.');
       setIsDeleting(false);
     }
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setDeleteConfirmText('');
+    setDeleteError('');
   };
 
   const displayInitial = (displayName || user?.email?.split('@')[0] || 'U')[0].toUpperCase();
@@ -376,9 +398,15 @@ export function ProfilePage() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="delete-modal-title"
+          onClick={(e) => { if (e.target === e.currentTarget) closeDeleteModal(); }}
+        >
           <div className="bg-surface rounded-xl p-6 ring-1 ring-white/10 max-w-md mx-4 w-full">
-            <h3 className="text-lg font-bold text-text-primary mb-2">Delete your account?</h3>
+            <h3 id="delete-modal-title" className="text-lg font-bold text-text-primary mb-2">Delete your account?</h3>
             <p className="text-sm text-text-secondary mb-4">
               This action is permanent and cannot be undone. All your data will be deleted:
             </p>
@@ -398,12 +426,12 @@ export function ProfilePage() {
               placeholder="delete"
               autoFocus
             />
+            {deleteError && (
+              <p className="text-sm text-error mb-4">{deleteError}</p>
+            )}
             <div className="flex justify-end gap-3">
               <button
-                onClick={() => {
-                  setShowDeleteModal(false);
-                  setDeleteConfirmText('');
-                }}
+                onClick={closeDeleteModal}
                 className="px-5 py-2 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary-hover transition-colors"
               >
                 Cancel

@@ -226,7 +226,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (!isSupabaseConfigured) return;
     const { error } = await supabase.rpc('delete_user_account');
     if (error) throw error;
-    await supabase.auth.signOut();
+    // User record is already deleted by RPC — signOut may fail, so don't block on it
+    try { await supabase.auth.signOut(); } catch { /* user already deleted */ }
     set({ user: null, profile: null });
   },
 

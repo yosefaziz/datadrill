@@ -16,5 +16,6 @@ BEGIN
 END;
 $$;
 
--- Grant execute to authenticated users
+-- Revoke default public access, grant only to authenticated users
+REVOKE ALL ON FUNCTION public.delete_user_account() FROM public;
 GRANT EXECUTE ON FUNCTION public.delete_user_account() TO authenticated;
