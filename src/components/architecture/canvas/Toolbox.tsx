@@ -16,12 +16,16 @@ interface ToolboxProps {
   availableComponentIds: string[];
   usedComponentIds: string[];
   disabled?: boolean;
+  selectedComponentId?: string | null;
+  onComponentClick?: (id: string) => void;
 }
 
 export function Toolbox({
   availableComponentIds,
   usedComponentIds,
   disabled = false,
+  selectedComponentId = null,
+  onComponentClick,
 }: ToolboxProps) {
   // Group by category and shuffle within each category (only when availableComponentIds changes)
   const grouped = useMemo(() => {
@@ -65,9 +69,11 @@ export function Toolbox({
     <div className="h-full flex flex-col">
       <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide mb-3">
         Component Library
-        <span className="ml-2 text-xs font-normal text-text-muted">Drag to add</span>
+        <span className="ml-2 text-xs font-normal text-text-muted">
+          {selectedComponentId ? '1 selected \u2014 click a pipeline step' : 'Click or drag to assign'}
+        </span>
       </h3>
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto p-1 pr-2">
         <div className="flex flex-wrap gap-4">
           {categoryOrder.map((category) => {
             const categoryComponents = grouped[category];
@@ -88,6 +94,8 @@ export function Toolbox({
                         key={component.id}
                         component={component}
                         disabled={disabled || isUsed}
+                        isSelected={selectedComponentId === component.id}
+                        onClick={onComponentClick}
                       />
                     );
                   })}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { CanvasQuestion } from '@/types';
 import { useCanvasStore } from '@/stores/canvasStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -30,10 +31,16 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
   const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
 
   const [activeComponent, setActiveComponent] = useState<ToolboxComponent | null>(null);
+  const [selectedComponentId, setSelectedComponentId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
 
   // Reset state when question changes
   useEffect(() => {
     reset();
+    setSelectedComponentId(null);
   }, [question.id, reset]);
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -56,6 +63,22 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
     if (!step) return;
 
     selectComponent(stepId, componentId);
+    setSelectedComponentId(null);
+  };
+
+  const handleComponentClick = (id: string) => {
+    setSelectedComponentId((prev) => (prev === id ? null : id));
+  };
+
+  const handleStepClick = (stepId: string) => {
+    if (selectedComponentId) {
+      selectComponent(stepId, selectedComponentId);
+      setSelectedComponentId(null);
+    }
+  };
+
+  const handleBackgroundClick = () => {
+    setSelectedComponentId(null);
   };
 
   const handleSubmit = async () => {
@@ -88,8 +111,8 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
   const usedComponentIds = Object.values(selections);
 
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex-1 p-4 h-full overflow-hidden flex flex-col">
+    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <div className="flex-1 p-4 h-full overflow-hidden flex flex-col" onClick={handleBackgroundClick}>
         <Breadcrumb
           items={[
             { label: 'Architecture', href: '/architecture' },
@@ -178,26 +201,36 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
               {isSubmitted && validationResult ? (
                 <CanvasFeedback result={validationResult} onReset={handleReset} />
               ) : (
-                <>
+                <PanelGroup direction="vertical">
                   {/* Top: Pipeline Steps (Drop Zones) */}
-                  <div className="flex-[3] p-6 border-b border-border bg-gradient-to-b from-bg-secondary to-surface overflow-auto">
-                    <PipelineBuilder
-                      steps={question.steps}
-                      selections={selections}
-                      onRemoveSelection={clearSelection}
-                      disabled={isSubmitted}
-                    />
-                  </div>
+                  <Panel defaultSize={40} minSize={25}>
+                    <div className="h-full p-6 border-b border-border bg-gradient-to-b from-bg-secondary to-surface overflow-auto" onClick={(e) => e.stopPropagation()}>
+                      <PipelineBuilder
+                        steps={question.steps}
+                        selections={selections}
+                        onRemoveSelection={clearSelection}
+                        disabled={isSubmitted}
+                        hasSelectedComponent={!!selectedComponentId}
+                        onStepClick={handleStepClick}
+                      />
+                    </div>
+                  </Panel>
+
+                  <PanelResizeHandle className="h-2 bg-transparent hover:bg-border-focus transition-colors cursor-row-resize rounded" />
 
                   {/* Bottom: Component Library (Draggables) */}
-                  <div className="flex-[2] p-6 bg-surface overflow-auto">
-                    <Toolbox
-                      availableComponentIds={question.availableComponents}
-                      usedComponentIds={usedComponentIds}
-                      disabled={isSubmitted}
-                    />
-                  </div>
-                </>
+                  <Panel defaultSize={60} minSize={25}>
+                    <div className="h-full p-6 bg-surface overflow-auto" onClick={(e) => e.stopPropagation()}>
+                      <Toolbox
+                        availableComponentIds={question.availableComponents}
+                        usedComponentIds={usedComponentIds}
+                        disabled={isSubmitted}
+                        selectedComponentId={selectedComponentId}
+                        onComponentClick={handleComponentClick}
+                      />
+                    </div>
+                  </Panel>
+                </PanelGroup>
               )}
             </div>
           </div>

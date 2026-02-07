@@ -6,6 +6,8 @@ interface PipelineBuilderProps {
   selections: Record<string, string>;
   onRemoveSelection: (stepId: string) => void;
   disabled?: boolean;
+  hasSelectedComponent?: boolean;
+  onStepClick?: (stepId: string) => void;
 }
 
 export function PipelineBuilder({
@@ -13,13 +15,15 @@ export function PipelineBuilder({
   selections,
   onRemoveSelection,
   disabled = false,
+  hasSelectedComponent = false,
+  onStepClick,
 }: PipelineBuilderProps) {
   return (
     <div className="h-full flex flex-col">
       <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide mb-3">
         Pipeline Steps
       </h3>
-      <div className="flex-1 flex items-center gap-4 overflow-x-auto pb-2">
+      <div className="flex-1 flex items-center gap-4 overflow-x-auto p-1 pb-2">
         {steps.map((step, index) => (
           <div key={step.id} className="flex items-center gap-4">
             <div className="w-48 md:w-56 lg:w-64 flex-shrink-0">
@@ -29,6 +33,8 @@ export function PipelineBuilder({
                 selectedComponentId={selections[step.id] || null}
                 disabled={disabled}
                 onRemove={() => onRemoveSelection(step.id)}
+                hasSelectedComponent={hasSelectedComponent}
+                onClickAssign={onStepClick ? () => onStepClick(step.id) : undefined}
               />
             </div>
             {/* Arrow connector */}

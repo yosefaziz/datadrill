@@ -8,6 +8,8 @@ interface DroppableStepProps {
   selectedComponentId: string | null;
   disabled?: boolean;
   onRemove?: () => void;
+  hasSelectedComponent?: boolean;
+  onClickAssign?: () => void;
 }
 
 export function DroppableStep({
@@ -16,6 +18,8 @@ export function DroppableStep({
   selectedComponentId,
   disabled = false,
   onRemove,
+  hasSelectedComponent = false,
+  onClickAssign,
 }: DroppableStepProps) {
   const { isOver, setNodeRef } = useDroppable({
     id: step.id,
@@ -24,15 +28,26 @@ export function DroppableStep({
 
   const selectedComponent = selectedComponentId ? getComponentById(selectedComponentId) : null;
 
+  const handleClick = () => {
+    if (hasSelectedComponent && !disabled && !selectedComponent && onClickAssign) {
+      onClickAssign();
+    }
+  };
+
+  const canClickAssign = hasSelectedComponent && !disabled && !selectedComponent;
+
   return (
     <div
       ref={setNodeRef}
+      onClick={handleClick}
       className={`p-4 rounded-xl transition-all min-h-[100px] shadow-md ${
         isOver
           ? 'ring-2 ring-primary bg-primary/10 scale-[1.02]'
-          : selectedComponent
-            ? 'bg-info/10 ring-1 ring-info/30'
-            : 'bg-bg-secondary ring-1 ring-white/5'
+          : canClickAssign
+            ? 'bg-primary/5 ring-1 ring-primary/30 cursor-pointer'
+            : selectedComponent
+              ? 'bg-info/10 ring-1 ring-info/30'
+              : 'bg-bg-secondary ring-1 ring-white/5'
       } ${disabled ? 'opacity-60' : ''}`}
     >
       <div className="flex items-start gap-3">
@@ -79,7 +94,7 @@ export function DroppableStep({
                   : 'bg-white/5 text-text-muted'
               }`}
             >
-              {isOver ? 'Drop here!' : 'Drag a component here'}
+              {isOver ? 'Drop here!' : canClickAssign ? 'Click to assign' : 'Click or drag a component'}
             </div>
           )}
         </div>
