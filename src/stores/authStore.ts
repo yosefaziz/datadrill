@@ -22,6 +22,8 @@ interface AuthState {
   updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
   completeOnboarding: (survey: OnboardingSurvey) => Promise<void>;
   checkUsernameAvailable: (username: string) => Promise<boolean>;
+  updatePassword: (newPassword: string) => Promise<void>;
+  deleteAccount: () => Promise<void>;
   openAuthModal: () => void;
   setAuthModalView: (view: AuthModalView) => void;
   closeAuthModal: () => void;
@@ -212,6 +214,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     });
     if (error) throw error;
     return data as boolean;
+  },
+
+  updatePassword: async (newPassword: string) => {
+    if (!isSupabaseConfigured) return;
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+  },
+
+  deleteAccount: async () => {
+    if (!isSupabaseConfigured) return;
+    const { error } = await supabase.rpc('delete_user_account');
+    if (error) throw error;
+    await supabase.auth.signOut();
+    set({ user: null, profile: null });
   },
 
   openAuthModal: () => {
