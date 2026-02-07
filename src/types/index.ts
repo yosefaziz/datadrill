@@ -358,8 +358,10 @@ export type WeakestSkill = 'sql' | 'pyspark' | 'architecture' | 'modeling';
 
 export interface UserProfile {
   id: string;
+  username: string | null;
   display_name: string | null;
-  avatar_url: string | null;
+  birth_year: number | null;
+  gender: string | null;
   role: UserRole | null;
   primary_goal: UserGoal | null;
   weakest_skill: WeakestSkill | null;
@@ -370,9 +372,12 @@ export interface UserProfile {
 }
 
 export interface OnboardingSurvey {
+  username: string;
   role: UserRole;
   primary_goal: UserGoal;
   weakest_skill: WeakestSkill;
+  birth_year: number;
+  gender: string;
 }
 
 // ── Submission Types ───────────────────────────────────────────────

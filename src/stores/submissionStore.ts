@@ -76,11 +76,17 @@ export const useSubmissionStore = create<SubmissionState>((set, get) => ({
   },
 
   fetchHistory: async (userId: string, reset = false) => {
-    if (!isSupabaseConfigured) return;
+    if (!isSupabaseConfigured) {
+      set({ isLoadingHistory: false });
+      return;
+    }
     const state = get();
     if (state.isLoadingHistory) return;
 
-    set({ isLoadingHistory: true });
+    // Only show loading spinner on first fetch, not background refreshes
+    if (state.submissions.length === 0) {
+      set({ isLoadingHistory: true });
+    }
 
     const offset = reset ? 0 : state.submissions.length;
     let query = supabase

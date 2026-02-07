@@ -69,7 +69,7 @@ export function QuestionPage() {
 
     // Check anonymous submission limit
     if (!canSubmit(currentQuestion.id, !!user)) {
-      openAuth('sign_up');
+      openAuth();
       return;
     }
 

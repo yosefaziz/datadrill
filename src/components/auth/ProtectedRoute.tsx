@@ -6,7 +6,9 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user, isLoading, openAuthModal } = useAuthStore();
+  const user = useAuthStore((s) => s.user);
+  const isLoading = useAuthStore((s) => s.isLoading);
+  const openAuthModal = useAuthStore((s) => s.openAuthModal);
 
   if (isLoading) {
     return (
@@ -30,7 +32,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
             Create an account or sign in to access your dashboard, submission history, and track your progress.
           </p>
           <button
-            onClick={() => openAuthModal('sign_in')}
+            onClick={() => openAuthModal()}
             className="px-6 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-primary-hover transition-colors"
           >
             Sign In

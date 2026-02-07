@@ -18,6 +18,7 @@ const SIZE = 300;
 const CENTER = SIZE / 2;
 const RADIUS = 120;
 const LEVELS = 4;
+const PADDING = 50;
 
 function polarToCartesian(angle: number, radius: number): { x: number; y: number } {
   // Start from top (negative y) and go clockwise
@@ -26,6 +27,12 @@ function polarToCartesian(angle: number, radius: number): { x: number; y: number
     x: CENTER + radius * Math.cos(rad),
     y: CENTER + radius * Math.sin(rad),
   };
+}
+
+function getTextAnchor(x: number): 'start' | 'middle' | 'end' {
+  if (x < CENTER - 20) return 'end';
+  if (x > CENTER + 20) return 'start';
+  return 'middle';
 }
 
 export function RadarChart({ skills, onSkillClick, selectedSkill }: RadarChartProps) {
@@ -62,7 +69,7 @@ export function RadarChart({ skills, onSkillClick, selectedSkill }: RadarChartPr
 
   return (
     <div className="flex justify-center">
-      <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="w-full max-w-[320px]">
+      <svg viewBox={`${-PADDING} ${-PADDING} ${SIZE + 2 * PADDING} ${SIZE + 2 * PADDING}`} className="w-full max-w-[320px]">
         {/* Grid */}
         {gridPaths.map((path, i) => (
           <path
@@ -114,29 +121,51 @@ export function RadarChart({ skills, onSkillClick, selectedSkill }: RadarChartPr
         ))}
 
         {/* Labels */}
-        {labelPositions.map((lp) => (
-          <g key={lp.skill}>
-            <text
-              x={lp.x}
-              y={lp.y - 6}
-              textAnchor="middle"
-              className="text-[10px] font-medium cursor-pointer"
-              fill={lp.skill === selectedSkill ? 'var(--accent)' : 'var(--text-primary)'}
+        {labelPositions.map((lp) => {
+          const anchor = getTextAnchor(lp.x);
+          const isSelected = lp.skill === selectedSkill;
+          const hitW = 90;
+          const hitH = 36;
+          const hitX = anchor === 'middle' ? lp.x - hitW / 2 : anchor === 'start' ? lp.x - 6 : lp.x - hitW + 6;
+          const hitY = lp.y - hitH / 2;
+          return (
+            <g
+              key={lp.skill}
+              className="cursor-pointer group/label"
+              role="button"
               onClick={() => onSkillClick(lp.skill)}
             >
-              {SKILL_LABELS[lp.skill]}
-            </text>
-            <text
-              x={lp.x}
-              y={lp.y + 8}
-              textAnchor="middle"
-              className="text-[9px]"
-              fill="var(--text-muted)"
-            >
-              {lp.mastery}%
-            </text>
-          </g>
-        ))}
+              <rect
+                x={hitX}
+                y={hitY}
+                width={hitW}
+                height={hitH}
+                rx={6}
+                fill={isSelected ? 'var(--accent)' : 'var(--text-primary)'}
+                opacity={0}
+                className="transition-opacity group-hover/label:opacity-[0.08]"
+              />
+              <text
+                x={lp.x}
+                y={lp.y - 6}
+                textAnchor={anchor}
+                className="text-[11px] font-medium pointer-events-none"
+                fill={isSelected ? 'var(--accent)' : 'var(--text-primary)'}
+              >
+                {SKILL_LABELS[lp.skill]}
+              </text>
+              <text
+                x={lp.x}
+                y={lp.y + 9}
+                textAnchor={anchor}
+                className="text-[10px] pointer-events-none"
+                fill="var(--text-muted)"
+              >
+                {lp.mastery}%
+              </text>
+            </g>
+          );
+        })}
       </svg>
     </div>
   );

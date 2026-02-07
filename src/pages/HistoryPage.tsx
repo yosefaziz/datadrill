@@ -6,14 +6,12 @@ import { SubmissionCard } from '@/components/history/SubmissionCard';
 
 export function HistoryPage() {
   const user = useAuthStore((s) => s.user);
-  const {
-    submissions,
-    hasMore,
-    isLoadingHistory,
-    filters,
-    fetchHistory,
-    setFilter,
-  } = useSubmissionStore();
+  const submissions = useSubmissionStore((s) => s.submissions);
+  const hasMore = useSubmissionStore((s) => s.hasMore);
+  const isLoadingHistory = useSubmissionStore((s) => s.isLoadingHistory);
+  const filters = useSubmissionStore((s) => s.filters);
+  const fetchHistory = useSubmissionStore((s) => s.fetchHistory);
+  const setFilter = useSubmissionStore((s) => s.setFilter);
 
   useEffect(() => {
     if (user) {
@@ -46,7 +44,7 @@ export function HistoryPage() {
           <SubmissionCard key={sub.id} submission={sub} />
         ))}
 
-        {isLoadingHistory && (
+        {isLoadingHistory && submissions.length === 0 && (
           <div className="text-center py-4">
             <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
           </div>

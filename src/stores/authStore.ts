@@ -3,7 +3,7 @@ import { User } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { UserProfile, OnboardingSurvey } from '@/types';
 
-type AuthModalView = 'sign_in' | 'sign_up';
+type AuthModalView = 'initial' | 'sign_in' | 'sign_up';
 
 interface AuthState {
   user: User | null;
@@ -14,13 +14,16 @@ interface AuthState {
   initialize: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signInWithGitHub: () => Promise<void>;
+  signInWithLinkedIn: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string, captchaToken: string) => Promise<void>;
   signOut: () => Promise<void>;
   fetchProfile: () => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
   completeOnboarding: (survey: OnboardingSurvey) => Promise<void>;
-  openAuthModal: (view?: AuthModalView) => void;
+  checkUsernameAvailable: (username: string) => Promise<boolean>;
+  openAuthModal: () => void;
+  setAuthModalView: (view: AuthModalView) => void;
   closeAuthModal: () => void;
 }
 
@@ -29,7 +32,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   profile: null,
   isLoading: true,
   isAuthModalOpen: false,
-  authModalView: 'sign_in',
+  authModalView: 'initial' as AuthModalView,
 
   initialize: async () => {
     if (!isSupabaseConfigured) {
@@ -90,6 +93,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (!isSupabaseConfigured) return;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (error) throw error;
+  },
+
+  signInWithLinkedIn: async () => {
+    if (!isSupabaseConfigured) return;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'linkedin_oidc',
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (error) throw error;
@@ -162,9 +174,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const { error } = await supabase
       .from('profiles')
       .update({
+        username: survey.username,
         role: survey.role,
         primary_goal: survey.primary_goal,
         weakest_skill: survey.weakest_skill,
+        birth_year: survey.birth_year,
+        gender: survey.gender,
         onboarding_completed: true,
       })
       .eq('id', user.id);
@@ -175,17 +190,33 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       profile: state.profile
         ? {
             ...state.profile,
+            username: survey.username,
             role: survey.role,
             primary_goal: survey.primary_goal,
             weakest_skill: survey.weakest_skill,
+            birth_year: survey.birth_year,
+            gender: survey.gender,
             onboarding_completed: true,
           }
         : null,
     }));
   },
 
-  openAuthModal: (view: AuthModalView = 'sign_in') => {
-    set({ isAuthModalOpen: true, authModalView: view });
+  checkUsernameAvailable: async (username: string) => {
+    if (!isSupabaseConfigured) return false;
+    const { data, error } = await supabase.rpc('check_username_available', {
+      requested_username: username,
+    });
+    if (error) throw error;
+    return data as boolean;
+  },
+
+  openAuthModal: () => {
+    set({ isAuthModalOpen: true, authModalView: 'initial' });
+  },
+
+  setAuthModalView: (view: AuthModalView) => {
+    set({ authModalView: view });
   },
 
   closeAuthModal: () => {

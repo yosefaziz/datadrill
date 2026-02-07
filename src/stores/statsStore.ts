@@ -20,14 +20,20 @@ interface StatsState {
   setSelectedSkill: (skill: SkillType | null) => void;
 }
 
-export const useStatsStore = create<StatsState>((set) => ({
+export const useStatsStore = create<StatsState>((set, get) => ({
   stats: null,
   selectedSkill: null,
   isLoading: false,
 
   fetchStats: async (userId: string) => {
-    if (!isSupabaseConfigured) return;
-    set({ isLoading: true });
+    if (!isSupabaseConfigured) {
+      set({ isLoading: false });
+      return;
+    }
+    // Only show loading spinner on first fetch, not background refreshes
+    if (!get().stats) {
+      set({ isLoading: true });
+    }
 
     try {
       // Fetch all user submissions

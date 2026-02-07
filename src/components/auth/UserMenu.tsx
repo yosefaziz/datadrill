@@ -22,7 +22,6 @@ export function UserMenu() {
   if (!user) return null;
 
   const displayName = profile?.display_name || user.email?.split('@')[0] || 'User';
-  const avatarUrl = profile?.avatar_url;
 
   const handleSignOut = async () => {
     setIsOpen(false);
@@ -37,18 +36,9 @@ export function UserMenu() {
         aria-label="User menu"
         aria-expanded={isOpen}
       >
-        {avatarUrl ? (
-          <img
-            src={avatarUrl}
-            alt=""
-            className="w-7 h-7 rounded-full"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-sm font-medium">
-            {displayName[0].toUpperCase()}
-          </div>
-        )}
+        <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-sm font-medium">
+          {displayName[0].toUpperCase()}
+        </div>
         <span className="text-sm text-text-primary hidden sm:inline max-w-[120px] truncate">
           {displayName}
         </span>

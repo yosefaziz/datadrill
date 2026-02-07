@@ -60,7 +60,7 @@ export function Header() {
             <UserMenu />
           ) : (
             <button
-              onClick={() => openAuthModal('sign_in')}
+              onClick={() => openAuthModal()}
               className="px-4 py-1.5 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary-hover transition-colors"
             >
               Sign In

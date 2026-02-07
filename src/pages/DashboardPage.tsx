@@ -8,7 +8,11 @@ import { StatsCards } from '@/components/stats/StatsCards';
 export function DashboardPage() {
   const user = useAuthStore((s) => s.user);
   const profile = useAuthStore((s) => s.profile);
-  const { stats, selectedSkill, isLoading, fetchStats, setSelectedSkill } = useStatsStore();
+  const stats = useStatsStore((s) => s.stats);
+  const selectedSkill = useStatsStore((s) => s.selectedSkill);
+  const isLoading = useStatsStore((s) => s.isLoading);
+  const fetchStats = useStatsStore((s) => s.fetchStats);
+  const setSelectedSkill = useStatsStore((s) => s.setSelectedSkill);
 
   useEffect(() => {
     if (user) {
@@ -27,7 +31,7 @@ export function DashboardPage() {
         <p className="text-text-secondary mt-1">Track your progress across all skills.</p>
       </div>
 
-      {isLoading ? (
+      {isLoading && !stats ? (
         <div className="flex items-center justify-center py-16">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
