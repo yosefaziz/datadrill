@@ -81,7 +81,7 @@ export const useSubmissionStore = create<SubmissionState>((set, get) => ({
       return;
     }
     const state = get();
-    if (state.isLoadingHistory) return;
+    if (state.isLoadingHistory && !reset) return;
 
     // Only show loading spinner on first fetch, not background refreshes
     if (state.submissions.length === 0) {
@@ -89,34 +89,36 @@ export const useSubmissionStore = create<SubmissionState>((set, get) => ({
     }
 
     const offset = reset ? 0 : state.submissions.length;
-    let query = supabase
-      .from('submissions')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .range(offset, offset + PAGE_SIZE - 1);
 
-    if (state.filters.skill) {
-      query = query.eq('skill', state.filters.skill);
-    }
-    if (state.filters.passed !== null) {
-      query = query.eq('passed', state.filters.passed);
-    }
+    try {
+      let query = supabase
+        .from('submissions')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .range(offset, offset + PAGE_SIZE - 1);
 
-    const { data, error } = await query;
+      if (state.filters.skill) {
+        query = query.eq('skill', state.filters.skill);
+      }
+      if (state.filters.passed !== null) {
+        query = query.eq('passed', state.filters.passed);
+      }
 
-    if (error) {
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      const newSubmissions = (data || []) as Submission[];
+      set({
+        submissions: reset ? newSubmissions : [...state.submissions, ...newSubmissions],
+        hasMore: newSubmissions.length === PAGE_SIZE,
+        isLoadingHistory: false,
+      });
+    } catch (error) {
       console.error('Failed to fetch history:', error);
       set({ isLoadingHistory: false });
-      return;
     }
-
-    const newSubmissions = (data || []) as Submission[];
-    set({
-      submissions: reset ? newSubmissions : [...state.submissions, ...newSubmissions],
-      hasMore: newSubmissions.length === PAGE_SIZE,
-      isLoadingHistory: false,
-    });
   },
 
   fetchQuestionSubmissions: async (userId: string, questionId: string) => {

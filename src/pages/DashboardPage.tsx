@@ -26,9 +26,9 @@ export function DashboardPage() {
     <div className="max-w-4xl mx-auto px-6 py-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-text-primary">
-          {profile?.display_name ? `Welcome back, ${profile.display_name}` : 'Dashboard'}
+          {profile?.display_name ? `Welcome back, ${profile.display_name}` : 'Insights'}
         </h1>
-        <p className="text-text-secondary mt-1">Track your progress across all skills.</p>
+        <p className="text-text-secondary mt-1">Your performance across all skills.</p>
       </div>
 
       {isLoading && !stats ? (

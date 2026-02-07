@@ -33,7 +33,7 @@ export function Header() {
           {user && (
             <>
               <Link to="/dashboard" className={navLinkClass('/dashboard')}>
-                Dashboard
+                Insights
               </Link>
               <Link to="/history" className={navLinkClass('/history')}>
                 History

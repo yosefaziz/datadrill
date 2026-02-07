@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 
 export function UserMenu() {
@@ -54,21 +53,6 @@ export function UserMenu() {
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-xl ring-1 ring-white/10 py-1 z-50">
-          <Link
-            to="/dashboard"
-            onClick={() => setIsOpen(false)}
-            className="block px-4 py-2 text-sm text-text-primary hover:bg-bg-primary transition-colors"
-          >
-            Dashboard
-          </Link>
-          <Link
-            to="/history"
-            onClick={() => setIsOpen(false)}
-            className="block px-4 py-2 text-sm text-text-primary hover:bg-bg-primary transition-colors"
-          >
-            History
-          </Link>
-          <div className="border-t border-white/10 my-1" />
           <button
             onClick={handleSignOut}
             className="w-full text-left px-4 py-2 text-sm text-error hover:bg-bg-primary transition-colors"

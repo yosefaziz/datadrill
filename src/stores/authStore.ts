@@ -54,6 +54,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
+        // Skip if same user already set (e.g. token refresh on tab visibility)
+        if (get().user?.id === session.user.id) return;
+
         set({ user: session.user });
         await get().fetchProfile();
 
