@@ -12,6 +12,19 @@ import { PipelineBuilder } from './PipelineBuilder';
 import { CanvasFeedback } from './CanvasFeedback';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+}
+
 interface CanvasQuestionViewProps {
   question: CanvasQuestion;
 }
@@ -30,6 +43,7 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
   const user = useAuthStore((s) => s.user);
   const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
 
+  const isMobile = useIsMobile();
   const [activeComponent, setActiveComponent] = useState<ToolboxComponent | null>(null);
   const [selectedComponentId, setSelectedComponentId] = useState<string | null>(null);
 
@@ -109,6 +123,7 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
   const allStepsSelected = question.steps.every((step) => selections[step.id]);
   const selectedCount = Object.keys(selections).length;
   const usedComponentIds = Object.values(selections);
+
 
   return (
     <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
@@ -197,12 +212,33 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
             </div>
 
             {/* Content */}
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className={`flex-1 flex flex-col ${isMobile ? 'overflow-auto' : 'overflow-hidden'}`}>
               {isSubmitted && validationResult ? (
                 <CanvasFeedback result={validationResult} onReset={handleReset} />
+              ) : isMobile ? (
+                <>
+                  <div className="p-6 border-b border-border bg-gradient-to-b from-bg-secondary to-surface" onClick={(e) => e.stopPropagation()}>
+                    <PipelineBuilder
+                      steps={question.steps}
+                      selections={selections}
+                      onRemoveSelection={clearSelection}
+                      disabled={isSubmitted}
+                      hasSelectedComponent={!!selectedComponentId}
+                      onStepClick={handleStepClick}
+                    />
+                  </div>
+                  <div className="p-6 bg-surface" onClick={(e) => e.stopPropagation()}>
+                    <Toolbox
+                      availableComponentIds={question.availableComponents}
+                      usedComponentIds={usedComponentIds}
+                      disabled={isSubmitted}
+                      selectedComponentId={selectedComponentId}
+                      onComponentClick={handleComponentClick}
+                    />
+                  </div>
+                </>
               ) : (
                 <PanelGroup direction="vertical">
-                  {/* Top: Pipeline Steps (Drop Zones) */}
                   <Panel defaultSize={40} minSize={25}>
                     <div className="h-full p-6 border-b border-border bg-gradient-to-b from-bg-secondary to-surface overflow-auto" onClick={(e) => e.stopPropagation()}>
                       <PipelineBuilder
@@ -218,7 +254,6 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
 
                   <PanelResizeHandle className="h-2 bg-transparent hover:bg-border-focus transition-colors cursor-row-resize rounded" />
 
-                  {/* Bottom: Component Library (Draggables) */}
                   <Panel defaultSize={60} minSize={25}>
                     <div className="h-full p-6 bg-surface overflow-auto" onClick={(e) => e.stopPropagation()}>
                       <Toolbox
