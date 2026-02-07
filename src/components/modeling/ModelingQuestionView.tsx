@@ -1,17 +1,16 @@
-import { useEffect, useState } from 'react';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { Puzzle, ClipboardList } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ModelingQuestion, ModelingField, TableType } from '@/types';
 import { useModelingStore } from '@/stores/modelingStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useSubmissionStore } from '@/stores/submissionStore';
 import { validateModelingQuestion } from '@/services/validation/ModelingValidator';
-import { FieldSoup } from './FieldSoup';
-import { TableCanvas } from './TableCanvas';
+import { FieldDock } from './FieldDock';
+import { TableColumns } from './TableColumns';
+import { RelationshipLines } from './RelationshipLines';
 import { ScoreBars } from './ScoreBars';
 import { ModelingFeedback } from './ModelingFeedback';
-import { AddTableModal } from './AddTableModal';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 
 function useIsMobile() {
@@ -31,6 +30,9 @@ interface ModelingQuestionViewProps {
   question: ModelingQuestion;
 }
 
+let factCounter = 0;
+let dimCounter = 0;
+
 export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
   const {
     tables,
@@ -38,8 +40,10 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
     isSubmitted,
     addTable,
     addFieldToTable,
+    batchAddFieldsToTable,
     removeFieldFromTable,
     removeTable,
+    renameTable,
     setValidationResult,
     reset,
   } = useModelingStore();
@@ -48,11 +52,35 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
   const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
 
   const [activeField, setActiveField] = useState<ModelingField | null>(null);
-  const [showAddTableModal, setShowAddTableModal] = useState(false);
+  const [selectedFieldIds, setSelectedFieldIds] = useState<Set<string>>(new Set());
+  const [isQuestionExpanded, setIsQuestionExpanded] = useState(true);
+  const [editingTableId, setEditingTableId] = useState<string | null>(null);
+
+  const tableColumnsContainerRef = useRef<HTMLDivElement>(null);
+  const fieldRowRefs = useRef<Map<string, HTMLElement>>(new Map());
+
+  const isMobile = useIsMobile();
+
+  // Require 5px movement before activating drag, so clicks work normally
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
 
   useEffect(() => {
     reset();
+    factCounter = 0;
+    dimCounter = 0;
+    setSelectedFieldIds(new Set());
+    setEditingTableId(null);
+    setIsQuestionExpanded(true);
   }, [question.id, reset]);
+
+  // Auto-collapse question card after first table is created
+  useEffect(() => {
+    if (tables.length === 1 && isQuestionExpanded) {
+      setIsQuestionExpanded(false);
+    }
+  }, [tables.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDragStart = (event: DragStartEvent) => {
     const fieldId = event.active.id as string;
@@ -68,17 +96,54 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
     const fieldId = active.id as string;
     const targetId = over.id as string;
 
-    // Check if dropping on a table
     const targetTable = tables.find((t) => t.id === targetId);
     if (targetTable) {
       addFieldToTable(targetId, fieldId);
     }
   };
 
-  const handleAddTable = (type: TableType, name: string) => {
-    addTable(type, name);
-    setShowAddTableModal(false);
-  };
+  const handleFieldClick = useCallback((fieldId: string, shiftKey: boolean) => {
+    setSelectedFieldIds((prev) => {
+      const next = new Set(prev);
+      if (shiftKey) {
+        if (next.has(fieldId)) {
+          next.delete(fieldId);
+        } else {
+          next.add(fieldId);
+        }
+      } else {
+        if (next.has(fieldId) && next.size === 1) {
+          next.clear();
+        } else {
+          return new Set([fieldId]);
+        }
+      }
+      return next;
+    });
+  }, []);
+
+  const handleColumnClick = useCallback((tableId: string) => {
+    if (selectedFieldIds.size > 0) {
+      batchAddFieldsToTable(tableId, [...selectedFieldIds]);
+      setSelectedFieldIds(new Set());
+    }
+  }, [selectedFieldIds, batchAddFieldsToTable]);
+
+  const handleCreateTable = useCallback((type: TableType) => {
+    if (type === 'fact') {
+      factCounter++;
+      addTable(type, `fact_${factCounter}`);
+    } else {
+      dimCounter++;
+      addTable(type, `dim_${dimCounter}`);
+    }
+    // Auto-enter edit mode on the newly created table
+    const newTables = useModelingStore.getState().tables;
+    const newTable = newTables[newTables.length - 1];
+    if (newTable) {
+      setEditingTableId(newTable.id);
+    }
+  }, [addTable]);
 
   const handleSubmit = async () => {
     const result = validateModelingQuestion(question, tables);
@@ -103,6 +168,11 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
 
   const handleReset = () => {
     reset();
+    factCounter = 0;
+    dimCounter = 0;
+    setSelectedFieldIds(new Set());
+    setEditingTableId(null);
+    setIsQuestionExpanded(true);
   };
 
   // Count how many times each field is used
@@ -114,190 +184,177 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
   });
   const hasTablesWithFields = tables.some((t) => t.fieldIds.length > 0);
 
-  // Calculate live scores for preview
+  // Calculate live scores
   const liveResult = hasTablesWithFields
     ? validateModelingQuestion(question, tables)
     : null;
 
-  const isMobile = useIsMobile();
+  // Clear selection when clicking empty space
+  const handleBackgroundClick = () => {
+    if (selectedFieldIds.size > 0) {
+      setSelectedFieldIds(new Set());
+    }
+  };
 
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="flex-1 p-4 h-full overflow-hidden flex flex-col">
+    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <div
+        className="flex-1 p-4 h-full overflow-hidden flex flex-col gap-3"
+        onClick={handleBackgroundClick}
+      >
         <Breadcrumb
           items={[
             { label: 'Modeling', href: '/modeling' },
             { label: question.title },
           ]}
         />
-        <PanelGroup direction={isMobile ? 'vertical' : 'horizontal'} className="flex-1 min-h-0">
-          {/* Left Panel - Question, Fields, Add Table */}
-          <Panel defaultSize={isMobile ? 40 : 35} minSize={20}>
-            <div className="h-full overflow-auto flex flex-col gap-4 pr-1">
-              {/* Question/Objective Panel */}
-              <div className="bg-surface rounded-lg shadow-md p-4">
-                <h1 className="text-xl font-bold text-text-primary">{question.title}</h1>
-                <div className="flex items-center gap-2 mt-2 flex-wrap">
-                  <span
-                    className={`text-xs font-medium px-2 py-1 rounded ${
-                      question.difficulty === 'Easy'
-                        ? 'bg-success/20 text-success'
-                        : question.difficulty === 'Medium'
-                          ? 'bg-warning/20 text-warning'
-                          : 'bg-error/20 text-error'
-                    }`}
-                  >
-                    {question.difficulty}
-                  </span>
-                  {question.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs bg-bg-secondary text-text-secondary px-2 py-1 rounded"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-3 p-3 bg-warning/10 rounded-lg ring-1 ring-warning/20">
-                  <div className="text-sm font-semibold text-warning">Constraint</div>
-                  <div className="text-sm text-text-secondary">{question.constraint}</div>
-                </div>
-                <p className="mt-3 text-sm text-text-secondary">{question.prompt}</p>
-              </div>
 
-              {/* Available Fields - Interactive area */}
-              <div className="flex-1 bg-gradient-to-br from-primary/10 to-accent/5 rounded-xl shadow-lg p-4 overflow-hidden flex flex-col ring-1 ring-primary/20">
-                <div className="flex items-center gap-2 mb-3">
-                  <Puzzle className="w-5 h-5 text-primary" />
-                  <h3 className="text-sm font-semibold text-text-primary">
-                    Drag Fields to Tables
-                  </h3>
-                </div>
-                <p className="text-xs text-text-muted mb-3">
-                  Drag these fields into the tables on the right
-                </p>
-                <FieldSoup
+        {/* Compact Question Card */}
+        <div
+          className="bg-surface rounded-lg shadow-md flex-shrink-0"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={() => setIsQuestionExpanded(!isQuestionExpanded)}
+            className="w-full px-4 py-3 flex items-center justify-between text-left"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <h1 className="text-lg font-bold text-text-primary truncate">{question.title}</h1>
+              <span
+                className={`text-xs font-medium px-2 py-0.5 rounded flex-shrink-0 ${
+                  question.difficulty === 'Easy'
+                    ? 'bg-success/20 text-success'
+                    : question.difficulty === 'Medium'
+                      ? 'bg-warning/20 text-warning'
+                      : 'bg-error/20 text-error'
+                }`}
+              >
+                {question.difficulty}
+              </span>
+              <span className="text-xs text-warning truncate flex-shrink-0">
+                {question.constraint}
+              </span>
+            </div>
+            {isQuestionExpanded ? (
+              <ChevronUp className="w-4 h-4 text-text-muted flex-shrink-0" />
+            ) : (
+              <ChevronDown className="w-4 h-4 text-text-muted flex-shrink-0" />
+            )}
+          </button>
+          {isQuestionExpanded && (
+            <div className="px-4 pb-3 border-t border-border">
+              <div className="flex flex-wrap gap-1 mt-2">
+                {question.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs bg-bg-secondary text-text-secondary px-2 py-0.5 rounded"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-2 text-sm text-text-secondary">{question.prompt}</p>
+            </div>
+          )}
+        </div>
+
+        {/* Live Score Bars */}
+        {!isSubmitted && (
+          <div
+            className="bg-surface rounded-lg shadow-md p-3 flex-shrink-0"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ScoreBars
+              storageScore={liveResult?.storageScore || 0}
+              queryCostScore={liveResult?.queryCostScore || 0}
+              storageThresholds={question.scoreThresholds.storage}
+              queryCostThresholds={question.scoreThresholds.queryCost}
+            />
+          </div>
+        )}
+
+        {/* Table Columns Area (main workspace) */}
+        <div
+          className="flex-1 min-h-0 relative"
+          ref={tableColumnsContainerRef}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {isSubmitted && validationResult ? (
+            <div className="h-full overflow-auto bg-surface rounded-lg shadow-md p-4">
+              <ModelingFeedback
+                result={validationResult}
+                thresholds={question.scoreThresholds}
+              />
+            </div>
+          ) : (
+            <>
+              <div className="h-full overflow-auto">
+                <TableColumns
+                  tables={tables}
                   fields={question.fields}
-                  usageCounts={fieldUsageCounts}
+                  hasSelectedFields={selectedFieldIds.size > 0}
+                  editingTableId={editingTableId}
+                  onColumnClick={handleColumnClick}
+                  onCreateTable={handleCreateTable}
+                  onRemoveField={removeFieldFromTable}
+                  onRemoveTable={removeTable}
+                  onRenameTable={renameTable}
+                  onAutoEditHandled={() => setEditingTableId(null)}
                   disabled={isSubmitted}
+                  fieldRowRefs={fieldRowRefs}
                 />
               </div>
-
-              {/* Add Table - Prominent action area */}
-              {!isSubmitted && (
-                <button
-                  onClick={() => setShowAddTableModal(true)}
-                  className="p-4 rounded-xl bg-gradient-to-r from-accent/20 to-primary/20 hover:from-accent/30 hover:to-primary/30 transition-all group ring-1 ring-accent/30 hover:ring-accent/50 shadow-lg flex-shrink-0"
-                >
-                  <div className="flex items-center justify-center gap-3">
-                    <span className="text-3xl text-accent group-hover:scale-110 transition-transform">+</span>
-                    <div className="text-left">
-                      <div className="font-semibold text-text-primary">Create Table</div>
-                      <div className="text-xs text-text-secondary">Add a Fact or Dimension table</div>
-                    </div>
-                  </div>
-                </button>
+              {!isMobile && tables.length >= 2 && (
+                <RelationshipLines
+                  tables={tables}
+                  containerRef={tableColumnsContainerRef}
+                  fieldRowRefs={fieldRowRefs}
+                />
               )}
-            </div>
-          </Panel>
+            </>
+          )}
+        </div>
 
-          <PanelResizeHandle
-            className={
-              isMobile
-                ? 'h-2 bg-border hover:bg-border-focus transition-colors my-1 rounded'
-                : 'w-2 bg-border hover:bg-border-focus transition-colors mx-1 rounded'
-            }
-          />
+        {/* Field Dock (pinned bottom) */}
+        {!isSubmitted && (
+          <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+            <FieldDock
+              fields={question.fields}
+              usageCounts={fieldUsageCounts}
+              selectedFieldIds={selectedFieldIds}
+              onFieldClick={handleFieldClick}
+              disabled={isSubmitted}
+            />
+          </div>
+        )}
 
-          {/* Right Panel - Score + Tables + Submit */}
-          <Panel defaultSize={isMobile ? 60 : 65} minSize={30}>
-            <div className="h-full overflow-hidden flex flex-col gap-4 pl-1">
-              {/* Live Score - Top right */}
-              {!isSubmitted && (
-                <div className="bg-surface rounded-lg shadow-md p-4 flex-shrink-0">
-                  <h3 className="text-sm font-semibold text-text-primary mb-3">Live Score</h3>
-                  <ScoreBars
-                    storageScore={liveResult?.storageScore || 0}
-                    queryCostScore={liveResult?.queryCostScore || 0}
-                    storageThresholds={question.scoreThresholds.storage}
-                    queryCostThresholds={question.scoreThresholds.queryCost}
-                  />
-                </div>
-              )}
-
-              {/* Table Canvas */}
-              <div className="flex-1 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col min-h-0">
-                <div className="px-6 py-3 border-b border-border bg-bg-secondary flex-shrink-0">
-                  <div className="text-sm text-text-secondary">
-                    {isSubmitted
-                      ? 'Review your model'
-                      : tables.length === 0
-                        ? 'Create tables and drag fields into them'
-                        : `Your Schema (${tables.length} table${tables.length !== 1 ? 's' : ''})`}
-                  </div>
-                </div>
-
-                <div className="flex-1 overflow-auto p-6">
-                  {isSubmitted && validationResult ? (
-                    <ModelingFeedback
-                      result={validationResult}
-                      thresholds={question.scoreThresholds}
-                    />
-                  ) : tables.length === 0 ? (
-                    <div className="h-full flex items-center justify-center text-text-muted">
-                      <div className="text-center">
-                        <ClipboardList className="w-12 h-12 mx-auto mb-2 text-text-muted" />
-                        <div>No tables yet</div>
-                        <div className="text-sm">Click "Create Table" on the left to start</div>
-                      </div>
-                    </div>
-                  ) : (
-                    <TableCanvas
-                      tables={tables}
-                      fields={question.fields}
-                      onRemoveField={removeFieldFromTable}
-                      onRemoveTable={removeTable}
-                      disabled={isSubmitted}
-                    />
-                  )}
-                </div>
-
-                {/* Submit button - Bottom right */}
-                <div className="px-6 py-3 border-t border-border bg-bg-secondary flex justify-end flex-shrink-0">
-                  {!isSubmitted ? (
-                    <button
-                      onClick={handleSubmit}
-                      disabled={!hasTablesWithFields}
-                      className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                        hasTablesWithFields
-                          ? 'bg-primary text-text-primary hover:bg-primary-hover shadow-md'
-                          : 'bg-border text-text-muted cursor-not-allowed'
-                      }`}
-                    >
-                      Submit Model
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleReset}
-                      className="px-6 py-2 rounded-lg font-medium bg-accent text-text-primary hover:bg-accent-hover transition-colors"
-                    >
-                      Try Again
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </Panel>
-        </PanelGroup>
+        {/* Submit / Try Again */}
+        <div
+          className="flex justify-end flex-shrink-0"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {!isSubmitted ? (
+            <button
+              onClick={handleSubmit}
+              disabled={!hasTablesWithFields}
+              className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                hasTablesWithFields
+                  ? 'bg-primary text-text-primary hover:bg-primary-hover shadow-md'
+                  : 'bg-border text-text-muted cursor-not-allowed'
+              }`}
+            >
+              Submit Model
+            </button>
+          ) : (
+            <button
+              onClick={handleReset}
+              className="px-6 py-2 rounded-lg font-medium bg-accent text-text-primary hover:bg-accent-hover transition-colors"
+            >
+              Try Again
+            </button>
+          )}
+        </div>
       </div>
-
-      {/* Add Table Modal */}
-      {showAddTableModal && (
-        <AddTableModal
-          onAdd={handleAddTable}
-          onClose={() => setShowAddTableModal(false)}
-        />
-      )}
 
       {/* Drag Overlay */}
       <DragOverlay>

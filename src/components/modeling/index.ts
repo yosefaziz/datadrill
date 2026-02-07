@@ -1,6 +1,6 @@
 export { ModelingQuestionView } from './ModelingQuestionView';
-export { FieldSoup } from './FieldSoup';
-export { TableCanvas } from './TableCanvas';
+export { FieldDock } from './FieldDock';
+export { TableColumns } from './TableColumns';
+export { RelationshipLines } from './RelationshipLines';
 export { ScoreBars } from './ScoreBars';
-export { AddTableModal } from './AddTableModal';
 export { ModelingFeedback } from './ModelingFeedback';
