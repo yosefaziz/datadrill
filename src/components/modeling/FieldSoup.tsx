@@ -1,5 +1,4 @@
 import { useDraggable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
 import { Clock } from 'lucide-react';
 import { ModelingField, FieldDataType } from '@/types';
 
@@ -26,20 +25,15 @@ interface DraggableFieldProps {
 }
 
 function DraggableField({ field, usageCount, disabled = false }: DraggableFieldProps) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: field.id,
     data: { field },
     disabled,
   });
 
-  const style = {
-    transform: CSS.Translate.toString(transform),
-  };
-
   return (
     <div
       ref={setNodeRef}
-      style={style}
       {...listeners}
       {...attributes}
       className={`relative px-3 py-2 rounded-lg border-2 transition-all select-none ${TYPE_COLORS[field.dataType]} ${
