@@ -53,7 +53,7 @@ export function ArchitectureSelectionPhase({ question }: ArchitectureSelectionPh
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 overflow-y-auto">
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-text-primary mb-2">
           Phase 2: Choose an Architecture

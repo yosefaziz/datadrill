@@ -12,23 +12,24 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
   const remainingSelections = question.maxQuestions - selectedQuestionIds.length;
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-text-primary mb-2">
-          Phase 1: Ask Clarifying Questions
-        </h2>
-        <p className="text-text-secondary">
-          Before choosing an architecture, gather requirements by asking the right questions.
-          Select exactly {question.maxQuestions} questions.
+    <div className="p-4 flex flex-col h-full">
+      <div className="mb-3">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-lg font-semibold text-text-primary">
+            Phase 1: Ask Clarifying Questions
+          </h2>
+          {remainingSelections > 0 && (
+            <span className="text-sm text-warning whitespace-nowrap">
+              {remainingSelections} more to select
+            </span>
+          )}
+        </div>
+        <p className="text-sm text-text-secondary mt-1">
+          Gather requirements by selecting {question.maxQuestions} questions.
         </p>
-        {remainingSelections > 0 && (
-          <p className="text-sm text-warning mt-2">
-            Select {remainingSelections} more question{remainingSelections !== 1 ? 's' : ''}
-          </p>
-        )}
       </div>
 
-      <div className="space-y-3 mb-6" role="group" aria-label="Select clarifying questions">
+      <div className="space-y-1.5 flex-1 min-h-0 overflow-y-auto pr-2" role="group" aria-label="Select clarifying questions">
         {question.clarifyingQuestions.map((cq) => {
           const isSelected = selectedQuestionIds.includes(cq.id);
           const isDisabled = !isSelected && selectedQuestionIds.length >= question.maxQuestions;
@@ -40,7 +41,7 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
               disabled={isDisabled}
               role="checkbox"
               aria-checked={isSelected}
-              className={`w-full text-left p-4 rounded-lg border-2 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+              className={`w-full text-left px-3 py-2 rounded-lg border transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                 isSelected
                   ? 'border-primary bg-primary/10'
                   : isDisabled
@@ -48,16 +49,16 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
                     : 'border-border hover:border-primary hover:bg-bg-secondary'
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
                     isSelected ? 'border-primary bg-primary' : 'border-border'
                   }`}
                   aria-hidden="true"
                 >
                   {isSelected && (
                     <svg
-                      className="w-3 h-3 text-white"
+                      className="w-2.5 h-2.5 text-white"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -71,18 +72,18 @@ export function QuestionSelectionPhase({ question }: QuestionSelectionPhaseProps
                     </svg>
                   )}
                 </div>
-                <span className="text-text-primary">{cq.text}</span>
+                <span className="text-sm text-text-primary">{cq.text}</span>
               </div>
             </button>
           );
         })}
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end pt-3 border-t border-border shrink-0">
         <button
           onClick={() => setPhase('architecture')}
           disabled={!canProceed}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+          className={`px-6 py-2 rounded-lg font-medium text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
             canProceed
               ? 'bg-primary text-white hover:bg-primary-hover'
               : 'bg-border text-text-muted cursor-not-allowed'

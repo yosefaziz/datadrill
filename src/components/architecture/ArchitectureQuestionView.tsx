@@ -173,7 +173,7 @@ export function ArchitectureQuestionView({ question }: ArchitectureQuestionViewP
           </div>
 
           {/* Phase Content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
             {phase === 'questions' && <QuestionSelectionPhase question={question} />}
             {phase === 'architecture' && (
               <ArchitectureSelectionPhase question={question} />
