@@ -16,6 +16,7 @@ interface QuestionState {
   filters: {
     difficulty: string | null;
     tag: string | null;
+    questionType: string | null;
   };
 
   // Actions
@@ -24,8 +25,10 @@ interface QuestionState {
   setCurrentSkill: (skill: SkillType | null) => void;
   setDifficultyFilter: (difficulty: string | null) => void;
   setTagFilter: (tag: string | null) => void;
+  setQuestionTypeFilter: (questionType: string | null) => void;
   getFilteredQuestions: () => QuestionMeta[];
   getAllTags: () => string[];
+  getAllQuestionTypes: () => string[];
   getQuestionCountBySkill: (skill: SkillType) => number;
 }
 
@@ -45,6 +48,7 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
   filters: {
     difficulty: null,
     tag: null,
+    questionType: null,
   },
 
   fetchQuestionsForSkill: async (skill: SkillType) => {
@@ -130,6 +134,12 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     }));
   },
 
+  setQuestionTypeFilter: (questionType) => {
+    set((state) => ({
+      filters: { ...state.filters, questionType },
+    }));
+  },
+
   getFilteredQuestions: () => {
     const { questionsBySkill, currentSkill, filters } = get();
     if (!currentSkill) return [];
@@ -138,6 +148,7 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     return questions.filter((q) => {
       if (filters.difficulty && q.difficulty !== filters.difficulty) return false;
       if (filters.tag && !q.tags.includes(filters.tag)) return false;
+      if (filters.questionType && q.questionType !== filters.questionType) return false;
       return true;
     });
   },
@@ -150,6 +161,18 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     const tags = new Set<string>();
     questions.forEach((q) => q.tags.forEach((t) => tags.add(t)));
     return Array.from(tags).sort();
+  },
+
+  getAllQuestionTypes: () => {
+    const { questionsBySkill, currentSkill } = get();
+    if (!currentSkill) return [];
+
+    const questions = questionsBySkill[currentSkill];
+    const types = new Set<string>();
+    questions.forEach((q) => {
+      if (q.questionType) types.add(q.questionType);
+    });
+    return Array.from(types).sort();
   },
 
   getQuestionCountBySkill: (skill: SkillType) => {

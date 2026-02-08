@@ -3,16 +3,14 @@ import { QuestionCard } from './QuestionCard';
 import { Filters } from './Filters';
 import { SkillType } from '@/types';
 
-function SkeletonCard() {
+function SkeletonRow() {
   return (
-    <div className="bg-surface rounded-lg p-5 shadow-md ring-1 ring-white/5 animate-pulse">
-      <div className="flex items-center justify-between mb-3">
-        <div className="h-6 w-32 bg-white/10 rounded" />
-        <div className="h-5 w-14 bg-white/10 rounded-full" />
-      </div>
-      <div className="mt-3 flex gap-2">
-        <div className="h-5 w-16 bg-white/5 rounded" />
-        <div className="h-5 w-16 bg-white/5 rounded" />
+    <div className="flex items-center gap-4 px-4 py-3 animate-pulse">
+      <div className="h-4 w-14 bg-white/10 rounded" />
+      <div className="h-4 flex-1 bg-white/10 rounded" />
+      <div className="hidden sm:flex gap-1.5">
+        <div className="h-4 w-12 bg-white/5 rounded" />
+        <div className="h-4 w-12 bg-white/5 rounded" />
       </div>
     </div>
   );
@@ -30,9 +28,9 @@ export function QuestionList({ skill }: QuestionListProps) {
     return (
       <div>
         <Filters />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="bg-surface rounded-xl ring-1 ring-white/5 divide-y divide-white/5 overflow-hidden">
           {[...Array(6)].map((_, i) => (
-            <SkeletonCard key={i} />
+            <SkeletonRow key={i} />
           ))}
         </div>
       </div>
@@ -55,13 +53,13 @@ export function QuestionList({ skill }: QuestionListProps) {
           No questions match the current filters.
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="bg-surface rounded-xl ring-1 ring-white/5 divide-y divide-white/5 overflow-hidden">
           {questions.map((question, index) => (
             <QuestionCard
               key={question.id}
               question={question}
               skill={skill}
-              className={`animate-fade-in-up stagger-${Math.min(index + 1, 6)}`}
+              className={`animate-fade-in stagger-${Math.min(index + 1, 6)}`}
             />
           ))}
         </div>

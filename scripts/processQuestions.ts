@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
+import * as yaml from 'js-yaml';
 
 type SkillType = 'sql' | 'python' | 'debug' | 'architecture' | 'modeling';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
@@ -295,6 +296,81 @@ interface QuestionMeta {
   title: string;
   difficulty: Difficulty;
   tags: string[];
+  track?: string;
+  trackLevel?: number;
+  trackOrder?: number;
+  concepts?: string[];
+  bloomLevel?: string;
+  interviewRelevant?: boolean;
+  expectedTime?: number;
+}
+
+// ── Track types ──────────────────────────────────────────────────
+
+type UnlockCondition = 'always_unlocked' | 'complete_previous' | 'score_threshold';
+
+interface TrackLevelYaml {
+  level: number;
+  title: string;
+  description: string;
+  concepts: string[];
+  questions: string[];
+  unlock: UnlockCondition;
+  threshold?: number;
+}
+
+interface TrackYaml {
+  id: string;
+  name: string;
+  tagline: string;
+  interviewer_says: string;
+  you_need: string;
+  description: string;
+  icon: string;
+  category: string;
+  order: number;
+  prerequisites: string[];
+  levels: TrackLevelYaml[];
+}
+
+interface ProcessedTrackLevel {
+  level: number;
+  title: string;
+  description: string;
+  concepts: string[];
+  questionIds: string[];
+  unlockCondition: UnlockCondition;
+  threshold?: number;
+}
+
+interface ProcessedTrack {
+  id: string;
+  skill: SkillType;
+  name: string;
+  tagline: string;
+  interviewerSays: string;
+  youNeed: string;
+  description: string;
+  icon: string;
+  category: string;
+  order: number;
+  prerequisites: string[];
+  levels: ProcessedTrackLevel[];
+}
+
+interface ProcessedTrackMeta {
+  id: string;
+  skill: SkillType;
+  name: string;
+  tagline: string;
+  interviewerSays: string;
+  youNeed: string;
+  icon: string;
+  category: string;
+  order: number;
+  prerequisites: string[];
+  totalLevels: number;
+  totalQuestions: number;
 }
 
 const SKILL_DIRS: SkillType[] = ['sql', 'python', 'debug', 'architecture', 'modeling'];
@@ -547,9 +623,9 @@ async function processQuestions() {
       continue;
     }
 
-    // Find all markdown files for this skill (excluding README files)
+    // Find all markdown files for this skill (excluding README files and tracks directory)
     const files = (await glob('**/*.md', { cwd: skillDir })).filter(
-      (f) => !f.toLowerCase().includes('readme')
+      (f) => !f.toLowerCase().includes('readme') && !f.startsWith('tracks/')
     );
 
     if (files.length === 0) {
@@ -589,6 +665,7 @@ async function processQuestions() {
         );
 
         // Add to skill-specific index
+        const { data: frontmatterData } = matter(content);
         const meta: QuestionMeta = {
           id: question.id,
           skill: question.skill,
@@ -601,6 +678,15 @@ async function processQuestions() {
         if (skill === 'architecture' && 'questionType' in question) {
           meta.questionType = question.questionType;
         }
+
+        // Add optional track fields from frontmatter
+        if (frontmatterData.track) meta.track = frontmatterData.track;
+        if (frontmatterData.track_level != null) meta.trackLevel = frontmatterData.track_level;
+        if (frontmatterData.track_order != null) meta.trackOrder = frontmatterData.track_order;
+        if (frontmatterData.concepts) meta.concepts = frontmatterData.concepts;
+        if (frontmatterData.bloom_level) meta.bloomLevel = frontmatterData.bloom_level;
+        if (frontmatterData.interview_relevant != null) meta.interviewRelevant = frontmatterData.interview_relevant;
+        if (frontmatterData.expected_time != null) meta.expectedTime = frontmatterData.expected_time;
 
         skillQuestionsMeta.push(meta);
         allQuestionsMeta.push(meta);
@@ -617,6 +703,85 @@ async function processQuestions() {
       path.join(skillOutputDir, 'index.json'),
       JSON.stringify(skillQuestionsMeta, null, 2)
     );
+
+    // Process skill tracks
+    const tracksDir = path.join(skillDir, 'tracks');
+    if (fs.existsSync(tracksDir)) {
+      const tracksOutputDir = path.join(skillOutputDir, 'tracks');
+      fs.mkdirSync(tracksOutputDir, { recursive: true });
+
+      const trackFiles = (await glob('*.yaml', { cwd: tracksDir })).concat(
+        await glob('*.yml', { cwd: tracksDir })
+      );
+
+      const trackMetas: ProcessedTrackMeta[] = [];
+
+      for (const trackFile of trackFiles) {
+        try {
+          const trackContent = fs.readFileSync(path.join(tracksDir, trackFile), 'utf-8');
+          const trackData = yaml.load(trackContent) as TrackYaml;
+
+          const processedTrack: ProcessedTrack = {
+            id: trackData.id,
+            skill,
+            name: trackData.name,
+            tagline: trackData.tagline || '',
+            interviewerSays: trackData.interviewer_says,
+            youNeed: trackData.you_need,
+            description: trackData.description,
+            icon: trackData.icon,
+            category: trackData.category,
+            order: trackData.order,
+            prerequisites: trackData.prerequisites || [],
+            levels: trackData.levels.map((l) => ({
+              level: l.level,
+              title: l.title,
+              description: l.description,
+              concepts: l.concepts,
+              questionIds: l.questions,
+              unlockCondition: l.unlock,
+              threshold: l.threshold,
+            })),
+          };
+
+          // Write individual track file
+          fs.writeFileSync(
+            path.join(tracksOutputDir, `${trackData.id}.json`),
+            JSON.stringify(processedTrack, null, 2)
+          );
+
+          // Build track meta
+          const totalQuestions = trackData.levels.reduce((sum, l) => sum + l.questions.length, 0);
+          trackMetas.push({
+            id: trackData.id,
+            skill,
+            name: trackData.name,
+            tagline: trackData.tagline || '',
+            interviewerSays: trackData.interviewer_says,
+            youNeed: trackData.you_need,
+            icon: trackData.icon,
+            category: trackData.category,
+            order: trackData.order,
+            prerequisites: trackData.prerequisites || [],
+            totalLevels: trackData.levels.length,
+            totalQuestions,
+          });
+
+          console.log(`Processed track: ${skill}/tracks/${trackFile}`);
+        } catch (error) {
+          console.error(`Error processing track ${skill}/tracks/${trackFile}:`, error);
+        }
+      }
+
+      // Sort by order and write tracks index
+      trackMetas.sort((a, b) => a.order - b.order);
+      fs.writeFileSync(
+        path.join(tracksOutputDir, 'index.json'),
+        JSON.stringify(trackMetas, null, 2)
+      );
+
+      console.log(`  ${trackMetas.length} tracks processed for ${skill}`);
+    }
   }
 
   // Write global index with all questions

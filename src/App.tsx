@@ -6,6 +6,7 @@ import { AuthCallback } from '@/components/auth/AuthCallback';
 import { HomePage } from '@/pages/HomePage';
 import { SkillPage } from '@/pages/SkillPage';
 import { QuestionPage } from '@/pages/QuestionPage';
+import { SkillPathPage } from '@/pages/SkillPathPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { HistoryPage } from '@/pages/HistoryPage';
 import { ProfilePage } from '@/pages/ProfilePage';
@@ -43,6 +44,7 @@ function App() {
               }
             />
             <Route path="/:skill" element={<SkillPage />} />
+            <Route path="/:skill/path/:trackId" element={<SkillPathPage />} />
             <Route path="/:skill/question/:id" element={<QuestionPage />} />
           </Routes>
         </AppLayout>

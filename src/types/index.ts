@@ -262,6 +262,65 @@ export interface QuestionMeta {
   title: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   tags: string[];
+  // Skill path fields (optional — questions without these appear in Grid only)
+  track?: string;
+  trackLevel?: number;
+  trackOrder?: number;
+  concepts?: string[];
+  bloomLevel?: string;
+  interviewRelevant?: boolean;
+  expectedTime?: number;
+}
+
+// ── Skill Track Types ─────────────────────────────────────────────
+
+export type UnlockCondition = 'always_unlocked' | 'complete_previous' | 'score_threshold';
+
+export interface SkillTrackLevel {
+  level: number;
+  title: string;
+  description: string;
+  concepts: string[];
+  questionIds: string[];
+  unlockCondition: UnlockCondition;
+  threshold?: number;
+}
+
+export interface SkillTrack {
+  id: string;
+  skill: SkillType;
+  name: string;
+  tagline: string;
+  interviewerSays: string;
+  youNeed: string;
+  description: string;
+  icon: string;
+  category: string;
+  order: number;
+  prerequisites: string[];
+  levels: SkillTrackLevel[];
+}
+
+export interface SkillTrackMeta {
+  id: string;
+  skill: SkillType;
+  name: string;
+  tagline: string;
+  interviewerSays: string;
+  youNeed: string;
+  icon: string;
+  category: string;
+  order: number;
+  prerequisites: string[];
+  totalLevels: number;
+  totalQuestions: number;
+}
+
+export interface TrackProgress {
+  trackId: string;
+  completedQuestionIds: string[];
+  currentLevel: number;
+  percentComplete: number;
 }
 
 export interface QueryResult {

@@ -1,0 +1,35 @@
+id: sql-anti-joins
+name: "Find What's Missing"
+tagline: "Detect inactive users, missing data & gaps"
+interviewer_says: "users who never, titles without, inactive users"
+you_need: "Anti-joins (LEFT JOIN + IS NULL, NOT EXISTS)"
+description: "Learn to find rows that DON'T match — a critical pattern for churn analysis, gap detection, and data quality checks."
+icon: "search-x"
+category: "Joins & Filtering"
+order: 1
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "LEFT JOIN + IS NULL"
+    description: "The classic anti-join pattern"
+    concepts: ["LEFT JOIN", "IS NULL", "anti-join"]
+    questions:
+      - anti-join-left-null-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "NOT EXISTS Pattern"
+    description: "Correlated subquery approach to anti-joins"
+    concepts: ["NOT EXISTS", "correlated subquery"]
+    questions:
+      - anti-join-not-exists
+    unlock: complete_previous
+
+  - level: 3
+    title: "Interview-Ready Anti-Joins"
+    description: "Complex scenarios combining anti-joins with aggregation"
+    concepts: ["anti-join", "GROUP BY", "HAVING", "multi-table"]
+    questions:
+      - anti-join-interview-complex
+    unlock: complete_previous
