@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { CheckCircle2, XCircle, Minus } from 'lucide-react';
 import { QuestionMeta, SkillType } from '@/types';
 import { useQuestionStore, QuestionStatus } from '@/stores/questionStore';
 
@@ -14,15 +15,15 @@ const difficultyColors = {
   Hard: 'text-error',
 };
 
-const statusConfig: Record<QuestionStatus, { label: string; className: string }> = {
-  passed: { label: 'Passed', className: 'text-success' },
-  failed: { label: 'Failed', className: 'text-error' },
-  not_started: { label: '—', className: 'text-text-muted' },
+const statusIcons: Record<QuestionStatus, { icon: typeof CheckCircle2; className: string; label: string }> = {
+  passed: { icon: CheckCircle2, className: 'text-success', label: 'Passed' },
+  failed: { icon: XCircle, className: 'text-error', label: 'Failed' },
+  not_started: { icon: Minus, className: 'text-text-muted opacity-40', label: 'Not started' },
 };
 
 export function QuestionCard({ question, skill, className = '' }: QuestionCardProps) {
   const status = useQuestionStore((s) => s.getQuestionStatus)(question.id);
-  const { label, className: statusClass } = statusConfig[status];
+  const { icon: Icon, className: iconClass, label } = statusIcons[status];
 
   return (
     <Link
@@ -40,8 +41,8 @@ export function QuestionCard({ question, skill, className = '' }: QuestionCardPr
       </span>
 
       {/* Status */}
-      <span className={`text-xs font-medium ${statusClass}`}>
-        {label}
+      <span className={`flex items-center ${iconClass}`} title={label}>
+        <Icon className="w-4 h-4" />
       </span>
     </Link>
   );

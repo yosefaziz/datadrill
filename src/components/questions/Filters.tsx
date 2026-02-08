@@ -7,11 +7,11 @@ const QUESTION_TYPE_LABELS: Record<string, string> = {
   quiz: 'Quiz',
 };
 
-const STATUS_LABELS: Record<QuestionStatus, string> = {
-  passed: 'Passed',
-  failed: 'Failed',
-  not_started: 'Not Started',
-};
+const STATUS_OPTIONS: { value: QuestionStatus; label: string }[] = [
+  { value: 'not_started', label: 'Not Started' },
+  { value: 'failed', label: 'Failed' },
+  { value: 'passed', label: 'Passed' },
+];
 
 export function Filters() {
   const { filters, setDifficultyFilter, setSearchQuery, setStatusFilter, setQuestionTypeFilter, getAllQuestionTypes } = useQuestionStore();
@@ -88,7 +88,7 @@ export function Filters() {
           className="px-3 py-2 rounded-lg bg-surface text-text-primary ring-1 ring-white/10 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">All</option>
-          {Object.entries(STATUS_LABELS).map(([value, label]) => (
+          {STATUS_OPTIONS.map(({ value, label }) => (
             <option key={value} value={value}>
               {label}
             </option>
