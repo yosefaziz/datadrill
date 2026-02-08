@@ -84,7 +84,7 @@ export function SkillPage() {
           onClick={() => handleTabChange(activeTab === 'questions' ? 'paths' : 'questions')}
           role="switch"
           aria-checked={activeTab === 'paths'}
-          aria-label="Toggle between Questions and Skill Paths"
+          aria-label="Toggle between Interview Questions and Solution Playbooks"
         >
           {/* Sliding blue pill */}
           <div

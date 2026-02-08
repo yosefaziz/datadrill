@@ -8,10 +8,10 @@ Become the default platform data professionals use to prepare for interviews —
 
 Interview-first. The platform has two complementary experiences:
 
-1. **Interview Prep** (primary) — Question bank of interview-direct question types. Users practice the same formats they'll face in real interviews.
-2. **Skill Paths** (secondary) — Progressive concept paths that build specific skills from simple to interview-realistic complexity. Triggered when users struggle with interview questions.
+1. **Interview Questions** (primary) — Question bank of interview-direct question types. Users practice the same formats they'll face in real interviews.
+2. **Solution Playbooks** (secondary) — Progressive concept paths that build pattern recognition from simple to interview-realistic complexity. Triggered when users struggle with interview questions. Can include scaffold types and additional question formats beyond pure interview questions.
 
-Scaffold types (Predict, Parsons, Translate) are the early levels of skill paths, not standalone features.
+Scaffold types (Predict, Parsons, Translate) are the early levels of solution playbooks, not standalone features.
 
 ## Target Users
 
@@ -28,7 +28,7 @@ No existing platform covers this space:
 - **Interviewing.io / Pramp:** Require a live partner, not available on-demand
 - **dataexpert.io:** Video courses, not interactive practice
 
-DataDrill's differentiators: full cognitive spectrum (Bloom's Taxonomy), in-browser execution (DuckDB + Pyodide), progressive skill paths, and structured mock interviews — all free, no setup.
+DataDrill's differentiators: full cognitive spectrum (Bloom's Taxonomy), in-browser execution (DuckDB + Pyodide), progressive solution playbooks, and structured mock interviews — all free, no setup.
 
 ## Development Principles
 
@@ -55,11 +55,11 @@ Product-led. Build features that create shareable moments (mock interview scorec
 
 Users browse interview questions by skill → difficulty → topic. Question types mirror real interview formats: Write, Reverse, Optimize, Review, Stepwise, Incident, Tradeoff, etc.
 
-### Skill Paths (triggered by struggle)
+### Solution Playbooks (triggered by struggle)
 
-When a user fails X attempts on questions involving a specific concept (e.g., window functions), the platform recommends a skill path:
+When a user fails X attempts on questions involving a specific concept (e.g., window functions), the platform recommends a solution playbook:
 
-> "Struggling with window functions? Try the Window Functions path."
+> "Struggling with window functions? Try the Window Functions playbook."
 
 Each path progressively layers complexity:
 - **Level 1:** Single concept — e.g., `RANK()` (scaffold: Predict/Parsons)
@@ -67,20 +67,20 @@ Each path progressively layers complexity:
 - **Level 3:** Two concepts combined — e.g., window function + CTE
 - **Level N:** Interview-realistic — e.g., window function + CTE + self-join + GROUP BY
 
-Scaffold types (Predict, Parsons, Translate) are the early levels. Interview-direct types (Write, Reverse, Optimize) are the later levels. The path ends at the complexity level the user was originally stuck on.
+Scaffold types (Predict, Parsons, Translate) are the early levels. Interview-direct types (Write, Reverse, Optimize) are the later levels. The playbook ends at the complexity level the user was originally stuck on.
 
-**Weak concept detection:** Mechanism TBD — options include tag-based pass/fail tracking, decomposed scoring, or self-reporting. Decision deferred until paths are built.
+**Weak concept detection:** Mechanism TBD — options include tag-based pass/fail tracking, decomposed scoring, or self-reporting. Decision deferred until playbooks are built.
 
 ### Separate pages
 
-- `/interview` or skill pages — interview prep question bank
-- `/paths` — skill path browser and progress tracking
+- `/interview` or skill pages — interview questions bank
+- `/paths` — solution playbook browser and progress tracking
 
 ## Difficulty Framework
 
 **Current state:** Easy/Medium/Hard are author-assigned labels — subjective and inconsistent. Treat these as approximate until a deterministic framework exists.
 
-**Future state:** Difficulty determined by concept composition — number of concepts combined, interaction complexity between concepts, and proximity to real interview problems. The skill path levels provide the natural difficulty gradient.
+**Future state:** Difficulty determined by concept composition — number of concepts combined, interaction complexity between concepts, and proximity to real interview problems. The solution playbook levels provide the natural difficulty gradient.
 
 ## Question Types
 
@@ -106,7 +106,7 @@ Scaffold types (Predict, Parsons, Translate) are the early levels. Interview-dir
 | Evolve | Create | Modeling | Planned | Scaffold |
 
 - **12 interview types** appear in the main question bank
-- **5 scaffold types** (Predict, Parsons, Translate, Evolve, Quiz) are building blocks within skill paths
+- **5 scaffold types** (Predict, Parsons, Translate, Evolve, Quiz) are building blocks within solution playbooks
 - See `new-question-types-plan.md` for detailed rationale, research backing, and implementation specs
 
 ## Skills
@@ -125,7 +125,7 @@ Scaffold types (Predict, Parsons, Translate) are the early levels. Interview-dir
 
 - All questions must be validated against DuckDB (SQL) or Pyodide (Python) — no broken questions ship
 - Each question is tagged with specific concepts it tests (e.g., `window-functions`, `CTEs`, `GROUP BY`)
-- Questions within a skill path must have clear concept progression — each level adds exactly one new concept
+- Questions within a solution playbook must have clear concept progression — each level adds exactly one new concept
 - Interview-direct questions should mirror real interview formats, not textbook exercises
 - LLM-assisted generation, human-validated against local execution
 - Questions use YAML frontmatter + markdown, processed by `scripts/processQuestions.ts` at build time
@@ -139,7 +139,7 @@ Decisions already made (see `new-question-types-plan.md` for full rationale):
 - **Mock Interview as top-nav entry** — separate from skill-based practice: "Skills = learn at my pace" vs "Mock Interview = simulate a real interview"
 - **URL structure stays flat** — type encoded in question ID by naming convention (e.g., `/sql/question/predict-window-function-1`), no new routes needed
 - **Randomized mock sessions via pool-based templates** — define round slots by skill/type/difficulty, client randomly selects matching questions at session start
-- **No Interview Focus toggle** — skill paths replace this. Users who struggle with interview questions get guided to paths; no need for a mode switch
+- **No Interview Focus toggle** — solution playbooks replace this. Users who struggle with interview questions get guided to playbooks; no need for a mode switch
 
 ## Feature Priority
 
@@ -150,7 +150,7 @@ Decisions already made (see `new-question-types-plan.md` for full rationale):
 
 **Tier 2 (after Tier 1):**
 - Remaining question types: Stepwise, Translate, Tradeoff, Incident, Evolve
-- Skill Paths (progressive concept paths with scaffold types)
+- Solution Playbooks (progressive concept paths with scaffold types)
 - Shareable skill profiles / public scorecards
 - Substack integration (link from platform)
 
@@ -168,5 +168,5 @@ Decisions already made (see `new-question-types-plan.md` for full rationale):
 ## Success Metrics
 
 - **Phase 1 (adoption):** Monthly active users, questions attempted per user, return rate (7-day, 30-day)
-- **Phase 2 (engagement):** Mock interviews completed, skill paths started/finished, Substack subscribers
+- **Phase 2 (engagement):** Mock interviews completed, solution playbooks started/finished, Substack subscribers
 - **Phase 3 (B2B):** Companies onboarded, assessments sent, candidate completion rates

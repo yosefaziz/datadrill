@@ -126,7 +126,7 @@ export function PathsList({ skill }: PathsListProps) {
   if (categories.length === 0) {
     return (
       <div className="text-center py-12 text-text-secondary">
-        No skill paths available yet.
+        No solution playbooks available yet.
       </div>
     );
   }

@@ -81,7 +81,7 @@ export function SkillPathPage() {
       {/* Back link */}
       <div className="mb-6 animate-fade-in">
         <Link to={`/${skill}`} className="text-primary hover:text-primary-hover text-sm transition-colors duration-200">
-          &larr; {SKILL_NAMES[skill]} Paths
+          &larr; {SKILL_NAMES[skill]} Playbooks
         </Link>
       </div>
 

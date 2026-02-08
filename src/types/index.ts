@@ -262,7 +262,7 @@ export interface QuestionMeta {
   title: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   tags: string[];
-  // Skill path fields (optional — questions without these appear in Grid only)
+  // Solution playbook fields (optional — questions without these appear in Interview Questions only)
   track?: string;
   trackLevel?: number;
   trackOrder?: number;
