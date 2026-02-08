@@ -27,7 +27,7 @@ export function QuestionCard({ question, skill, className = '' }: QuestionCardPr
   return (
     <Link
       to={`/${skill}/question/${question.id}`}
-      className={`grid grid-cols-[1fr_5rem_5rem] items-center gap-4 px-4 py-3 hover:bg-white/[0.03] transition-colors duration-150 ${className}`}
+      className={`grid grid-cols-[1fr_6rem_6rem] items-center gap-8 px-4 py-3 hover:bg-white/[0.03] transition-colors duration-150 ${className}`}
     >
       {/* Title */}
       <span className="text-sm font-medium text-text-primary truncate">

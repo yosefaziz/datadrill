@@ -6,6 +6,8 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 let latestQuestionRequestId = 0;
 
 export type QuestionStatus = 'passed' | 'failed' | 'not_started';
+export type SortColumn = 'title' | 'difficulty' | 'status';
+export type SortDirection = 'asc' | 'desc';
 
 interface QuestionState {
   // Questions by skill
@@ -25,6 +27,10 @@ interface QuestionState {
     searchQuery: string;
     status: QuestionStatus | null;
   };
+  sort: {
+    column: SortColumn | null;
+    direction: SortDirection;
+  };
 
   // Actions
   fetchQuestionsForSkill: (skill: SkillType) => Promise<void>;
@@ -36,6 +42,7 @@ interface QuestionState {
   setQuestionTypeFilter: (questionType: string | null) => void;
   setSearchQuery: (query: string) => void;
   setStatusFilter: (status: QuestionStatus | null) => void;
+  toggleSort: (column: SortColumn) => void;
   getFilteredQuestions: () => QuestionMeta[];
   getQuestionStatus: (questionId: string) => QuestionStatus;
   getAllTags: () => string[];
@@ -63,6 +70,10 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     questionType: null,
     searchQuery: '',
     status: null,
+  },
+  sort: {
+    column: null,
+    direction: 'asc',
   },
 
   fetchQuestionsForSkill: async (skill: SkillType) => {
@@ -166,6 +177,19 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     }));
   },
 
+  toggleSort: (column) => {
+    set((state) => {
+      if (state.sort.column === column) {
+        // Same column: toggle direction, or clear if already desc
+        if (state.sort.direction === 'asc') {
+          return { sort: { column, direction: 'desc' } };
+        }
+        return { sort: { column: null, direction: 'asc' } };
+      }
+      return { sort: { column, direction: 'asc' } };
+    });
+  },
+
   fetchQuestionStatuses: async (skill: SkillType, userId: string) => {
     if (!isSupabaseConfigured) return;
 
@@ -197,12 +221,12 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
   },
 
   getFilteredQuestions: () => {
-    const { questionsBySkill, currentSkill, filters, questionStatuses } = get();
+    const { questionsBySkill, currentSkill, filters, questionStatuses, sort } = get();
     if (!currentSkill) return [];
 
     const questions = questionsBySkill[currentSkill];
     const query = filters.searchQuery.toLowerCase();
-    return questions.filter((q) => {
+    const filtered = questions.filter((q) => {
       if (filters.difficulty && q.difficulty !== filters.difficulty) return false;
       if (filters.tag && !q.tags.includes(filters.tag)) return false;
       if (filters.questionType && q.questionType !== filters.questionType) return false;
@@ -212,6 +236,28 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
         if (status !== filters.status) return false;
       }
       return true;
+    });
+
+    if (!sort.column) return filtered;
+
+    const difficultyOrder: Record<string, number> = { Easy: 0, Medium: 1, Hard: 2 };
+    const statusOrder: Record<string, number> = { passed: 0, failed: 1, not_started: 2 };
+    const dir = sort.direction === 'asc' ? 1 : -1;
+
+    return [...filtered].sort((a, b) => {
+      switch (sort.column) {
+        case 'title':
+          return dir * a.title.localeCompare(b.title);
+        case 'difficulty':
+          return dir * (difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty]);
+        case 'status': {
+          const sa = questionStatuses[a.id] ?? 'not_started';
+          const sb = questionStatuses[b.id] ?? 'not_started';
+          return dir * (statusOrder[sa] - statusOrder[sb]);
+        }
+        default:
+          return 0;
+      }
     });
   },
 
