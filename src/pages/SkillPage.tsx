@@ -85,7 +85,7 @@ export function SkillPage() {
           {/* Sliding blue pill */}
           <div
             className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-md bg-primary transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-              activeTab === 'paths' ? 'translate-x-[calc(100%+8px)]' : 'translate-x-0'
+              activeTab === 'paths' ? 'translate-x-full' : 'translate-x-0'
             }`}
           />
 
