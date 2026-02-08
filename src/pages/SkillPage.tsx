@@ -6,7 +6,7 @@ import { SkillType } from '@/types';
 
 const SKILL_NAMES: Record<SkillType, string> = {
   sql: 'SQL',
-  pyspark: 'PySpark',
+  python: 'Python',
   debug: 'Debug',
   architecture: 'Data Architecture',
   modeling: 'Data Modeling',
@@ -14,14 +14,14 @@ const SKILL_NAMES: Record<SkillType, string> = {
 
 const SKILL_DESCRIPTIONS: Record<SkillType, string> = {
   sql: 'Write SQL queries to retrieve and manipulate data',
-  pyspark: 'Write PySpark DataFrame transformations',
-  debug: 'Fix broken SQL or PySpark pipelines',
+  python: 'Write Python DataFrame transformations',
+  debug: 'Fix broken SQL or Python pipelines',
   architecture: 'Practice asking the right questions before choosing an architecture',
   modeling: 'Design schemas by assigning fields to Fact and Dimension tables',
 };
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
-  return skill === 'sql' || skill === 'pyspark' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
+  return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
 }
 
 export function SkillPage() {

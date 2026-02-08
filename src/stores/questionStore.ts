@@ -32,7 +32,7 @@ interface QuestionState {
 export const useQuestionStore = create<QuestionState>((set, get) => ({
   questionsBySkill: {
     sql: [],
-    pyspark: [],
+    python: [],
     debug: [],
     architecture: [],
     modeling: [],

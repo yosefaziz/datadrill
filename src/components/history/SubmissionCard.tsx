@@ -7,7 +7,7 @@ interface SubmissionCardProps {
 
 const SKILL_LABELS: Record<string, string> = {
   sql: 'SQL',
-  pyspark: 'PySpark',
+  python: 'Python',
   debug: 'Debug',
   architecture: 'Architecture',
   modeling: 'Modeling',

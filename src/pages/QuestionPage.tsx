@@ -15,7 +15,7 @@ import { ModelingQuestionView } from '@/components/modeling/ModelingQuestionView
 import { SkillType, getInitialCode, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion, isModelingQuestion } from '@/types';
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
-  return skill === 'sql' || skill === 'pyspark' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
+  return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
 }
 
 export function QuestionPage() {
@@ -113,7 +113,7 @@ export function QuestionPage() {
 
   if (isLoading || showExecutorLoading) {
     const loadingMessage = showExecutorLoading
-      ? skill === 'pyspark'
+      ? skill === 'python'
         ? 'Initializing Python engine...'
         : 'Initializing SQL engine...'
       : 'Loading question...';

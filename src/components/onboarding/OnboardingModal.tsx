@@ -24,7 +24,7 @@ const GOALS: { value: UserGoal; label: string; desc: string }[] = [
 
 const WEAKNESSES: { value: WeakestSkill; label: string; desc: string }[] = [
   { value: 'sql', label: 'SQL', desc: 'Writing complex queries and optimization' },
-  { value: 'pyspark', label: 'PySpark', desc: 'DataFrame transformations and distributed processing' },
+  { value: 'python', label: 'Python', desc: 'DataFrame transformations and distributed processing' },
   { value: 'architecture', label: 'Architecture', desc: 'System design and technology choices' },
   { value: 'modeling', label: 'Modeling', desc: 'Schema design and data modeling' },
 ];

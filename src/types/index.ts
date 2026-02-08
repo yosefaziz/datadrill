@@ -1,5 +1,5 @@
 // Skill types
-export type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture' | 'modeling';
+export type SkillType = 'sql' | 'python' | 'debug' | 'architecture' | 'modeling';
 
 export interface TableData {
   name: string;
@@ -25,9 +25,9 @@ export interface SqlQuestion extends BaseQuestion {
   expectedOutputQuery: string;
 }
 
-// PySpark question - write DataFrame transformations
-export interface PySparkQuestion extends BaseQuestion {
-  skill: 'pyspark';
+// Python question - write DataFrame transformations
+export interface PythonQuestion extends BaseQuestion {
+  skill: 'python';
   tables: TableData[]; // Input DataFrames
   expectedOutputQuery: string; // PySpark solution
 }
@@ -35,7 +35,7 @@ export interface PySparkQuestion extends BaseQuestion {
 // Debug question - fix broken pipelines
 export interface DebugQuestion extends BaseQuestion {
   skill: 'debug';
-  language: 'sql' | 'pyspark';
+  language: 'sql' | 'python';
   tables: TableData[];
   brokenCode: string; // Pre-filled buggy code
   expectedOutputQuery: string;
@@ -252,7 +252,7 @@ export interface ArchitectureValidationResult {
 }
 
 // Discriminated union of all question types
-export type Question = SqlQuestion | PySparkQuestion | DebugQuestion | ArchitectureQuestion | ModelingQuestion;
+export type Question = SqlQuestion | PythonQuestion | DebugQuestion | ArchitectureQuestion | ModelingQuestion;
 
 // Metadata for question listings (minimal data for index)
 export interface QuestionMeta {
@@ -291,8 +291,8 @@ export function isSqlQuestion(question: Question): question is SqlQuestion {
   return question.skill === 'sql';
 }
 
-export function isPySparkQuestion(question: Question): question is PySparkQuestion {
-  return question.skill === 'pyspark';
+export function isPythonQuestion(question: Question): question is PythonQuestion {
+  return question.skill === 'python';
 }
 
 export function isDebugQuestion(question: Question): question is DebugQuestion {
@@ -337,8 +337,8 @@ export function getExpectedQuery(question: Question): string {
 
 // Helper to get editor language for a question
 export function getEditorLanguage(question: Question): 'sql' | 'python' {
-  if (question.skill === 'pyspark') return 'python';
-  if (question.skill === 'debug') return question.language === 'pyspark' ? 'python' : 'sql';
+  if (question.skill === 'python') return 'python';
+  if (question.skill === 'debug') return question.language === 'python' ? 'python' : 'sql';
   return 'sql';
 }
 
@@ -354,7 +354,7 @@ export function getInitialCode(question: Question): string {
 
 export type UserRole = 'student' | 'junior' | 'mid' | 'senior' | 'staff';
 export type UserGoal = 'interview_prep' | 'skill_building' | 'career_switch';
-export type WeakestSkill = 'sql' | 'pyspark' | 'architecture' | 'modeling';
+export type WeakestSkill = 'sql' | 'python' | 'architecture' | 'modeling';
 
 export interface UserProfile {
   id: string;

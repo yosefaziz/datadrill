@@ -8,7 +8,7 @@ import { Breadcrumb } from '@/components/layout/Breadcrumb';
 
 const skillNames: Record<string, string> = {
   sql: 'SQL',
-  pyspark: 'PySpark',
+  python: 'Python',
   debug: 'Debug',
   architecture: 'Architecture',
   modeling: 'Modeling',

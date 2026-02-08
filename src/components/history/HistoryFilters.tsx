@@ -9,7 +9,7 @@ interface HistoryFiltersProps {
 
 const SKILLS: { value: SkillType; label: string }[] = [
   { value: 'sql', label: 'SQL' },
-  { value: 'pyspark', label: 'PySpark' },
+  { value: 'python', label: 'Python' },
   { value: 'debug', label: 'Debug' },
   { value: 'architecture', label: 'Architecture' },
   { value: 'modeling', label: 'Modeling' },

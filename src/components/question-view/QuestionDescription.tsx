@@ -12,7 +12,7 @@ const difficultyColors = {
 
 const skillBadges = {
   sql: { bg: 'bg-info/20', text: 'text-info', label: 'SQL' },
-  pyspark: { bg: 'bg-warning/20', text: 'text-warning', label: 'PySpark' },
+  python: { bg: 'bg-warning/20', text: 'text-warning', label: 'Python' },
   debug: { bg: 'bg-accent/20', text: 'text-accent', label: 'Debug' },
   architecture: { bg: 'bg-primary/20', text: 'text-primary', label: 'Architecture' },
   modeling: { bg: 'bg-success/20', text: 'text-success', label: 'Modeling' },
@@ -77,7 +77,7 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
         <div className="space-y-6">
           <div>
             <h2 className="text-lg font-semibold text-text-primary mb-3">
-              {question.skill === 'pyspark' ? 'DataFrames' : 'Tables'}
+              {question.skill === 'python' ? 'DataFrames' : 'Tables'}
             </h2>
             {question.tables.map((table) => (
               <div key={table.name} className="mb-4">

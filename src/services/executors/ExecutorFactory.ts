@@ -1,16 +1,16 @@
 import { IExecutor } from './IExecutor';
 import { sqlExecutor } from './SqlExecutor';
-import { pySparkExecutor } from './PySparkExecutor';
+import { pythonExecutor } from './PythonExecutor';
 import { SkillType } from '@/types';
 
 export function getExecutor(skill: SkillType): IExecutor {
   switch (skill) {
     case 'sql':
       return sqlExecutor;
-    case 'pyspark':
-      return pySparkExecutor;
+    case 'python':
+      return pythonExecutor;
     case 'debug':
-      // Debug uses either SQL or PySpark executor based on question language
+      // Debug uses either SQL or Python executor based on question language
       // This is handled at the question level, not here
       // Default to SQL
       return sqlExecutor;
@@ -19,12 +19,12 @@ export function getExecutor(skill: SkillType): IExecutor {
   }
 }
 
-export function getExecutorForDebug(language: 'sql' | 'pyspark'): IExecutor {
+export function getExecutorForDebug(language: 'sql' | 'python'): IExecutor {
   switch (language) {
     case 'sql':
       return sqlExecutor;
-    case 'pyspark':
-      return pySparkExecutor;
+    case 'python':
+      return pythonExecutor;
     default:
       return sqlExecutor;
   }

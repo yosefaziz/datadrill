@@ -1,6 +1,6 @@
 import { IValidator } from './IValidator';
 import { sqlValidator } from './SqlValidator';
-import { pySparkValidator } from './PySparkValidator';
+import { pythonValidator } from './PythonValidator';
 import { Question, isDebugQuestion } from '@/types';
 
 export function getValidator(question: Question): IValidator {
@@ -9,8 +9,8 @@ export function getValidator(question: Question): IValidator {
     switch (question.language) {
       case 'sql':
         return sqlValidator;
-      case 'pyspark':
-        return pySparkValidator;
+      case 'python':
+        return pythonValidator;
       default:
         return sqlValidator;
     }
@@ -20,8 +20,8 @@ export function getValidator(question: Question): IValidator {
   switch (question.skill) {
     case 'sql':
       return sqlValidator;
-    case 'pyspark':
-      return pySparkValidator;
+    case 'python':
+      return pythonValidator;
     default:
       return sqlValidator;
   }

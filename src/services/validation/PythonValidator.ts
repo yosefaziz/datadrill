@@ -1,6 +1,6 @@
 import { IValidator } from './IValidator';
 import { pySparkService } from '@/services/pyspark/PySparkService';
-import { Question, QueryResult, ValidationResult, isPySparkQuestion, isDebugQuestion } from '@/types';
+import { Question, QueryResult, ValidationResult, isPythonQuestion, isDebugQuestion } from '@/types';
 
 function normalizeValue(value: unknown): string {
   if (value === null || value === undefined) return 'NULL';
@@ -70,15 +70,15 @@ function compareResults(expected: QueryResult, actual: QueryResult): boolean {
   return true;
 }
 
-class PySparkValidator implements IValidator {
+class PythonValidator implements IValidator {
   async validate(question: Question, userCode: string): Promise<ValidationResult> {
-    // Only handle PySpark questions or Debug questions with PySpark language
-    if (!isPySparkQuestion(question) && !(isDebugQuestion(question) && question.language === 'pyspark')) {
+    // Only handle Python questions or Debug questions with Python language
+    if (!isPythonQuestion(question) && !(isDebugQuestion(question) && question.language === 'python')) {
       return {
         passed: false,
         totalDatasets: 0,
         passedDatasets: 0,
-        error: 'PySparkValidator can only validate PySpark questions',
+        error: 'PythonValidator can only validate Python questions',
       };
     }
 
@@ -146,4 +146,4 @@ class PySparkValidator implements IValidator {
   }
 }
 
-export const pySparkValidator = new PySparkValidator();
+export const pythonValidator = new PythonValidator();

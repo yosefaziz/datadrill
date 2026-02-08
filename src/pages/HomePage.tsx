@@ -57,8 +57,8 @@ const SKILLS: SkillConfig[] = [
     description: 'Write queries from scratch to retrieve and manipulate data',
   },
   {
-    skill: 'pyspark',
-    name: 'PySpark',
+    skill: 'python',
+    name: 'Python',
     Icon: Zap,
     description: 'Write DataFrame transformations for distributed data processing',
   },
@@ -66,7 +66,7 @@ const SKILLS: SkillConfig[] = [
     skill: 'debug',
     name: 'Debug',
     Icon: Bug,
-    description: 'Fix broken pipelines and identify bugs in SQL or PySpark code',
+    description: 'Fix broken pipelines and identify bugs in SQL or Python code',
   },
   {
     skill: 'architecture',
@@ -85,7 +85,7 @@ const SKILLS: SkillConfig[] = [
 export function HomePage() {
   const [questionCounts, setQuestionCounts] = useState<Record<SkillType, number>>({
     sql: 0,
-    pyspark: 0,
+    python: 0,
     debug: 0,
     architecture: 0,
     modeling: 0,
@@ -116,7 +116,7 @@ export function HomePage() {
         })
       );
 
-      const counts: Record<SkillType, number> = { sql: 0, pyspark: 0, debug: 0, architecture: 0, modeling: 0 };
+      const counts: Record<SkillType, number> = { sql: 0, python: 0, debug: 0, architecture: 0, modeling: 0 };
       results.forEach(({ skill, count }) => {
         counts[skill] = count;
       });

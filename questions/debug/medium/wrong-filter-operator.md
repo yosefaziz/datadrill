@@ -2,7 +2,7 @@
 title: "Wrong Filter Operator"
 difficulty: "Medium"
 tags: ["filter", "debugging", "PySpark"]
-language: pyspark
+language: python
 tables:
   - name: transactions
     visible_data: |

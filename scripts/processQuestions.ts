@@ -4,7 +4,7 @@ import * as path from 'path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
 
-type SkillType = 'sql' | 'pyspark' | 'debug' | 'architecture' | 'modeling';
+type SkillType = 'sql' | 'python' | 'debug' | 'architecture' | 'modeling';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
 type ArchitectureQuestionType = 'constraints' | 'canvas' | 'quiz';
 
@@ -24,10 +24,10 @@ interface BaseFrontmatter {
 
 interface SqlFrontmatter extends BaseFrontmatter {}
 
-interface PySparkFrontmatter extends BaseFrontmatter {}
+interface PythonFrontmatter extends BaseFrontmatter {}
 
 interface DebugFrontmatter extends BaseFrontmatter {
-  language: 'sql' | 'pyspark';
+  language: 'sql' | 'python';
   broken_code: string;
   hint?: string;
 }
@@ -162,15 +162,15 @@ interface SqlProcessedQuestion extends BaseProcessedQuestion {
   expectedOutputQuery: string;
 }
 
-interface PySparkProcessedQuestion extends BaseProcessedQuestion {
-  skill: 'pyspark';
+interface PythonProcessedQuestion extends BaseProcessedQuestion {
+  skill: 'python';
   tables: ProcessedTable[];
   expectedOutputQuery: string;
 }
 
 interface DebugProcessedQuestion extends BaseProcessedQuestion {
   skill: 'debug';
-  language: 'sql' | 'pyspark';
+  language: 'sql' | 'python';
   tables: ProcessedTable[];
   brokenCode: string;
   expectedOutputQuery: string;
@@ -283,7 +283,7 @@ interface ModelingProcessedQuestion {
 
 type ProcessedQuestion =
   | SqlProcessedQuestion
-  | PySparkProcessedQuestion
+  | PythonProcessedQuestion
   | DebugProcessedQuestion
   | ArchitectureProcessedQuestion
   | ModelingProcessedQuestion;
@@ -297,7 +297,7 @@ interface QuestionMeta {
   tags: string[];
 }
 
-const SKILL_DIRS: SkillType[] = ['sql', 'pyspark', 'debug', 'architecture', 'modeling'];
+const SKILL_DIRS: SkillType[] = ['sql', 'python', 'debug', 'architecture', 'modeling'];
 
 function processTable(table: TableFrontmatter): ProcessedTable {
   return {
@@ -499,11 +499,11 @@ async function processQuestion(
         expectedOutputQuery: frontmatter.expected_output_query,
       };
     }
-    case 'pyspark': {
-      const frontmatter = data as PySparkFrontmatter;
+    case 'python': {
+      const frontmatter = data as PythonFrontmatter;
       return {
         ...baseQuestion,
-        skill: 'pyspark',
+        skill: 'python',
         tables,
         expectedOutputQuery: frontmatter.expected_output_query,
       };

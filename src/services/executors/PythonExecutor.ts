@@ -2,7 +2,7 @@ import { IExecutor } from './IExecutor';
 import { pySparkService } from '@/services/pyspark/PySparkService';
 import { QueryResult, TableData } from '@/types';
 
-class PySparkExecutor implements IExecutor {
+class PythonExecutor implements IExecutor {
   async initialize(): Promise<void> {
     await pySparkService.initialize();
   }
@@ -37,4 +37,4 @@ class PySparkExecutor implements IExecutor {
   }
 }
 
-export const pySparkExecutor = new PySparkExecutor();
+export const pythonExecutor = new PythonExecutor();
