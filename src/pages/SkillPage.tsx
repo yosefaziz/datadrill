@@ -68,15 +68,17 @@ export function SkillPage() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-6 py-8">
-      {/* Top bar: back link + light switch toggle */}
-      <div className="flex items-center justify-between mb-6 animate-fade-in">
+      {/* Back link */}
+      <div className="mb-4 animate-fade-in">
         <Link to="/" className="text-primary hover:text-primary-hover text-sm transition-colors duration-200">
           &larr; All Skills
         </Link>
+      </div>
 
-        {/* Light switch toggle - clicking anywhere toggles */}
+      {/* Toggle switch — centered */}
+      <div className="flex justify-center mb-6 animate-fade-in stagger-1">
         <button
-          className="relative inline-flex items-center rounded-lg bg-bg-secondary p-1 ring-1 ring-border-color cursor-pointer select-none transition-shadow duration-200 hover:ring-primary/40"
+          className="relative inline-flex items-center rounded-xl bg-bg-secondary p-1.5 ring-1 ring-border-color cursor-pointer select-none transition-shadow duration-200 hover:ring-primary/40"
           onClick={() => handleTabChange(activeTab === 'questions' ? 'paths' : 'questions')}
           role="switch"
           aria-checked={activeTab === 'paths'}
@@ -84,20 +86,20 @@ export function SkillPage() {
         >
           {/* Sliding blue pill */}
           <div
-            className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-md bg-primary transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            className={`absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] rounded-lg bg-primary transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
               activeTab === 'paths' ? 'translate-x-full' : 'translate-x-0'
             }`}
           />
 
-          <span className={`relative z-10 px-4 py-1.5 rounded-md text-xs font-medium transition-colors duration-200 ${
+          <span className={`relative z-10 px-10 py-3 rounded-lg text-sm font-medium text-center leading-tight transition-colors duration-200 ${
             activeTab === 'questions' ? 'text-bg-primary' : 'text-text-muted'
           }`}>
-            Questions
+            Interview<br />Questions
           </span>
-          <span className={`relative z-10 px-4 py-1.5 rounded-md text-xs font-medium transition-colors duration-200 ${
+          <span className={`relative z-10 px-10 py-3 rounded-lg text-sm font-medium text-center leading-tight transition-colors duration-200 ${
             activeTab === 'paths' ? 'text-bg-primary' : 'text-text-muted'
           }`}>
-            Skill Paths
+            Solution<br />Playbooks
           </span>
         </button>
       </div>
