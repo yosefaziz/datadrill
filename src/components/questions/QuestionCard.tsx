@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { QuestionMeta, SkillType } from '@/types';
+import { useQuestionStore, QuestionStatus } from '@/stores/questionStore';
 
 interface QuestionCardProps {
   question: QuestionMeta;
@@ -13,56 +14,35 @@ const difficultyColors = {
   Hard: 'text-error',
 };
 
-const questionTypeColors = {
-  constraints: 'bg-info/10 text-info',
-  canvas: 'bg-accent/10 text-accent',
-  quiz: 'bg-primary/10 text-primary',
-};
-
-const questionTypeLabels = {
-  constraints: 'Constraints',
-  canvas: 'Canvas',
-  quiz: 'Quiz',
+const statusConfig: Record<QuestionStatus, { label: string; className: string }> = {
+  passed: { label: 'Passed', className: 'text-success' },
+  failed: { label: 'Failed', className: 'text-error' },
+  not_started: { label: '—', className: 'text-text-muted' },
 };
 
 export function QuestionCard({ question, skill, className = '' }: QuestionCardProps) {
+  const status = useQuestionStore((s) => s.getQuestionStatus)(question.id);
+  const { label, className: statusClass } = statusConfig[status];
+
   return (
     <Link
       to={`/${skill}/question/${question.id}`}
-      className={`flex items-center gap-4 px-4 py-3 hover:bg-white/[0.03] transition-colors duration-150 ${className}`}
+      className={`grid grid-cols-[1fr_5rem_5rem] items-center gap-4 px-4 py-3 hover:bg-white/[0.03] transition-colors duration-150 ${className}`}
     >
-      {/* Difficulty dot + label */}
-      <span className={`text-xs font-medium w-14 shrink-0 ${difficultyColors[question.difficulty]}`}>
+      {/* Title */}
+      <span className="text-sm font-medium text-text-primary truncate">
+        {question.title}
+      </span>
+
+      {/* Difficulty */}
+      <span className={`text-xs font-medium ${difficultyColors[question.difficulty]}`}>
         {question.difficulty}
       </span>
 
-      {/* Title + type badge */}
-      <div className="flex items-center gap-2 flex-1 min-w-0">
-        <span className="text-sm font-medium text-text-primary truncate">
-          {question.title}
-        </span>
-        {question.questionType && (
-          <span
-            className={`px-1.5 py-0.5 rounded text-[10px] font-medium shrink-0 ${
-              questionTypeColors[question.questionType]
-            }`}
-          >
-            {questionTypeLabels[question.questionType]}
-          </span>
-        )}
-      </div>
-
-      {/* Tags */}
-      <div className="hidden sm:flex items-center gap-1.5 shrink-0">
-        {question.tags.slice(0, 3).map((tag) => (
-          <span
-            key={tag}
-            className="px-2 py-0.5 bg-bg-secondary text-text-muted rounded text-[11px]"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
+      {/* Status */}
+      <span className={`text-xs font-medium ${statusClass}`}>
+        {label}
+      </span>
     </Link>
   );
 }

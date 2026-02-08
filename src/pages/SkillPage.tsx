@@ -32,16 +32,18 @@ export function SkillPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialTab = (searchParams.get('tab') as TabId) || 'questions';
   const [activeTab, setActiveTab] = useState<TabId>(initialTab);
-  const { fetchQuestionsForSkill, setDifficultyFilter, setTagFilter, setQuestionTypeFilter } = useQuestionStore();
+  const { fetchQuestionsForSkill, setDifficultyFilter, setTagFilter, setQuestionTypeFilter, setSearchQuery, setStatusFilter } = useQuestionStore();
 
   useEffect(() => {
     if (isValidSkill(skill)) {
       setDifficultyFilter(null);
       setTagFilter(null);
       setQuestionTypeFilter(null);
+      setSearchQuery('');
+      setStatusFilter(null);
       fetchQuestionsForSkill(skill);
     }
-  }, [skill, fetchQuestionsForSkill, setDifficultyFilter, setTagFilter, setQuestionTypeFilter]);
+  }, [skill, fetchQuestionsForSkill, setDifficultyFilter, setTagFilter, setQuestionTypeFilter, setSearchQuery, setStatusFilter]);
 
   const handleTabChange = (tab: TabId) => {
     setActiveTab(tab);

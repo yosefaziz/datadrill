@@ -1,14 +1,19 @@
 import { create } from 'zustand';
 import { Question, QuestionMeta, SkillType } from '@/types';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 
 // Track the latest request to prevent race conditions
 let latestQuestionRequestId = 0;
+
+export type QuestionStatus = 'passed' | 'failed' | 'not_started';
 
 interface QuestionState {
   // Questions by skill
   questionsBySkill: Record<SkillType, QuestionMeta[]>;
   // Individual question cache
   questionsById: Record<string, Question>;
+  // Status per question: question_id → 'passed' | 'failed'
+  questionStatuses: Record<string, 'passed' | 'failed'>;
   currentQuestion: Question | null;
   currentSkill: SkillType | null;
   isLoading: boolean;
@@ -17,16 +22,22 @@ interface QuestionState {
     difficulty: string | null;
     tag: string | null;
     questionType: string | null;
+    searchQuery: string;
+    status: QuestionStatus | null;
   };
 
   // Actions
   fetchQuestionsForSkill: (skill: SkillType) => Promise<void>;
   fetchQuestion: (skill: SkillType, id: string) => Promise<void>;
+  fetchQuestionStatuses: (skill: SkillType, userId: string) => Promise<void>;
   setCurrentSkill: (skill: SkillType | null) => void;
   setDifficultyFilter: (difficulty: string | null) => void;
   setTagFilter: (tag: string | null) => void;
   setQuestionTypeFilter: (questionType: string | null) => void;
+  setSearchQuery: (query: string) => void;
+  setStatusFilter: (status: QuestionStatus | null) => void;
   getFilteredQuestions: () => QuestionMeta[];
+  getQuestionStatus: (questionId: string) => QuestionStatus;
   getAllTags: () => string[];
   getAllQuestionTypes: () => string[];
   getQuestionCountBySkill: (skill: SkillType) => number;
@@ -41,6 +52,7 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     modeling: [],
   },
   questionsById: {},
+  questionStatuses: {},
   currentQuestion: null,
   currentSkill: null,
   isLoading: false,
@@ -49,6 +61,8 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     difficulty: null,
     tag: null,
     questionType: null,
+    searchQuery: '',
+    status: null,
   },
 
   fetchQuestionsForSkill: async (skill: SkillType) => {
@@ -140,15 +154,63 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     }));
   },
 
+  setSearchQuery: (searchQuery) => {
+    set((state) => ({
+      filters: { ...state.filters, searchQuery },
+    }));
+  },
+
+  setStatusFilter: (status) => {
+    set((state) => ({
+      filters: { ...state.filters, status },
+    }));
+  },
+
+  fetchQuestionStatuses: async (skill: SkillType, userId: string) => {
+    if (!isSupabaseConfigured) return;
+
+    const { data, error } = await supabase
+      .from('submissions')
+      .select('question_id, passed')
+      .eq('user_id', userId)
+      .eq('skill', skill);
+
+    if (error) {
+      console.error('Failed to fetch question statuses:', error);
+      return;
+    }
+
+    // Build status map: passed if any submission passed, else failed
+    const statusMap: Record<string, 'passed' | 'failed'> = {};
+    for (const row of data || []) {
+      if (statusMap[row.question_id] === 'passed') continue;
+      statusMap[row.question_id] = row.passed ? 'passed' : 'failed';
+    }
+
+    set((state) => ({
+      questionStatuses: { ...state.questionStatuses, ...statusMap },
+    }));
+  },
+
+  getQuestionStatus: (questionId: string) => {
+    return get().questionStatuses[questionId] ?? 'not_started';
+  },
+
   getFilteredQuestions: () => {
-    const { questionsBySkill, currentSkill, filters } = get();
+    const { questionsBySkill, currentSkill, filters, questionStatuses } = get();
     if (!currentSkill) return [];
 
     const questions = questionsBySkill[currentSkill];
+    const query = filters.searchQuery.toLowerCase();
     return questions.filter((q) => {
       if (filters.difficulty && q.difficulty !== filters.difficulty) return false;
       if (filters.tag && !q.tags.includes(filters.tag)) return false;
       if (filters.questionType && q.questionType !== filters.questionType) return false;
+      if (query && !q.title.toLowerCase().includes(query)) return false;
+      if (filters.status) {
+        const status = questionStatuses[q.id] ?? 'not_started';
+        if (status !== filters.status) return false;
+      }
       return true;
     });
   },
