@@ -12,7 +12,7 @@ interface ThemeStore {
 const THEME_KEY = 'datadrill-theme';
 
 export const useThemeStore = create<ThemeStore>((set, get) => ({
-  theme: 'light',
+  theme: 'dark',
 
   setTheme: (theme: Theme) => {
     set({ theme });
@@ -40,11 +40,11 @@ export const useThemeStore = create<ThemeStore>((set, get) => ({
       return;
     }
 
-    // Then check system preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      get().setTheme('dark');
-    } else {
+    // Then check system preference, defaulting to dark
+    if (window.matchMedia('(prefers-color-scheme: light)').matches) {
       get().setTheme('light');
+    } else {
+      get().setTheme('dark');
     }
   },
 }));

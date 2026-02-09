@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
+import { useThemeStore } from '@/stores/themeStore';
 
 export function UserMenu() {
   const { user, profile, signOut } = useAuthStore();
+  const { theme, toggleTheme } = useThemeStore();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -61,6 +63,35 @@ export function UserMenu() {
           >
             Edit Profile
           </Link>
+          <div className="border-t border-border-color my-1" />
+          <button
+            onClick={toggleTheme}
+            className="w-full flex items-center justify-between px-4 py-2 text-sm text-text-primary hover:bg-bg-primary transition-colors"
+          >
+            <span className="flex items-center gap-2.5">
+              {theme === 'light' ? (
+                <svg className="w-4 h-4 text-text-muted" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              )}
+              {theme === 'light' ? 'Dark mode' : 'Light mode'}
+            </span>
+            <div
+              className={`relative w-9 h-5 rounded-full transition-colors ${
+                theme === 'dark' ? 'bg-primary' : 'bg-text-muted/30'
+              }`}
+            >
+              <div
+                className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${
+                  theme === 'dark' ? 'translate-x-4' : 'translate-x-0'
+                }`}
+              />
+            </div>
+          </button>
           <div className="border-t border-border-color my-1" />
           <button
             onClick={handleSignOut}
