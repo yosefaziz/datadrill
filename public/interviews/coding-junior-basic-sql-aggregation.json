@@ -17,7 +17,7 @@
       "questionType": "write",
       "timeMinutes": 8,
       "title": "Count Orders by Status",
-      "description": "Given an `orders` table, write a query that returns the count of orders\nfor each status. Order the results by count descending.\n",
+      "description": "<p>Given an <code>orders</code> table, write a query that returns the count of orders\nfor each status. Order the results by count descending.</p>\n",
       "tables": [
         {
           "name": "orders",
@@ -40,7 +40,7 @@
       "questionType": "quiz",
       "timeMinutes": 4,
       "title": "Explain Your Approach",
-      "description": "Let's make sure you understand how GROUP BY works under the hood.",
+      "description": "<p>Let&#39;s make sure you understand how GROUP BY works under the hood.</p>\n",
       "questions": [
         {
           "question": "What happens if you SELECT a column that is not in GROUP BY and not aggregated?",
@@ -72,7 +72,7 @@
       "questionType": "write",
       "timeMinutes": 8,
       "title": "Revenue by Status",
-      "description": "Now extend your analysis: write a query that returns each status with\nboth the order count and total revenue (sum of amount). Only include\nstatuses with total revenue above 50. Order by total revenue descending.\n",
+      "description": "<p>Now extend your analysis: write a query that returns each status with\nboth the order count and total revenue (sum of amount). Only include\nstatuses with total revenue above 50. Order by total revenue descending.</p>\n",
       "tables": [
         {
           "name": "orders",

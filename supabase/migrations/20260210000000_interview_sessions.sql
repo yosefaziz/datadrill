@@ -8,7 +8,7 @@ create table public.interview_sessions (
   started_at timestamptz not null,
   completed_at timestamptz,
   overall_score real,
-  round_results jsonb not null,
+  round_results jsonb not null default '[]'::jsonb,
   created_at timestamptz default now()
 );
 
@@ -22,5 +22,5 @@ create policy "Users can insert own sessions"
   on public.interview_sessions for insert with check (auth.uid() = user_id);
 
 -- Indexes
-create index idx_interview_sessions_user_id on public.interview_sessions(user_id);
+create index idx_interview_sessions_user on public.interview_sessions(user_id, created_at desc);
 create index idx_interview_sessions_scenario_id on public.interview_sessions(scenario_id);

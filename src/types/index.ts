@@ -340,9 +340,11 @@ export interface InterviewQuizOption {
   explanation: string;
 }
 
+export type InterviewRoundType = SkillType | 'quiz';
+
 export interface InterviewRound {
   id: string;
-  type: SkillType;
+  type: InterviewRoundType;
   questionType: string;
   timeMinutes: number;
   title: string;

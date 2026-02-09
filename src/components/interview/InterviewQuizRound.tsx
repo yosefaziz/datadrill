@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { InterviewQuizOption } from '@/types';
 
 interface InterviewQuizRoundProps {
@@ -9,6 +9,7 @@ interface InterviewQuizRoundProps {
 export function InterviewQuizRound({ questions, onSubmit }: InterviewQuizRoundProps) {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const scoreRef = useRef({ allCorrect: false, score: 0 });
 
   const allAnswered = questions.length > 0 && Object.keys(selectedAnswers).length === questions.length;
 
@@ -28,8 +29,14 @@ export function InterviewQuizRound({ questions, onSubmit }: InterviewQuizRoundPr
       }
     }
 
-    const score = correctCount / questions.length;
-    const allCorrect = correctCount === questions.length;
+    scoreRef.current = {
+      allCorrect: correctCount === questions.length,
+      score: correctCount / questions.length,
+    };
+  };
+
+  const handleContinue = () => {
+    const { allCorrect, score } = scoreRef.current;
     onSubmit(allCorrect, score, JSON.stringify(selectedAnswers));
   };
 
@@ -157,10 +164,16 @@ export function InterviewQuizRound({ questions, onSubmit }: InterviewQuizRoundPr
       )}
 
       {isSubmitted && (
-        <div className="flex-shrink-0 p-4 border-t border-border">
-          <div className="text-center text-sm text-text-secondary">
+        <div className="flex-shrink-0 p-4 border-t border-border flex items-center justify-between">
+          <div className="text-sm text-text-secondary">
             Score: {questions.filter((_, i) => selectedAnswers[i] === questions[i].correctAnswer).length}/{questions.length} correct
           </div>
+          <button
+            onClick={handleContinue}
+            className="bg-primary text-white rounded-lg px-6 py-2.5 font-medium text-sm hover:bg-primary-hover transition-colors"
+          >
+            Continue
+          </button>
         </div>
       )}
     </div>

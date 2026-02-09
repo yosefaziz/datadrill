@@ -690,14 +690,14 @@ async function processQuestion(
   }
 }
 
-function processInterviewRound(round: InterviewRoundYaml): ProcessedInterviewRound {
+async function processInterviewRound(round: InterviewRoundYaml): Promise<ProcessedInterviewRound> {
   const processed: ProcessedInterviewRound = {
     id: round.id,
     type: round.type,
     questionType: round.question_type,
     timeMinutes: round.time_minutes,
     title: round.title,
-    description: round.description,
+    description: round.description ? await marked(round.description.trim()) : '',
   };
 
   if (round.initial_code) processed.initialCode = round.initial_code;
@@ -929,7 +929,7 @@ async function processQuestions() {
           description: data.description,
           estimatedMinutes: data.estimated_minutes,
           tags: data.tags,
-          rounds: data.rounds.map(processInterviewRound),
+          rounds: await Promise.all(data.rounds.map(processInterviewRound)),
         };
 
         // Write individual scenario file

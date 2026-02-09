@@ -66,10 +66,15 @@ export function InterviewResults() {
       `Try it yourself at https://thedatadrill.vercel.app/interview`,
     ].join('\n');
 
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    navigator.clipboard.writeText(text).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      },
+      () => {
+        // Clipboard API not available (insecure context, etc.)
+      }
+    );
   }, [activeScenario, roundResults, getOverallScore]);
 
   // Edge case: no active scenario

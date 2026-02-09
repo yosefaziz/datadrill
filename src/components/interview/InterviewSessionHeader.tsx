@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { RoundResult } from '@/types';
 
 interface InterviewSessionHeaderProps {
@@ -21,12 +21,17 @@ export function InterviewSessionHeader({
   onEndInterview,
 }: InterviewSessionHeaderProps) {
   const totalSeconds = timeMinutes * 60;
-  const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
+  const [secondsLeft, setSecondsLeft] = useState(() => {
+    const elapsed = Math.floor((Date.now() - roundStartedAt) / 1000);
+    return Math.max(0, totalSeconds - elapsed);
+  });
+  const timeUpFiredRef = useRef(false);
 
   // Reset timer when round changes
   useEffect(() => {
     const elapsed = Math.floor((Date.now() - roundStartedAt) / 1000);
     setSecondsLeft(Math.max(0, totalSeconds - elapsed));
+    timeUpFiredRef.current = false;
   }, [roundStartedAt, totalSeconds]);
 
   // Countdown interval
@@ -44,9 +49,10 @@ export function InterviewSessionHeader({
     return () => clearInterval(interval);
   }, [roundStartedAt]);
 
-  // Call onTimeUp when timer reaches 0
+  // Call onTimeUp when timer reaches 0 (only once per round)
   useEffect(() => {
-    if (secondsLeft === 0) {
+    if (secondsLeft === 0 && !timeUpFiredRef.current) {
+      timeUpFiredRef.current = true;
       onTimeUp();
     }
   }, [secondsLeft, onTimeUp]);

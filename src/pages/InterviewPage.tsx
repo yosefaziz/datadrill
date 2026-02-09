@@ -20,6 +20,13 @@ export function InterviewPage() {
     }
   }, [scenarioId, fetchScenario]);
 
+  // Redirect unauthenticated users away from active sessions
+  useEffect(() => {
+    if (scenarioId && !isResults && !isComplete && !user) {
+      navigate('/interview');
+    }
+  }, [scenarioId, isResults, isComplete, user, navigate]);
+
   if (!scenarioId) {
     return <InterviewLobby />;
   }
@@ -29,7 +36,6 @@ export function InterviewPage() {
   }
 
   if (!user) {
-    navigate('/interview');
     return null;
   }
 
