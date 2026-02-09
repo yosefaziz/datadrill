@@ -119,7 +119,9 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     set({ isLoading: true, error: null, currentSkill: skill });
     try {
       const response = await fetch(`/questions/${skill}/${id}.json`);
-      if (!response.ok) throw new Error('Failed to fetch question');
+      if (!response.ok) throw new Error('Question not found');
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) throw new Error('Question not found');
       const question = await response.json();
       // Only update state if this is still the latest request
       if (requestId === latestQuestionRequestId) {
