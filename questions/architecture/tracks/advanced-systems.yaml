@@ -3,7 +3,7 @@ name: "Advanced Systems"
 tagline: "Multi-region, feature stores & cost optimization"
 interviewer_says: "design for multiple regions, feature store, reduce costs"
 you_need: "Multi-region replication, feature stores, cost management"
-description: "Advanced architecture topics that come up in senior-level interviews — multi-region consistency, ML feature stores, and cloud cost optimization."
+description: "Advanced architecture topics that come up in senior-level interviews  - multi-region consistency, ML feature stores, and cloud cost optimization."
 icon: "globe"
 category: "Operational Concerns"
 order: 10

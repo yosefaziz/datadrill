@@ -3,7 +3,7 @@ name: "Sessionization"
 tagline: "Group events into sessions by time gaps"
 interviewer_says: "define sessions from clickstream, 30-minute timeout"
 you_need: "LAG + conditional SUM for session boundaries"
-description: "Sessionization converts raw event streams into meaningful sessions — a core pattern for web analytics and user behavior analysis."
+description: "Sessionization converts raw event streams into meaningful sessions  - a core pattern for web analytics and user behavior analysis."
 icon: "clock"
 category: "Complex Patterns"
 order: 4

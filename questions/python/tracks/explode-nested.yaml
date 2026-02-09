@@ -3,7 +3,7 @@ name: "Explode & Flatten"
 tagline: "Flatten arrays, structs & nested JSON"
 interviewer_says: "explode the array column, flatten nested JSON"
 you_need: "explode(), flatten(), getField(), schema navigation"
-description: "Real-world data is rarely flat. Learn to handle arrays, structs, and nested JSON — common in event data and APIs."
+description: "Real-world data is rarely flat. Learn to handle arrays, structs, and nested JSON  - common in event data and APIs."
 icon: "unfold-vertical"
 category: "Transformations"
 order: 9

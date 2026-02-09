@@ -3,7 +3,7 @@ name: "Cumulative & Rolling"
 tagline: "Running totals, moving averages & cumulative stats"
 interviewer_says: "rolling 7-day average, running total, cumulative count"
 you_need: "Window with rangeBetween/rowsBetween"
-description: "Build on window functions to calculate rolling and cumulative metrics — critical for time-series analysis in PySpark."
+description: "Build on window functions to calculate rolling and cumulative metrics  - critical for time-series analysis in PySpark."
 icon: "trending-up"
 category: "Aggregation & Joins"
 order: 5

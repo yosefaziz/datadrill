@@ -3,7 +3,7 @@ name: "Type Mismatch Bugs"
 tagline: "Fix implicit casting & type conversion errors"
 interviewer_says: "integer division gives 0, string comparison fails"
 you_need: "Implicit casting rules, CAST, type promotion"
-description: "Type mismatches cause silent data corruption — integer division truncation, string-number comparisons, and date format issues."
+description: "Type mismatches cause silent data corruption  - integer division truncation, string-number comparisons, and date format issues."
 icon: "shuffle"
 category: "Subtle Traps"
 order: 7

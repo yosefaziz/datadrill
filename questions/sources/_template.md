@@ -1,4 +1,4 @@
-# {Company Name} — Data Engineering Interview Patterns
+# {Company Name}  - Data Engineering Interview Patterns
 
 ## Source
 - Platform: {Glassdoor / Reddit / Blind / etc.}

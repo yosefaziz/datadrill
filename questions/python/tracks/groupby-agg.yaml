@@ -3,7 +3,7 @@ name: "GroupBy & Aggregation"
 tagline: "Aggregate data with groupBy and agg functions"
 interviewer_says: "group by category, calculate totals"
 you_need: "groupBy(), agg(), sum(), count(), avg()"
-description: "Master PySpark's aggregation API — groupBy with multiple aggregate functions is the most common PySpark interview pattern."
+description: "Master PySpark's aggregation API  - groupBy with multiple aggregate functions is the most common PySpark interview pattern."
 icon: "bar-chart-2"
 category: "DataFrame Basics"
 order: 2

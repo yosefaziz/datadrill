@@ -3,7 +3,7 @@ title: "Find Top Customer"
 difficulty: "Medium"
 tags: ["aggregation", "GROUP BY", "ORDER BY", "LIMIT"]
 hints:
-  - "You need to combine multiple rows per customer into one — think about which clause groups rows together."
+  - "You need to combine multiple rows per customer into one  - think about which clause groups rows together."
   - "Once grouped, use an aggregate function to compute each customer's total, then sort to find the highest."
   - "Use GROUP BY customer_id with SUM(amount), ORDER BY the total descending, and LIMIT 1 to get just the top customer."
 tables:

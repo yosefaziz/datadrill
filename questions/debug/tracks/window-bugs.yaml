@@ -3,7 +3,7 @@ name: "Window Function Bugs"
 tagline: "Fix wrong frames, partitions & ordering in window functions"
 interviewer_says: "running total is wrong, rank gives unexpected results"
 you_need: "Window frame specs, PARTITION BY, ORDER BY"
-description: "Window function bugs are subtle — wrong frame boundaries, missing PARTITION BY, or incorrect ORDER BY produce silently wrong results."
+description: "Window function bugs are subtle  - wrong frame boundaries, missing PARTITION BY, or incorrect ORDER BY produce silently wrong results."
 icon: "columns"
 category: "Aggregation & Logic Bugs"
 order: 5

@@ -3,7 +3,7 @@ name: "LAG & LEAD"
 tagline: "Access previous & next rows for comparisons"
 interviewer_says: "compare to previous month, day-over-day change"
 you_need: "LAG/LEAD + PARTITION BY + ORDER BY"
-description: "LAG and LEAD let you compare each row to its neighbors — essential for time-series analysis and change detection."
+description: "LAG and LEAD let you compare each row to its neighbors  - essential for time-series analysis and change detection."
 icon: "arrow-left-right"
 category: "Window Functions"
 order: 3

@@ -3,7 +3,7 @@ name: "Subquery Filtering"
 tagline: "Filter with EXISTS, IN & correlated subqueries"
 interviewer_says: "employees who have orders, products with reviews"
 you_need: "EXISTS, IN, correlated subqueries"
-description: "Learn to filter rows using subqueries — a powerful pattern that separates junior from senior SQL skills."
+description: "Learn to filter rows using subqueries  - a powerful pattern that separates junior from senior SQL skills."
 icon: "filter"
 category: "Joins & Filtering"
 order: 3

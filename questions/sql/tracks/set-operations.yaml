@@ -3,7 +3,7 @@ name: "Set Operations"
 tagline: "Combine results with UNION, INTERSECT & EXCEPT"
 interviewer_says: "combine two tables, find common records, find differences"
 you_need: "UNION ALL, INTERSECT, EXCEPT"
-description: "Master set operations to combine, compare, and contrast result sets — essential for data reconciliation."
+description: "Master set operations to combine, compare, and contrast result sets  - essential for data reconciliation."
 icon: "combine"
 category: "Aggregation & Logic"
 order: 3

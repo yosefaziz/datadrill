@@ -3,7 +3,7 @@ name: "Subquery Correlation Bugs"
 tagline: "Fix wrong correlations & subquery scope errors"
 interviewer_says: "subquery returns wrong rows, correlated subquery too slow"
 you_need: "Correlated vs uncorrelated subqueries, scope rules"
-description: "Subquery bugs often come from wrong correlation — referencing the wrong table or using the wrong scope."
+description: "Subquery bugs often come from wrong correlation  - referencing the wrong table or using the wrong scope."
 icon: "link"
 category: "Aggregation & Logic Bugs"
 order: 6

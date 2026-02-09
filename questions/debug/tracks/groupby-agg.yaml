@@ -3,7 +3,7 @@ name: "GROUP BY & Aggregate Bugs"
 tagline: "Fix missing GROUP BY columns & wrong aggregates"
 interviewer_says: "wrong totals, missing groups, aggregate error"
 you_need: "GROUP BY rules, aggregate function behavior"
-description: "GROUP BY bugs produce wrong numbers silently — learn to spot missing columns, wrong aggregates, and HAVING mistakes."
+description: "GROUP BY bugs produce wrong numbers silently  - learn to spot missing columns, wrong aggregates, and HAVING mistakes."
 icon: "bar-chart-2"
 category: "Aggregation & Logic Bugs"
 order: 4

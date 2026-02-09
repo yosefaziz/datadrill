@@ -3,7 +3,7 @@ name: "Self-Joins"
 tagline: "Compare rows within the same table"
 interviewer_says: "employees and their managers, consecutive events"
 you_need: "Self-join with aliases"
-description: "Master self-joins — joining a table to itself for hierarchical and comparison queries."
+description: "Master self-joins  - joining a table to itself for hierarchical and comparison queries."
 icon: "arrow-right-left"
 category: "Joins & Filtering"
 order: 4

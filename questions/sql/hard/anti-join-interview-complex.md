@@ -52,7 +52,7 @@ expected_output_query: "SELECT c.name, MAX(o.order_date) as last_order_date FROM
 
 # Inactive Customers with Past Orders
 
-Write a query that finds customers whose most recent order was before October 2023 — they were once active but have gone quiet.
+Write a query that finds customers whose most recent order was before October 2023  - they were once active but have gone quiet.
 
 Join customers with orders, group by customer, and use `HAVING` to filter for those whose latest order is before `2023-10-01`.
 

@@ -3,7 +3,7 @@ name: "Filter & Select"
 tagline: "Filter rows and select columns in PySpark"
 interviewer_says: "filter the dataframe, select specific columns"
 you_need: "filter(), select(), col()"
-description: "Learn the fundamental DataFrame operations — filtering rows and selecting columns in PySpark."
+description: "Learn the fundamental DataFrame operations  - filtering rows and selecting columns in PySpark."
 icon: "filter"
 category: "DataFrame Basics"
 order: 1

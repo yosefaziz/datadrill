@@ -36,7 +36,7 @@ expected_output_query: |
   FROM users
   WHERE email IS NULL
   ORDER BY name
-hint: "In SQL, nothing equals NULL — not even NULL itself. How do you check for NULL values?"
+hint: "In SQL, nothing equals NULL  - not even NULL itself. How do you check for NULL values?"
 ---
 
 # NULL Equality Comparison Bug

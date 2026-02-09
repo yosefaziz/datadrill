@@ -3,7 +3,7 @@ name: "Deduplication"
 tagline: "Remove duplicate rows the right way"
 interviewer_says: "deduplicate, keep latest, remove duplicates"
 you_need: "ROW_NUMBER + QUALIFY or subquery"
-description: "Learn to identify and remove duplicates — a daily task in data engineering and a common interview question."
+description: "Learn to identify and remove duplicates  - a daily task in data engineering and a common interview question."
 icon: "copy-minus"
 category: "Aggregation & Logic"
 order: 2

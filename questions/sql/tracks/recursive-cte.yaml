@@ -3,7 +3,7 @@ name: "Recursive CTEs"
 tagline: "Traverse hierarchies & generate series"
 interviewer_says: "org chart traversal, bill of materials"
 you_need: "WITH RECURSIVE + base case + recursive step"
-description: "Recursive CTEs solve hierarchical queries like org charts and category trees — an advanced topic that impresses interviewers."
+description: "Recursive CTEs solve hierarchical queries like org charts and category trees  - an advanced topic that impresses interviewers."
 icon: "network"
 category: "Advanced"
 order: 1

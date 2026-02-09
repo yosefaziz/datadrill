@@ -3,7 +3,7 @@ name: "Join Type Bugs"
 tagline: "Fix wrong JOIN types, fan-outs & NULL traps"
 interviewer_says: "why are there extra rows, missing data after join"
 you_need: "JOIN types, NULL behavior in joins"
-description: "The most common SQL bugs come from joins — wrong type, unexpected fan-out, or WHERE clauses killing outer joins."
+description: "The most common SQL bugs come from joins  - wrong type, unexpected fan-out, or WHERE clauses killing outer joins."
 icon: "git-merge"
 category: "Join & Filter Bugs"
 order: 1

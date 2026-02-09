@@ -3,7 +3,7 @@ name: "Dedup & Null Handling"
 tagline: "Deduplicate rows and handle null values"
 interviewer_says: "remove duplicates, handle null values, coalesce"
 you_need: "dropDuplicates(), fillna(), coalesce(), isNull()"
-description: "Data quality starts with deduplication and null handling — two of the most practical PySpark skills for real-world pipelines."
+description: "Data quality starts with deduplication and null handling  - two of the most practical PySpark skills for real-world pipelines."
 icon: "copy-minus"
 category: "Transformations"
 order: 6

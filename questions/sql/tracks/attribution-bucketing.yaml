@@ -3,7 +3,7 @@ name: "Attribution & Bucketing"
 tagline: "As-of lookups, attribution models & histograms"
 interviewer_says: "last-touch attribution, bucket users by spend"
 you_need: "CASE bucketing, window functions, range joins"
-description: "Attribution assigns credit across touchpoints, and bucketing segments continuous data — both are common analytics interview topics."
+description: "Attribution assigns credit across touchpoints, and bucketing segments continuous data  - both are common analytics interview topics."
 icon: "target"
 category: "Advanced"
 order: 5

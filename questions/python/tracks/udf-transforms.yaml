@@ -3,7 +3,7 @@ name: "UDFs & Column Transforms"
 tagline: "Create UDFs and transform columns"
 interviewer_says: "apply custom function, transform column, add computed column"
 you_need: "udf(), withColumn(), when/otherwise, regexp"
-description: "Learn to extend PySpark with custom transformations — UDFs, column expressions, and conditional logic."
+description: "Learn to extend PySpark with custom transformations  - UDFs, column expressions, and conditional logic."
 icon: "code"
 category: "Transformations"
 order: 8

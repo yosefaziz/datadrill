@@ -3,7 +3,7 @@ name: "Pivot & Unpivot"
 tagline: "Reshape data between wide and long formats"
 interviewer_says: "pivot monthly sales, convert rows to columns"
 you_need: "CASE + aggregation for pivot, UNION ALL for unpivot"
-description: "Pivoting converts rows to columns and vice versa — a common data transformation in reporting and ETL."
+description: "Pivoting converts rows to columns and vice versa  - a common data transformation in reporting and ETL."
 icon: "table"
 category: "Advanced"
 order: 3

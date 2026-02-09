@@ -3,7 +3,7 @@ name: "Dimension Patterns"
 tagline: "Junk, degenerate, role-playing & bridge dimensions"
 interviewer_says: "what is a junk dimension, role-playing dimension"
 you_need: "Special dimension types, bridge tables, mini-dimensions"
-description: "Beyond basic dimensions, learn specialized patterns — junk dimensions for flags, role-playing for dates, and bridges for many-to-many."
+description: "Beyond basic dimensions, learn specialized patterns  - junk dimensions for flags, role-playing for dates, and bridges for many-to-many."
 icon: "box"
 category: "Dimension Patterns"
 order: 5

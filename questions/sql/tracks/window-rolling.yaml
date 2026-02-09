@@ -3,7 +3,7 @@ name: "Rolling Averages"
 tagline: "Calculate trends, running totals & moving averages"
 interviewer_says: "rolling 7-day average, trailing sum, moving average"
 you_need: "SUM/AVG() OVER + ROWS/RANGE frames"
-description: "Master rolling calculations — one of the most common window function patterns in data engineering interviews."
+description: "Master rolling calculations  - one of the most common window function patterns in data engineering interviews."
 icon: "trending-up"
 category: "Window Functions"
 order: 2

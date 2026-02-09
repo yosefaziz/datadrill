@@ -145,14 +145,14 @@ export function ModelingFeedback({ result, thresholds }: ModelingFeedbackProps) 
         </h3>
         <ul className="text-sm text-text-secondary space-y-1">
           <li>
-            • <strong>Fact tables</strong> have billions of rows — every field adds significant
+            • <strong>Fact tables</strong> have billions of rows  - every field adds significant
             storage
           </li>
           <li>
-            • <strong>Dimension tables</strong> are small — it's OK to denormalize here
+            • <strong>Dimension tables</strong> are small  - it's OK to denormalize here
           </li>
           <li>
-            • <strong>More tables = more JOINs</strong> — impacts query performance
+            • <strong>More tables = more JOINs</strong>  - impacts query performance
           </li>
           <li>
             • <strong>Star Schema</strong> balances storage and query cost effectively

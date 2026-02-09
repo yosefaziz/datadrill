@@ -3,7 +3,7 @@ name: "Find What's Missing"
 tagline: "Detect inactive users, missing data & gaps"
 interviewer_says: "users who never, titles without, inactive users"
 you_need: "Anti-joins (LEFT JOIN + IS NULL, NOT EXISTS)"
-description: "Learn to find rows that DON'T match — a critical pattern for churn analysis, gap detection, and data quality checks."
+description: "Learn to find rows that DON'T match  - a critical pattern for churn analysis, gap detection, and data quality checks."
 icon: "search-x"
 category: "Joins & Filtering"
 order: 1

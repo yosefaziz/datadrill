@@ -3,7 +3,7 @@ name: "DataFrame Joins"
 tagline: "Join DataFrames with various strategies"
 interviewer_says: "join these two DataFrames, broadcast small table"
 you_need: "join(), broadcast(), join types"
-description: "Learn PySpark join operations from basic inner joins to broadcast joins — essential for any data pipeline."
+description: "Learn PySpark join operations from basic inner joins to broadcast joins  - essential for any data pipeline."
 icon: "git-merge"
 category: "Aggregation & Joins"
 order: 3
