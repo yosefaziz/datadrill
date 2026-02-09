@@ -10,6 +10,7 @@ import { SkillPathPage } from '@/pages/SkillPathPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { HistoryPage } from '@/pages/HistoryPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { InterviewPage } from '@/pages/InterviewPage';
 
 function App() {
   return (
@@ -43,6 +44,9 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/interview" element={<InterviewPage />} />
+            <Route path="/interview/:scenarioId" element={<InterviewPage />} />
+            <Route path="/interview/:scenarioId/results" element={<InterviewPage />} />
             <Route path="/:skill" element={<SkillPage />} />
             <Route path="/:skill/path/:trackId" element={<SkillPathPage />} />
             <Route path="/:skill/question/:id" element={<QuestionPage />} />
