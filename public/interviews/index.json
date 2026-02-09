@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": "coding-junior-basic-sql-aggregation",
+    "category": "coding",
+    "level": "junior",
+    "title": "SQL Aggregation Basics",
+    "description": "Write basic aggregation queries, then explain your understanding of how GROUP BY works.",
+    "estimatedMinutes": 20,
+    "roundCount": 3,
+    "tags": [
+      "aggregation",
+      "group-by",
+      "count"
+    ]
+  }
+]

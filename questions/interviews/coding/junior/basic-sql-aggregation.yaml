@@ -1,0 +1,121 @@
+id: coding-junior-basic-sql-aggregation
+category: coding
+level: junior
+title: "SQL Aggregation Basics"
+description: "Write basic aggregation queries, then explain your understanding of how GROUP BY works."
+estimated_minutes: 20
+tags: [aggregation, group-by, count]
+
+rounds:
+  - id: round-1
+    type: sql
+    question_type: write
+    time_minutes: 8
+    title: "Count Orders by Status"
+    description: |
+      Given an `orders` table, write a query that returns the count of orders
+      for each status. Order the results by count descending.
+    initial_code: ""
+    tables:
+      - name: orders
+        visible_data: |
+          order_id,customer_id,status,amount
+          1,101,completed,50.00
+          2,102,pending,30.00
+          3,101,completed,75.00
+          4,103,cancelled,20.00
+          5,102,completed,60.00
+          6,104,pending,45.00
+        hidden_datasets:
+          - |
+            order_id,customer_id,status,amount
+            1,201,completed,100.00
+            2,202,pending,50.00
+            3,203,completed,75.00
+            4,204,cancelled,25.00
+            5,205,completed,60.00
+            6,206,completed,80.00
+            7,207,pending,35.00
+            8,208,cancelled,90.00
+    expected_output: |
+      status,order_count
+      completed,3
+      pending,2
+      cancelled,1
+    expected_output_query: |
+      SELECT status, COUNT(*) as order_count
+      FROM orders
+      GROUP BY status
+      ORDER BY order_count DESC
+    hints:
+      - "Use COUNT(*) with GROUP BY"
+      - "ORDER BY can reference aliases"
+
+  - id: round-2
+    type: quiz
+    question_type: quiz
+    time_minutes: 4
+    title: "Explain Your Approach"
+    description: "Let's make sure you understand how GROUP BY works under the hood."
+    questions:
+      - question: "What happens if you SELECT a column that is not in GROUP BY and not aggregated?"
+        options:
+          - "SQL error - column must be in GROUP BY or an aggregate"
+          - "It returns the first value found"
+          - "It returns NULL"
+          - "It returns all values concatenated"
+        correct_answer: 0
+        explanation: "Standard SQL requires that every selected column is either in the GROUP BY clause or wrapped in an aggregate function. Most databases will raise an error."
+      - question: "If you used COUNT(customer_id) instead of COUNT(*), what would be different?"
+        options:
+          - "COUNT(column) skips NULLs, COUNT(*) counts all rows"
+          - "No difference - they always return the same result"
+          - "COUNT(column) is faster"
+          - "COUNT(*) skips NULLs"
+        correct_answer: 0
+        explanation: "COUNT(*) counts all rows including those with NULL values. COUNT(column) only counts rows where that specific column is not NULL."
+
+  - id: round-3
+    type: sql
+    question_type: write
+    time_minutes: 8
+    title: "Revenue by Status"
+    description: |
+      Now extend your analysis: write a query that returns each status with
+      both the order count and total revenue (sum of amount). Only include
+      statuses with total revenue above 50. Order by total revenue descending.
+    initial_code: ""
+    tables:
+      - name: orders
+        visible_data: |
+          order_id,customer_id,status,amount
+          1,101,completed,50.00
+          2,102,pending,30.00
+          3,101,completed,75.00
+          4,103,cancelled,20.00
+          5,102,completed,60.00
+          6,104,pending,45.00
+        hidden_datasets:
+          - |
+            order_id,customer_id,status,amount
+            1,201,completed,100.00
+            2,202,pending,50.00
+            3,203,completed,75.00
+            4,204,cancelled,25.00
+            5,205,completed,60.00
+            6,206,completed,80.00
+            7,207,pending,35.00
+            8,208,cancelled,90.00
+    expected_output: |
+      status,order_count,total_revenue
+      completed,3,185.00
+      pending,2,75.00
+    expected_output_query: |
+      SELECT status, COUNT(*) as order_count, SUM(amount) as total_revenue
+      FROM orders
+      GROUP BY status
+      HAVING SUM(amount) > 50
+      ORDER BY total_revenue DESC
+    hints:
+      - "Use HAVING to filter after GROUP BY"
+      - "SUM() for total revenue"
