@@ -328,6 +328,71 @@ export interface TrackProgress {
   percentComplete: number;
 }
 
+// ── Interview Types ──────────────────────────────────────────────
+
+export type InterviewCategory = 'coding' | 'system_design';
+export type InterviewLevel = 'junior' | 'mid' | 'senior' | 'staff';
+
+export interface InterviewQuizOption {
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+}
+
+export interface InterviewRound {
+  id: string;
+  type: SkillType;
+  questionType: string;
+  timeMinutes: number;
+  title: string;
+  description: string;
+  // Code round fields
+  initialCode?: string;
+  tables?: TableData[];
+  hiddenTables?: TableData[];
+  expectedOutput?: string;
+  expectedOutputQuery?: string;
+  language?: 'sql' | 'python';
+  hints?: string[];
+  // Quiz round fields
+  questions?: InterviewQuizOption[];
+}
+
+export interface InterviewScenarioMeta {
+  id: string;
+  category: InterviewCategory;
+  level: InterviewLevel;
+  title: string;
+  description: string;
+  estimatedMinutes: number;
+  roundCount: number;
+  tags: string[];
+}
+
+export interface InterviewScenario extends InterviewScenarioMeta {
+  rounds: InterviewRound[];
+}
+
+export interface RoundResult {
+  roundId: string;
+  passed: boolean;
+  score: number;
+  timeSpentSeconds: number;
+  answer: string;
+  resultMeta: Record<string, unknown> | null;
+}
+
+export interface InterviewSessionResult {
+  scenarioId: string;
+  category: InterviewCategory;
+  level: InterviewLevel;
+  startedAt: string;
+  completedAt: string | null;
+  roundResults: RoundResult[];
+  overallScore: number;
+}
+
 export interface QueryResult {
   columns: string[];
   rows: unknown[][];
