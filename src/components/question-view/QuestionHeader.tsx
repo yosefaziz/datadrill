@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Question, isDebugQuestion } from '@/types';
+import { ReactionButtons } from './ReactionButtons';
 
 interface QuestionHeaderProps {
   question: Question;
@@ -29,6 +30,7 @@ export function QuestionHeader({ question, children }: QuestionHeaderProps) {
       <div className="flex items-start justify-between gap-3">
         <h1 className="text-xl font-bold text-text-primary leading-tight">{question.title}</h1>
         <div className="flex items-center gap-1.5 flex-shrink-0">
+          <ReactionButtons questionId={question.id} />
           {children}
         </div>
       </div>

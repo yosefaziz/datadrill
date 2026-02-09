@@ -552,6 +552,18 @@ export interface AnonymousActivity {
   lastSeen: string;
 }
 
+// ── Reaction Types ────────────────────────────────────────────────
+
+export type ReactionType = 'like' | 'dislike';
+
+export interface QuestionReaction {
+  id: string;
+  user_id: string;
+  question_id: string;
+  reaction: ReactionType;
+  created_at: string;
+}
+
 // ── Community Types ────────────────────────────────────────────────
 
 export type ReportCategory = 'wrong_output' | 'unclear_description' | 'broken_test' | 'typo' | 'other';
