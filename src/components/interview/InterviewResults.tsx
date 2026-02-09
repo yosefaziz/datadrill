@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useInterviewStore } from '@/stores/interviewStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -30,6 +30,7 @@ export function InterviewResults() {
     useInterviewStore();
   const user = useAuthStore((s) => s.user);
   const savedRef = useRef(false);
+  const [copied, setCopied] = useState(false);
 
   // Save to Supabase on mount (only once)
   useEffect(() => {
@@ -38,6 +39,38 @@ export function InterviewResults() {
       saveSessionToSupabase(user.id);
     }
   }, [user, saveSessionToSupabase]);
+
+  const handleShare = useCallback(() => {
+    if (!activeScenario) return;
+
+    const score = getOverallScore();
+    const passed = roundResults.filter((r) => r.passed).length;
+    const total = activeScenario.rounds.length;
+    const catLabel = CATEGORY_LABELS[activeScenario.category] || activeScenario.category;
+    const lvlLabel = LEVEL_LABELS[activeScenario.level] || activeScenario.level;
+
+    const roundLines = activeScenario.rounds.map((round, i) => {
+      const r = roundResults.find((rr) => rr.roundId === round.id);
+      const status = r ? (r.passed ? 'Pass' : 'Fail') : 'Skipped';
+      return `  ${i + 1}. ${round.title} - ${status}`;
+    });
+
+    const text = [
+      `DataDrill Mock Interview Results`,
+      `${activeScenario.title} (${catLabel} - ${lvlLabel})`,
+      `Score: ${Math.round(score * 100)}% | Rounds: ${passed}/${total} passed`,
+      ``,
+      `Rounds:`,
+      ...roundLines,
+      ``,
+      `Try it yourself at https://thedatadrill.vercel.app/interview`,
+    ].join('\n');
+
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [activeScenario, roundResults, getOverallScore]);
 
   // Edge case: no active scenario
   if (!activeScenario) {
@@ -183,9 +216,10 @@ export function InterviewResults() {
           Try Another Interview
         </button>
         <button
+          onClick={handleShare}
           className="bg-bg-secondary text-text-secondary rounded-lg px-6 py-3 font-medium hover:text-text-primary transition-colors"
         >
-          Share Results
+          {copied ? 'Copied!' : 'Share Results'}
         </button>
       </div>
     </div>
