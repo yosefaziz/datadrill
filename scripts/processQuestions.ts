@@ -383,6 +383,82 @@ interface ProcessedTrackMeta {
   totalQuestions: number;
 }
 
+// ── Interview scenario types ────────────────────────────────────
+
+interface InterviewQuizOptionYaml {
+  question: string;
+  options: string[];
+  correct_answer: number;
+  explanation: string;
+}
+
+interface InterviewRoundYaml {
+  id: string;
+  type: SkillType;
+  question_type: string;
+  time_minutes: number;
+  title: string;
+  description: string;
+  initial_code?: string;
+  tables?: TableFrontmatter[];
+  hidden_tables?: TableFrontmatter[];
+  expected_output?: string;
+  expected_output_query?: string;
+  language?: 'sql' | 'python';
+  hints?: string[];
+  questions?: InterviewQuizOptionYaml[];
+}
+
+interface InterviewScenarioYaml {
+  id: string;
+  category: 'coding' | 'system_design';
+  level: 'junior' | 'mid' | 'senior' | 'staff';
+  title: string;
+  description: string;
+  estimated_minutes: number;
+  tags: string[];
+  rounds: InterviewRoundYaml[];
+}
+
+interface ProcessedInterviewRound {
+  id: string;
+  type: SkillType;
+  questionType: string;
+  timeMinutes: number;
+  title: string;
+  description: string;
+  initialCode?: string;
+  tables?: ProcessedTable[];
+  hiddenTables?: ProcessedTable[];
+  expectedOutput?: string;
+  expectedOutputQuery?: string;
+  language?: 'sql' | 'python';
+  hints?: string[];
+  questions?: { question: string; options: string[]; correctAnswer: number; explanation: string }[];
+}
+
+interface ProcessedInterviewScenario {
+  id: string;
+  category: 'coding' | 'system_design';
+  level: 'junior' | 'mid' | 'senior' | 'staff';
+  title: string;
+  description: string;
+  estimatedMinutes: number;
+  tags: string[];
+  rounds: ProcessedInterviewRound[];
+}
+
+interface ProcessedInterviewMeta {
+  id: string;
+  category: 'coding' | 'system_design';
+  level: 'junior' | 'mid' | 'senior' | 'staff';
+  title: string;
+  description: string;
+  estimatedMinutes: number;
+  roundCount: number;
+  tags: string[];
+}
+
 const SKILL_DIRS: SkillType[] = ['sql', 'python', 'debug', 'architecture', 'modeling'];
 
 function processTable(table: TableFrontmatter): ProcessedTable {
@@ -614,6 +690,35 @@ async function processQuestion(
   }
 }
 
+function processInterviewRound(round: InterviewRoundYaml): ProcessedInterviewRound {
+  const processed: ProcessedInterviewRound = {
+    id: round.id,
+    type: round.type,
+    questionType: round.question_type,
+    timeMinutes: round.time_minutes,
+    title: round.title,
+    description: round.description,
+  };
+
+  if (round.initial_code) processed.initialCode = round.initial_code;
+  if (round.tables) processed.tables = round.tables.map(processTable);
+  if (round.hidden_tables) processed.hiddenTables = round.hidden_tables.map(processTable);
+  if (round.expected_output) processed.expectedOutput = round.expected_output;
+  if (round.expected_output_query) processed.expectedOutputQuery = round.expected_output_query;
+  if (round.language) processed.language = round.language;
+  if (round.hints) processed.hints = round.hints;
+  if (round.questions) {
+    processed.questions = round.questions.map((q) => ({
+      question: q.question,
+      options: q.options,
+      correctAnswer: q.correct_answer,
+      explanation: q.explanation,
+    }));
+  }
+
+  return processed;
+}
+
 async function processQuestions() {
   const questionsDir = path.join(process.cwd(), 'questions');
   const outputBaseDir = path.join(process.cwd(), 'public', 'questions');
@@ -797,6 +902,72 @@ async function processQuestions() {
 
       console.log(`  ${trackMetas.length} tracks processed for ${skill}`);
     }
+  }
+
+  // ── Process interview scenarios ───────────────────────────────
+  const interviewsDir = path.join(questionsDir, 'interviews');
+  const interviewsOutputDir = path.join(process.cwd(), 'public', 'interviews');
+  fs.mkdirSync(interviewsOutputDir, { recursive: true });
+
+  if (fs.existsSync(interviewsDir)) {
+    const interviewFiles = (await glob('**/*.yaml', { cwd: interviewsDir })).concat(
+      await glob('**/*.yml', { cwd: interviewsDir })
+    );
+
+    const interviewMetas: ProcessedInterviewMeta[] = [];
+
+    for (const file of interviewFiles) {
+      try {
+        const content = fs.readFileSync(path.join(interviewsDir, file), 'utf-8');
+        const data = yaml.load(content) as InterviewScenarioYaml;
+
+        const scenario: ProcessedInterviewScenario = {
+          id: data.id,
+          category: data.category,
+          level: data.level,
+          title: data.title,
+          description: data.description,
+          estimatedMinutes: data.estimated_minutes,
+          tags: data.tags,
+          rounds: data.rounds.map(processInterviewRound),
+        };
+
+        // Write individual scenario file
+        fs.writeFileSync(
+          path.join(interviewsOutputDir, `${data.id}.json`),
+          JSON.stringify(scenario, null, 2)
+        );
+
+        interviewMetas.push({
+          id: data.id,
+          category: data.category,
+          level: data.level,
+          title: data.title,
+          description: data.description,
+          estimatedMinutes: data.estimated_minutes,
+          roundCount: data.rounds.length,
+          tags: data.tags,
+        });
+
+        console.log(`Processed interview: ${file}`);
+      } catch (error) {
+        console.error(`Error processing interview ${file}:`, error);
+      }
+    }
+
+    // Write interview index
+    fs.writeFileSync(
+      path.join(interviewsOutputDir, 'index.json'),
+      JSON.stringify(interviewMetas, null, 2)
+    );
+
+    console.log(`\nProcessed ${interviewMetas.length} interview scenarios.`);
+  } else {
+    // No interviews directory yet - write empty index
+    fs.writeFileSync(
+      path.join(interviewsOutputDir, 'index.json'),
+      '[]'
+    );
   }
 
   // Write global index with all questions
