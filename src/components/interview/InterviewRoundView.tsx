@@ -6,6 +6,7 @@ import { useExecutor } from '@/hooks/useExecutor';
 import { useValidation } from '@/hooks/useValidation';
 import { CodeEditor } from '@/components/editor/CodeEditor';
 import { OutputPanel } from '@/components/editor/OutputPanel';
+import { InterviewQuizRound } from './InterviewQuizRound';
 
 interface InterviewRoundViewProps {
   round: InterviewRound;
@@ -102,13 +103,9 @@ export function InterviewRoundView({ round, onSubmit }: InterviewRoundViewProps)
     onSubmit(result.passed, result.passed ? 1 : 0, code);
   }, [isInitialized, code, question, clearResult, validate, onSubmit]);
 
-  // Quiz round placeholder
-  if (round.questionType === 'quiz') {
-    return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-text-secondary">Quiz round - coming in Task 8</div>
-      </div>
-    );
+  // Quiz round
+  if (round.questionType === 'quiz' && round.questions) {
+    return <InterviewQuizRound questions={round.questions} onSubmit={onSubmit} />;
   }
 
   // Loading state for executor
