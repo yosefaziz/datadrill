@@ -1,0 +1,34 @@
+id: debug-type-cast
+name: "Type Mismatch Bugs"
+tagline: "Fix implicit casting & type conversion errors"
+interviewer_says: "integer division gives 0, string comparison fails"
+you_need: "Implicit casting rules, CAST, type promotion"
+description: "Type mismatches cause silent data corruption — integer division truncation, string-number comparisons, and date format issues."
+icon: "shuffle"
+category: "Subtle Traps"
+order: 7
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Integer Division"
+    description: "Fix integer division that truncates to 0"
+    concepts: ["integer division", "CAST to DECIMAL", "type promotion"]
+    questions:
+      - dbg-type-int-division
+    unlock: always_unlocked
+
+  - level: 2
+    title: "String vs Number"
+    description: "Fix implicit cast issues in string-number comparisons"
+    concepts: ["implicit casting", "string comparison", "numeric coercion"]
+    questions:
+      - dbg-type-string-num-compare
+      - dbg-type-leading-zeros
+
+  - level: 3
+    title: "Date Format Traps"
+    description: "Fix string-to-date parsing and format mismatches"
+    concepts: ["date parsing", "format strings", "locale issues"]
+    questions:
+      - dbg-type-date-format

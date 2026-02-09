@@ -1,0 +1,36 @@
+id: sql-funnel-conversion
+name: "Funnel & Conversion"
+tagline: "Build conversion funnels & drop-off analysis"
+interviewer_says: "conversion rate, funnel drop-off, step completion"
+you_need: "Conditional aggregation + self-join or LEAD"
+description: "Funnel analysis measures how users progress through a series of steps. A must-know for product analytics interviews."
+icon: "funnel"
+category: "Complex Patterns"
+order: 5
+prerequisites: [sql-agg-groupby]
+
+levels:
+  - level: 1
+    title: "Two-Step Funnel"
+    description: "Signup to purchase conversion"
+    concepts: ["conditional COUNT", "conversion rate"]
+    questions:
+      - funnel-two-step-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Multi-Step Funnel"
+    description: "3+ steps with drop-off rates"
+    concepts: ["multi-step funnel", "drop-off", "self-join"]
+    questions:
+      - funnel-multi-step-dropoff
+      - funnel-three-step-rates
+    unlock: complete_previous
+
+  - level: 3
+    title: "Time-Bounded Funnel"
+    description: "Conversion within N days"
+    concepts: ["time window", "DATE_DIFF", "bounded conversion"]
+    questions:
+      - funnel-time-bounded
+    unlock: complete_previous

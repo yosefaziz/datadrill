@@ -1,0 +1,36 @@
+id: architecture-batch-etl
+name: "Batch ETL Pipeline"
+tagline: "Design reliable batch processing pipelines"
+interviewer_says: "design a batch ETL pipeline for daily data loads"
+you_need: "ETL patterns, orchestration, idempotency"
+description: "Batch ETL is the backbone of data engineering. Learn to design reliable, scalable pipelines for scheduled data processing."
+icon: "database"
+category: "Pipeline Design"
+order: 1
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "ETL Fundamentals"
+    description: "Understand extract, transform, load patterns"
+    concepts: ["ETL vs ELT", "staging areas", "data extraction"]
+    questions:
+      - arch-etl-fundamentals
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Orchestration"
+    description: "Manage pipeline dependencies and failure handling"
+    concepts: ["DAGs", "task dependencies", "retries"]
+    questions:
+      - arch-etl-dag-design
+      - arch-etl-failure-handling
+    unlock: complete_previous
+
+  - level: 3
+    title: "Production Pipeline"
+    description: "Build production-grade ETL with observability"
+    concepts: ["monitoring", "alerting", "SLAs"]
+    questions:
+      - arch-etl-production-observability
+    unlock: complete_previous

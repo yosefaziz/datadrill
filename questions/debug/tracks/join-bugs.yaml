@@ -1,0 +1,41 @@
+id: debug-join-bugs
+name: "Join Type Bugs"
+tagline: "Fix wrong JOIN types, fan-outs & NULL traps"
+interviewer_says: "why are there extra rows, missing data after join"
+you_need: "JOIN types, NULL behavior in joins"
+description: "The most common SQL bugs come from joins — wrong type, unexpected fan-out, or WHERE clauses killing outer joins."
+icon: "git-merge"
+category: "Join & Filter Bugs"
+order: 1
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Wrong JOIN Type"
+    description: "Identify when INNER vs LEFT vs FULL is wrong"
+    concepts: ["INNER JOIN", "LEFT JOIN", "FULL OUTER JOIN"]
+    questions:
+      - dbg-join-wrong-type
+    unlock: always_unlocked
+
+  - level: 2
+    title: "WHERE Kills Outer Join"
+    description: "Spot predicates that turn LEFT JOIN into INNER JOIN"
+    concepts: ["predicate placement", "ON vs WHERE clause", "outer join nulls"]
+    questions:
+      - dbg-join-where-kills-outer
+
+  - level: 3
+    title: "Fan-Out Duplicates"
+    description: "Find joins that produce unexpected duplicate rows"
+    concepts: ["one-to-many join", "fan-out", "duplicate detection"]
+    questions:
+      - dbg-join-fanout-dupes
+      - dbg-join-many-to-many
+
+  - level: 4
+    title: "Mixed Join Bugs"
+    description: "Debug queries with multiple join issues at once"
+    concepts: ["multi-join debugging", "join order", "combined issues"]
+    questions:
+      - dbg-join-mixed-bugs

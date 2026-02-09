@@ -1,0 +1,44 @@
+id: python-joins
+name: "DataFrame Joins"
+tagline: "Join DataFrames with various strategies"
+interviewer_says: "join these two DataFrames, broadcast small table"
+you_need: "join(), broadcast(), join types"
+description: "Learn PySpark join operations from basic inner joins to broadcast joins — essential for any data pipeline."
+icon: "git-merge"
+category: "Aggregation & Joins"
+order: 3
+prerequisites: [python-filter-select]
+
+levels:
+  - level: 1
+    title: "Inner Join"
+    description: "Join two DataFrames on a shared key"
+    concepts: ["join", "inner", "on"]
+    questions:
+      - py-join-inner
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Left & Anti Joins"
+    description: "Use left outer and anti join patterns"
+    concepts: ["left_outer", "left_anti", "null handling"]
+    questions:
+      - py-join-left-anti
+    unlock: complete_previous
+
+  - level: 3
+    title: "Multi-Key Join"
+    description: "Join on multiple columns"
+    concepts: ["composite key", "multi-column join", "duplicate columns"]
+    questions:
+      - py-join-multi-key
+      - py-join-dedup-cols
+    unlock: complete_previous
+
+  - level: 4
+    title: "Broadcast Join"
+    description: "Optimize joins with broadcast for small tables"
+    concepts: ["broadcast", "shuffle", "join optimization"]
+    questions:
+      - py-join-broadcast
+    unlock: complete_previous

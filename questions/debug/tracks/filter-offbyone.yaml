@@ -1,0 +1,34 @@
+id: debug-filter-offbyone
+name: "Filter & Off-By-One"
+tagline: "Fix boundary errors & wrong filter operators"
+interviewer_says: "results include/exclude boundary, wrong comparison"
+you_need: "Comparison operators, BETWEEN semantics, date boundaries"
+description: "Off-by-one errors and wrong operators are easy to miss in code review but cause incorrect results in production."
+icon: "crosshair"
+category: "Join & Filter Bugs"
+order: 3
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Wrong Operator"
+    description: "Fix incorrect comparison operators in WHERE clauses"
+    concepts: ["< vs <=", "> vs >=", "strict vs inclusive"]
+    questions:
+      - dbg-filter-wrong-operator
+    unlock: always_unlocked
+
+  - level: 2
+    title: "BETWEEN Boundaries"
+    description: "Understand BETWEEN inclusive semantics and date traps"
+    concepts: ["BETWEEN is inclusive", "date truncation", "boundary values"]
+    questions:
+      - dbg-filter-between-inclusive
+      - dbg-filter-between-date-trap
+
+  - level: 3
+    title: "Date Boundary Bugs"
+    description: "Fix midnight cutoff and timezone boundary errors"
+    concepts: ["midnight cutoff", "timestamp vs date", "timezone boundaries"]
+    questions:
+      - dbg-filter-date-midnight

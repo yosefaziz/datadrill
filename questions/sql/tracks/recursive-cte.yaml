@@ -1,0 +1,36 @@
+id: sql-recursive-cte
+name: "Recursive CTEs"
+tagline: "Traverse hierarchies & generate series"
+interviewer_says: "org chart traversal, bill of materials"
+you_need: "WITH RECURSIVE + base case + recursive step"
+description: "Recursive CTEs solve hierarchical queries like org charts and category trees — an advanced topic that impresses interviewers."
+icon: "network"
+category: "Advanced"
+order: 1
+prerequisites: [sql-self-join]
+
+levels:
+  - level: 1
+    title: "Generate Series"
+    description: "Number/date sequences"
+    concepts: ["WITH RECURSIVE", "base case", "UNION ALL"]
+    questions:
+      - recursive-generate-series
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Tree Traversal"
+    description: "Org chart, category tree"
+    concepts: ["hierarchy traversal", "parent-child", "depth"]
+    questions:
+      - recursive-org-chart
+      - recursive-category-tree
+    unlock: complete_previous
+
+  - level: 3
+    title: "Bill of Materials"
+    description: "Recursive rollup"
+    concepts: ["bill of materials", "recursive aggregation", "rollup"]
+    questions:
+      - recursive-bom-rollup
+    unlock: complete_previous

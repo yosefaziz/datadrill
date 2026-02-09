@@ -36,3 +36,8 @@ tsconfig.tsbuildinfo
 # Git worktrees
 .worktrees/
 .env*.local
+
+# Question generation artifacts
+questions/coverage.json
+scripts/create-hard-questions.js
+scripts/create-python-questions.js

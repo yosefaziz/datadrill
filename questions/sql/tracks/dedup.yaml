@@ -1,0 +1,36 @@
+id: sql-dedup
+name: "Deduplication"
+tagline: "Remove duplicate rows the right way"
+interviewer_says: "deduplicate, keep latest, remove duplicates"
+you_need: "ROW_NUMBER + QUALIFY or subquery"
+description: "Learn to identify and remove duplicates — a daily task in data engineering and a common interview question."
+icon: "copy-minus"
+category: "Aggregation & Logic"
+order: 2
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "DISTINCT & GROUP BY"
+    description: "Basic dedup"
+    concepts: ["DISTINCT", "GROUP BY"]
+    questions:
+      - dedup-distinct-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "ROW_NUMBER Dedup"
+    description: "Keep latest/first per group"
+    concepts: ["ROW_NUMBER", "PARTITION BY", "subquery"]
+    questions:
+      - dedup-rownumber-latest
+      - dedup-rownumber-first
+    unlock: complete_previous
+
+  - level: 3
+    title: "Complex Dedup"
+    description: "Multi-column, tie-breaking"
+    concepts: ["multi-column dedup", "tie-breaking", "QUALIFY"]
+    questions:
+      - dedup-complex-tiebreak
+    unlock: complete_previous

@@ -1,0 +1,36 @@
+id: sql-active-users
+name: "Active User Metrics"
+tagline: "Calculate DAU, WAU, MAU & engagement ratios"
+interviewer_says: "daily active users, DAU/MAU ratio, L7 engagement"
+you_need: "COUNT DISTINCT + date ranges + rolling windows"
+description: "Active user metrics (DAU/WAU/MAU) are the most common product analytics questions in data interviews."
+icon: "activity"
+category: "Complex Patterns"
+order: 6
+prerequisites: [sql-agg-groupby]
+
+levels:
+  - level: 1
+    title: "Daily Active Users"
+    description: "Basic DAU count"
+    concepts: ["COUNT DISTINCT", "DATE", "daily active"]
+    questions:
+      - active-dau-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "WAU & MAU"
+    description: "Weekly/monthly active users"
+    concepts: ["date range", "rolling window", "WAU", "MAU"]
+    questions:
+      - active-wau-weekly
+      - active-mau-monthly
+    unlock: complete_previous
+
+  - level: 3
+    title: "Engagement Ratios"
+    description: "DAU/MAU stickiness"
+    concepts: ["DAU/MAU ratio", "stickiness", "engagement"]
+    questions:
+      - active-dau-mau-ratio
+    unlock: complete_previous

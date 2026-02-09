@@ -1,0 +1,36 @@
+id: sql-self-join
+name: "Self-Joins"
+tagline: "Compare rows within the same table"
+interviewer_says: "employees and their managers, consecutive events"
+you_need: "Self-join with aliases"
+description: "Master self-joins — joining a table to itself for hierarchical and comparison queries."
+icon: "arrow-right-left"
+category: "Joins & Filtering"
+order: 4
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Employee-Manager"
+    description: "Basic self-join"
+    concepts: ["self-join", "table aliases"]
+    questions:
+      - selfjoin-employee-manager
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Row Comparison"
+    description: "Compare current vs previous"
+    concepts: ["self-join", "row comparison", "inequality join"]
+    questions:
+      - selfjoin-consecutive-events
+      - selfjoin-row-compare
+    unlock: complete_previous
+
+  - level: 3
+    title: "Multi-Level Hierarchy"
+    description: "Grandparent chains"
+    concepts: ["multi-level self-join", "hierarchy"]
+    questions:
+      - selfjoin-hierarchy-chain
+    unlock: complete_previous

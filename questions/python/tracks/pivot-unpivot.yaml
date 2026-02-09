@@ -1,0 +1,36 @@
+id: python-pivot-unpivot
+name: "Pivot & Unpivot"
+tagline: "Reshape DataFrames between wide and long formats"
+interviewer_says: "pivot monthly sales, melt columns to rows"
+you_need: "pivot(), stack(), unpivot patterns"
+description: "Reshaping data between wide and long formats is essential for reporting and feature engineering in PySpark."
+icon: "table"
+category: "Transformations"
+order: 7
+prerequisites: [python-groupby-agg]
+
+levels:
+  - level: 1
+    title: "Basic Pivot"
+    description: "Pivot rows to columns with aggregation"
+    concepts: ["groupBy", "pivot", "sum"]
+    questions:
+      - py-pivot-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Multi-Value Pivot"
+    description: "Pivot with multiple aggregate functions"
+    concepts: ["pivot", "agg", "multiple values"]
+    questions:
+      - py-pivot-multi-agg
+      - py-pivot-explicit-values
+    unlock: complete_previous
+
+  - level: 3
+    title: "Unpivot"
+    description: "Transform wide format to long format"
+    concepts: ["stack", "unpivot", "selectExpr"]
+    questions:
+      - py-unpivot-stack
+    unlock: complete_previous

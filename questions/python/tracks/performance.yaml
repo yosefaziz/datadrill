@@ -1,0 +1,44 @@
+id: python-performance
+name: "Performance & I/O"
+tagline: "Repartition, caching, file I/O & optimization"
+interviewer_says: "optimize this job, reduce shuffle, partition strategy"
+you_need: "repartition(), coalesce(), cache(), partitionBy"
+description: "Performance optimization and I/O patterns separate production-ready PySpark code from toy examples."
+icon: "zap"
+category: "Advanced Patterns"
+order: 10
+prerequisites: [python-joins]
+
+levels:
+  - level: 1
+    title: "Repartition & Coalesce"
+    description: "Control the number of partitions"
+    concepts: ["repartition", "coalesce", "numPartitions"]
+    questions:
+      - py-perf-repartition
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Cache & Persist"
+    description: "Cache DataFrames for reuse"
+    concepts: ["cache", "persist", "StorageLevel", "unpersist"]
+    questions:
+      - py-perf-cache
+    unlock: complete_previous
+
+  - level: 3
+    title: "Partitioned Writes"
+    description: "Write data partitioned by column"
+    concepts: ["partitionBy", "write", "parquet", "overwrite"]
+    questions:
+      - py-perf-write-partition
+      - py-perf-write-bucket
+    unlock: complete_previous
+
+  - level: 4
+    title: "Optimization Patterns"
+    description: "Apply predicate pushdown and column pruning"
+    concepts: ["predicate pushdown", "column pruning", "explain"]
+    questions:
+      - py-perf-optimize
+    unlock: complete_previous

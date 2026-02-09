@@ -1,0 +1,44 @@
+id: sql-joins-multi
+name: "Multi-Table Joins"
+tagline: "Join 3+ tables with confidence"
+interviewer_says: "join employees with departments and salaries"
+you_need: "INNER JOIN, LEFT JOIN, multi-table"
+description: "Graduate from two-table joins to real-world queries that combine three or more tables — the bread and butter of analytics SQL."
+icon: "git-merge"
+category: "Joins & Filtering"
+order: 2
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Two-Table JOIN"
+    description: "Basic INNER/LEFT"
+    concepts: ["INNER JOIN", "LEFT JOIN"]
+    questions:
+      - joins-two-table-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Three-Table JOIN"
+    description: "Adding a third table"
+    concepts: ["multi-table JOIN", "three tables"]
+    questions:
+      - joins-three-table-chain
+    unlock: complete_previous
+
+  - level: 3
+    title: "Mixed Join Types"
+    description: "INNER + LEFT in one query"
+    concepts: ["mixed joins", "INNER JOIN", "LEFT JOIN"]
+    questions:
+      - joins-mixed-inner-left
+      - joins-mixed-optional-lookup
+    unlock: complete_previous
+
+  - level: 4
+    title: "Join with Aggregation"
+    description: "Joins + GROUP BY"
+    concepts: ["JOIN", "GROUP BY", "aggregate"]
+    questions:
+      - joins-agg-summary
+    unlock: complete_previous

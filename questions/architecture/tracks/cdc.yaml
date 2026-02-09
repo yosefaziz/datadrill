@@ -1,0 +1,36 @@
+id: architecture-cdc
+name: "Change Data Capture"
+tagline: "Replicate database changes in real-time"
+interviewer_says: "sync OLTP to warehouse, capture changes"
+you_need: "CDC patterns, Debezium, log-based replication"
+description: "Change Data Capture bridges operational and analytical systems. Learn log-based CDC, merge patterns, and consistency guarantees."
+icon: "refresh-cw"
+category: "Pipeline Design"
+order: 4
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "CDC Fundamentals"
+    description: "Understand change data capture approaches"
+    concepts: ["log-based CDC", "query-based CDC", "change tracking"]
+    questions:
+      - arch-cdc-fundamentals
+    unlock: always_unlocked
+
+  - level: 2
+    title: "CDC Pipeline"
+    description: "Build a CDC pipeline with Debezium and Kafka"
+    concepts: ["Debezium", "Kafka Connect", "source connectors"]
+    questions:
+      - arch-cdc-debezium-setup
+      - arch-cdc-kafka-connect
+    unlock: complete_previous
+
+  - level: 3
+    title: "Merge & Upsert"
+    description: "Apply CDC events to analytical destinations"
+    concepts: ["MERGE statements", "upsert patterns", "SCD Type 2"]
+    questions:
+      - arch-cdc-merge-upsert
+    unlock: complete_previous

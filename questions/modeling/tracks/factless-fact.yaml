@@ -1,0 +1,34 @@
+id: modeling-factless-fact
+name: "Factless Fact Tables"
+tagline: "Model events and coverage with factless facts"
+interviewer_says: "students enrolled in courses, events without measures"
+you_need: "Event tracking facts, coverage facts"
+description: "Factless fact tables capture events or coverage relationships that have no numeric measures — a frequently tested concept."
+icon: "table"
+category: "Dimension Patterns"
+order: 6
+prerequisites: [modeling-star-schema]
+
+levels:
+  - level: 1
+    title: "Event Facts"
+    description: "Student enrollment, attendance, and other event tracking"
+    concepts: ["factless fact", "event tracking", "enrollment"]
+    questions:
+      - model-factless-event
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Coverage Facts"
+    description: "Product-store eligibility and coverage relationships"
+    concepts: ["coverage fact", "eligibility", "product-store relationship"]
+    questions:
+      - model-factless-coverage-basic
+      - model-factless-coverage-design
+
+  - level: 3
+    title: "Factless vs Regular"
+    description: "When to use factless facts vs regular fact tables"
+    concepts: ["factless vs regular", "pattern selection", "design decisions"]
+    questions:
+      - model-factless-vs-regular

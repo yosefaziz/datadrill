@@ -1,0 +1,44 @@
+id: sql-window-lag-lead
+name: "LAG & LEAD"
+tagline: "Access previous & next rows for comparisons"
+interviewer_says: "compare to previous month, day-over-day change"
+you_need: "LAG/LEAD + PARTITION BY + ORDER BY"
+description: "LAG and LEAD let you compare each row to its neighbors — essential for time-series analysis and change detection."
+icon: "arrow-left-right"
+category: "Window Functions"
+order: 3
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Basic LAG"
+    description: "Previous row value"
+    concepts: ["LAG", "OVER", "ORDER BY"]
+    questions:
+      - laglead-basic-previous
+    unlock: always_unlocked
+
+  - level: 2
+    title: "LEAD & Offsets"
+    description: "Next row, custom offsets"
+    concepts: ["LEAD", "offset", "default value"]
+    questions:
+      - laglead-next-offset
+    unlock: complete_previous
+
+  - level: 3
+    title: "Change Detection"
+    description: "Day-over-day, month-over-month"
+    concepts: ["LAG", "change calculation", "percent change"]
+    questions:
+      - laglead-day-over-day
+      - laglead-month-over-month
+    unlock: complete_previous
+
+  - level: 4
+    title: "FIRST_VALUE & LAST_VALUE"
+    description: "Boundary values"
+    concepts: ["FIRST_VALUE", "LAST_VALUE", "window frame"]
+    questions:
+      - laglead-first-last-value
+    unlock: complete_previous

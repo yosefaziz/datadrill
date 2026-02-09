@@ -1,0 +1,44 @@
+id: sql-window-ranking
+name: "Window Ranking"
+tagline: "RANK, DENSE_RANK, ROW_NUMBER & Top-N"
+interviewer_says: "top 3 per category, rank employees by salary"
+you_need: "RANK/DENSE_RANK/ROW_NUMBER + PARTITION BY"
+description: "Ranking is the single most-asked window function topic in interviews. Master RANK vs DENSE_RANK vs ROW_NUMBER."
+icon: "trophy"
+category: "Window Functions"
+order: 1
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "ROW_NUMBER Basics"
+    description: "Simple numbering"
+    concepts: ["ROW_NUMBER", "OVER", "ORDER BY"]
+    questions:
+      - ranking-rownumber-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "RANK vs DENSE_RANK"
+    description: "Handling ties"
+    concepts: ["RANK", "DENSE_RANK", "ties"]
+    questions:
+      - ranking-rank-vs-dense
+    unlock: complete_previous
+
+  - level: 3
+    title: "Top-N per Group"
+    description: "Top 3 per category"
+    concepts: ["PARTITION BY", "Top-N", "subquery"]
+    questions:
+      - ranking-topn-category
+      - ranking-topn-department
+    unlock: complete_previous
+
+  - level: 4
+    title: "NTH_VALUE & NTILE"
+    description: "Advanced ranking"
+    concepts: ["NTH_VALUE", "NTILE", "percentile buckets"]
+    questions:
+      - ranking-ntile-quartiles
+    unlock: complete_previous

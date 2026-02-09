@@ -1,0 +1,44 @@
+id: sql-attribution-bucketing
+name: "Attribution & Bucketing"
+tagline: "As-of lookups, attribution models & histograms"
+interviewer_says: "last-touch attribution, bucket users by spend"
+you_need: "CASE bucketing, window functions, range joins"
+description: "Attribution assigns credit across touchpoints, and bucketing segments continuous data — both are common analytics interview topics."
+icon: "target"
+category: "Advanced"
+order: 5
+prerequisites: [sql-window-lag-lead]
+
+levels:
+  - level: 1
+    title: "CASE Bucketing"
+    description: "Create value ranges"
+    concepts: ["CASE", "value ranges", "bucketing"]
+    questions:
+      - attrib-case-bucket
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Histogram"
+    description: "Frequency distribution"
+    concepts: ["histogram", "frequency", "WIDTH_BUCKET"]
+    questions:
+      - attrib-histogram-freq
+    unlock: complete_previous
+
+  - level: 3
+    title: "Last-Touch Attribution"
+    description: "Credit last event"
+    concepts: ["last-touch", "attribution", "window function"]
+    questions:
+      - attrib-last-touch-basic
+      - attrib-last-touch-channel
+    unlock: complete_previous
+
+  - level: 4
+    title: "As-of Lookup"
+    description: "Point-in-time joins"
+    concepts: ["as-of join", "point-in-time", "range join"]
+    questions:
+      - attrib-asof-lookup
+    unlock: complete_previous

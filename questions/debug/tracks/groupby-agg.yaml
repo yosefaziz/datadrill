@@ -1,0 +1,34 @@
+id: debug-groupby-agg
+name: "GROUP BY & Aggregate Bugs"
+tagline: "Fix missing GROUP BY columns & wrong aggregates"
+interviewer_says: "wrong totals, missing groups, aggregate error"
+you_need: "GROUP BY rules, aggregate function behavior"
+description: "GROUP BY bugs produce wrong numbers silently — learn to spot missing columns, wrong aggregates, and HAVING mistakes."
+icon: "bar-chart-2"
+category: "Aggregation & Logic Bugs"
+order: 4
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Missing GROUP BY"
+    description: "Find non-aggregated columns missing from GROUP BY"
+    concepts: ["GROUP BY rules", "non-aggregated columns", "SQL standard"]
+    questions:
+      - dbg-groupby-missing-col
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Wrong Aggregate"
+    description: "Fix wrong aggregate function choice and double-counting"
+    concepts: ["SUM vs COUNT", "double-counting", "DISTINCT in aggregates"]
+    questions:
+      - dbg-agg-sum-vs-count
+      - dbg-agg-double-count
+
+  - level: 3
+    title: "Aggregate + NULL"
+    description: "Understand how NULLs affect SUM, AVG, and COUNT"
+    concepts: ["NULL in SUM", "NULL in AVG", "COUNT(*) vs COUNT(col)"]
+    questions:
+      - dbg-agg-null-impact

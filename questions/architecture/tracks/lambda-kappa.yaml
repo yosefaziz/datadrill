@@ -1,0 +1,36 @@
+id: architecture-lambda-kappa
+name: "Lambda & Kappa"
+tagline: "Choose between Lambda and Kappa architectures"
+interviewer_says: "Lambda vs Kappa, when to use each"
+you_need: "Batch layer, speed layer, serving layer trade-offs"
+description: "Lambda and Kappa are two foundational architecture patterns. Learn when to use each and their real-world trade-offs."
+icon: "git-branch"
+category: "System Patterns"
+order: 5
+prerequisites: [architecture-batch-etl, architecture-streaming-realtime]
+
+levels:
+  - level: 1
+    title: "Lambda Architecture"
+    description: "Understand the three-layer Lambda pattern"
+    concepts: ["batch layer", "speed layer", "serving layer"]
+    questions:
+      - arch-lambda-three-layers
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Kappa Architecture"
+    description: "Simplify with stream-only processing"
+    concepts: ["stream-only processing", "reprocessing from log", "offset management"]
+    questions:
+      - arch-kappa-stream-only
+      - arch-kappa-reprocessing
+    unlock: complete_previous
+
+  - level: 3
+    title: "Architecture Choice"
+    description: "Evaluate trade-offs and pick the right pattern"
+    concepts: ["complexity trade-offs", "latency requirements", "use case matching"]
+    questions:
+      - arch-lambda-kappa-comparison
+    unlock: complete_previous

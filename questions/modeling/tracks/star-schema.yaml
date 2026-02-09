@@ -1,0 +1,41 @@
+id: modeling-star-schema
+name: "Star Schema Design"
+tagline: "Design fact and dimension tables for analytics"
+interviewer_says: "design a star schema, identify facts vs dimensions"
+you_need: "Fact tables, dimension tables, grain, surrogate keys"
+description: "Star schema is the most commonly tested modeling pattern. Learn to identify facts, dimensions, and define the right grain."
+icon: "star"
+category: "Schema Fundamentals"
+order: 1
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Facts vs Dimensions"
+    description: "Identify measures and descriptive attributes"
+    concepts: ["fact table", "dimension table", "measures"]
+    questions:
+      - model-star-facts-dims
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Define the Grain"
+    description: "Transaction vs snapshot grain"
+    concepts: ["grain", "transaction grain", "snapshot grain"]
+    questions:
+      - model-star-grain
+
+  - level: 3
+    title: "Surrogate Keys"
+    description: "Natural vs surrogate keys and why surrogate keys matter"
+    concepts: ["surrogate key", "natural key", "key management"]
+    questions:
+      - model-star-surrogate-natural
+      - model-star-surrogate-design
+
+  - level: 4
+    title: "Complete Star Schema"
+    description: "Design a full star schema from business requirements"
+    concepts: ["schema design", "requirements analysis", "end-to-end modeling"]
+    questions:
+      - model-star-complete-design

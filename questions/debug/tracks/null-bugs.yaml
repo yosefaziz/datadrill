@@ -1,0 +1,34 @@
+id: debug-null-bugs
+name: "NULL Comparison Bugs"
+tagline: "Find bugs caused by NULL comparisons & logic"
+interviewer_says: "why does this filter miss rows, unexpected NULLs"
+you_need: "IS NULL, IS NOT NULL, COALESCE, three-valued logic"
+description: "NULL is the #1 source of subtle SQL bugs. Learn to spot comparisons that silently drop rows due to three-valued logic."
+icon: "circle-slash"
+category: "Join & Filter Bugs"
+order: 2
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "NULL Equality"
+    description: "Fix WHERE x = NULL vs IS NULL mistakes"
+    concepts: ["IS NULL", "IS NOT NULL", "NULL equality"]
+    questions:
+      - dbg-null-equality
+    unlock: always_unlocked
+
+  - level: 2
+    title: "NULL in Aggregates"
+    description: "Understand how NULL affects COUNT, AVG, and SUM"
+    concepts: ["COUNT vs COUNT(*)", "AVG with NULL", "SUM with NULL"]
+    questions:
+      - dbg-null-count-star
+      - dbg-null-avg-skew
+
+  - level: 3
+    title: "NULL Logic Chains"
+    description: "Spot NOT IN with NULL and CASE + NULL pitfalls"
+    concepts: ["NOT IN with NULL", "CASE expression NULL", "three-valued logic"]
+    questions:
+      - dbg-null-not-in-trap

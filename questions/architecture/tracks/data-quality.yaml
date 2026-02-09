@@ -1,0 +1,44 @@
+id: architecture-data-quality
+name: "Data Quality & Schema Evolution"
+tagline: "Ensure data quality and handle schema changes"
+interviewer_says: "how do you ensure data quality, handle schema changes"
+you_need: "DQ frameworks, schema registries, evolution strategies"
+description: "Data quality and schema evolution are critical operational concerns that separate toy pipelines from production systems."
+icon: "shield"
+category: "Operational Concerns"
+order: 7
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "DQ Checks"
+    description: "Implement basic data quality validations"
+    concepts: ["row counts", "null rates", "value ranges"]
+    questions:
+      - arch-dq-basic-checks
+    unlock: always_unlocked
+
+  - level: 2
+    title: "DQ Framework"
+    description: "Use data quality frameworks for systematic testing"
+    concepts: ["Great Expectations", "dbt tests", "data contracts"]
+    questions:
+      - arch-dq-framework-design
+    unlock: complete_previous
+
+  - level: 3
+    title: "Schema Registry"
+    description: "Manage schemas across distributed systems"
+    concepts: ["Avro", "Protobuf", "schema compatibility"]
+    questions:
+      - arch-dq-schema-registry
+      - arch-dq-schema-compatibility
+    unlock: complete_previous
+
+  - level: 4
+    title: "Schema Evolution"
+    description: "Handle schema changes without breaking consumers"
+    concepts: ["backward compatibility", "forward compatibility", "migration strategies"]
+    questions:
+      - arch-dq-schema-evolution
+    unlock: complete_previous

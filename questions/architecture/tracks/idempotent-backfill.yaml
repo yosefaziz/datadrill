@@ -1,0 +1,36 @@
+id: architecture-idempotent-backfill
+name: "Idempotency & Backfill"
+tagline: "Design pipelines that can safely rerun and backfill"
+interviewer_says: "make this pipeline idempotent, backfill 6 months"
+you_need: "Idempotent writes, partition overwrite, backfill strategies"
+description: "Idempotency ensures pipelines can safely rerun without duplicates. Learn to design for reruns and historical backfills."
+icon: "repeat"
+category: "Operational Concerns"
+order: 8
+prerequisites: [architecture-batch-etl]
+
+levels:
+  - level: 1
+    title: "Idempotent Patterns"
+    description: "Write pipelines that produce the same result on rerun"
+    concepts: ["MERGE", "DELETE+INSERT", "partition overwrite"]
+    questions:
+      - arch-idempotent-write-patterns
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Backfill Design"
+    description: "Design efficient historical data backfills"
+    concepts: ["parallel backfill", "dependency management", "checkpoint recovery"]
+    questions:
+      - arch-backfill-parallel
+      - arch-backfill-dependencies
+    unlock: complete_previous
+
+  - level: 3
+    title: "Production Scenarios"
+    description: "Handle real-world reprocessing challenges"
+    concepts: ["late-arriving data", "reprocessing triggers", "data reconciliation"]
+    questions:
+      - arch-backfill-production-scenarios
+    unlock: complete_previous

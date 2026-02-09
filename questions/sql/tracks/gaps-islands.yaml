@@ -1,0 +1,44 @@
+id: sql-gaps-islands
+name: "Gaps & Islands"
+tagline: "Find consecutive sequences & breaks in data"
+interviewer_says: "consecutive login days, streak analysis"
+you_need: "ROW_NUMBER difference technique"
+description: "The gaps-and-islands problem appears in login streaks, session detection, and sequence analysis. A classic interview puzzle."
+icon: "git-branch"
+category: "Complex Patterns"
+order: 3
+prerequisites: [sql-window-ranking]
+
+levels:
+  - level: 1
+    title: "Detect Gaps"
+    description: "Find missing dates"
+    concepts: ["LAG", "DATE_DIFF", "gap detection"]
+    questions:
+      - gaps-missing-dates
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Island Detection"
+    description: "Find consecutive groups"
+    concepts: ["ROW_NUMBER", "difference technique", "islands"]
+    questions:
+      - gaps-consecutive-groups
+    unlock: complete_previous
+
+  - level: 3
+    title: "Streak Counting"
+    description: "Login streaks, longest streak"
+    concepts: ["streak", "consecutive days", "MAX group"]
+    questions:
+      - gaps-login-streak
+      - gaps-longest-streak
+    unlock: complete_previous
+
+  - level: 4
+    title: "Complex Islands"
+    description: "Multi-column, conditional"
+    concepts: ["multi-column islands", "conditional grouping"]
+    questions:
+      - gaps-complex-conditional
+    unlock: complete_previous

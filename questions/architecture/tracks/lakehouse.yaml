@@ -1,0 +1,36 @@
+id: architecture-lakehouse
+name: "Data Lake & Lakehouse"
+tagline: "Design modern lakehouse architectures"
+interviewer_says: "data lake vs warehouse, lakehouse design"
+you_need: "Delta Lake, Iceberg, Hudi, medallion architecture"
+description: "The lakehouse pattern combines data lake flexibility with warehouse reliability. Learn medallion architecture and table formats."
+icon: "layers"
+category: "System Patterns"
+order: 6
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Lake vs Warehouse"
+    description: "Compare data lake and warehouse trade-offs"
+    concepts: ["data lake", "data warehouse", "schema-on-read vs schema-on-write"]
+    questions:
+      - arch-lakehouse-lake-vs-warehouse
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Table Formats"
+    description: "Understand modern open table formats"
+    concepts: ["Delta Lake", "Apache Iceberg", "Apache Hudi"]
+    questions:
+      - arch-lakehouse-table-formats
+      - arch-lakehouse-format-comparison
+    unlock: complete_previous
+
+  - level: 3
+    title: "Medallion Architecture"
+    description: "Design bronze, silver, and gold data layers"
+    concepts: ["bronze layer", "silver layer", "gold layer"]
+    questions:
+      - arch-lakehouse-medallion
+    unlock: complete_previous

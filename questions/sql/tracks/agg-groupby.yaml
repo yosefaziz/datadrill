@@ -1,0 +1,45 @@
+id: sql-agg-groupby
+name: "Aggregate Mastery"
+tagline: "COUNT, SUM, AVG with GROUP BY & HAVING"
+interviewer_says: "total by category, average per group, count distinct"
+you_need: "Aggregate functions + GROUP BY + HAVING"
+description: "Master the most fundamental SQL pattern — grouping and aggregating data. Nearly every data interview starts here."
+icon: "bar-chart-2"
+category: "Aggregation & Logic"
+order: 1
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Basic Aggregates"
+    description: "COUNT, SUM, AVG basics"
+    concepts: ["COUNT", "SUM", "AVG"]
+    questions:
+      - agg-basic-count
+      - agg-basic-sum-avg
+    unlock: always_unlocked
+
+  - level: 2
+    title: "GROUP BY"
+    description: "Grouping with multiple columns"
+    concepts: ["GROUP BY", "multiple columns"]
+    questions:
+      - agg-groupby-multi
+    unlock: complete_previous
+
+  - level: 3
+    title: "HAVING & Filtering"
+    description: "Filter aggregated results"
+    concepts: ["HAVING", "aggregate filtering"]
+    questions:
+      - agg-having-filter
+    unlock: complete_previous
+
+  - level: 4
+    title: "Conditional Aggregation"
+    description: "CASE inside SUM/COUNT"
+    concepts: ["CASE", "conditional SUM", "conditional COUNT"]
+    questions:
+      - agg-conditional-sum
+      - agg-conditional-count
+    unlock: complete_previous

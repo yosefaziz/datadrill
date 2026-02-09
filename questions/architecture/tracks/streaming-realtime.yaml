@@ -1,0 +1,44 @@
+id: architecture-streaming-realtime
+name: "Real-Time & Streaming"
+tagline: "Design streaming pipelines for real-time analytics"
+interviewer_says: "process events in real-time, sub-second latency"
+you_need: "Kafka, Flink/Spark Streaming, exactly-once"
+description: "Real-time data processing is increasingly common in interviews. Learn streaming architecture patterns and trade-offs."
+icon: "zap"
+category: "Pipeline Design"
+order: 2
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Streaming Basics"
+    description: "Understand core streaming concepts and components"
+    concepts: ["producers", "consumers", "topics"]
+    questions:
+      - arch-streaming-basics
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Processing Patterns"
+    description: "Learn stateless and stateful stream processing"
+    concepts: ["stateless vs stateful", "windowing", "watermarks"]
+    questions:
+      - arch-streaming-processing-patterns
+    unlock: complete_previous
+
+  - level: 3
+    title: "Delivery Guarantees"
+    description: "Master message delivery semantics"
+    concepts: ["at-least-once", "exactly-once", "idempotent consumers"]
+    questions:
+      - arch-streaming-delivery-semantics
+      - arch-streaming-exactly-once
+    unlock: complete_previous
+
+  - level: 4
+    title: "Sessionization Pipeline"
+    description: "Build real-time session detection from event streams"
+    concepts: ["session windows", "gap detection", "real-time aggregation"]
+    questions:
+      - arch-streaming-sessionization
+    unlock: complete_previous

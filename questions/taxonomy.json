@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "description": "Concept taxonomy for question generation. Maps skill → category → concepts with difficulty and tags.",
+  "skills": {
+    "sql": {
+      "categories": {
+        "Aggregation & Logic": {
+          "concepts": [
+            { "id": "agg-basic", "name": "Basic Aggregates", "tags": ["COUNT", "SUM", "AVG", "MIN", "MAX"], "difficulty": ["easy"] },
+            { "id": "group-by", "name": "GROUP BY", "tags": ["GROUP BY", "multi-column", "expression"], "difficulty": ["easy", "medium"] },
+            { "id": "having", "name": "HAVING Clause", "tags": ["HAVING", "aggregate-filter"], "difficulty": ["easy", "medium"] },
+            { "id": "conditional-agg", "name": "Conditional Aggregation", "tags": ["CASE", "SUM-CASE", "COUNT-CASE", "FILTER"], "difficulty": ["medium"] },
+            { "id": "dedup", "name": "Deduplication", "tags": ["DISTINCT", "ROW_NUMBER", "QUALIFY", "dedup"], "difficulty": ["easy", "medium", "hard"] },
+            { "id": "set-ops", "name": "Set Operations", "tags": ["UNION", "UNION ALL", "INTERSECT", "EXCEPT"], "difficulty": ["easy", "medium"] }
+          ]
+        },
+        "Joins & Filtering": {
+          "concepts": [
+            { "id": "inner-join", "name": "Inner Join", "tags": ["INNER JOIN", "equi-join"], "difficulty": ["easy"] },
+            { "id": "left-join", "name": "Left/Right Join", "tags": ["LEFT JOIN", "RIGHT JOIN", "outer-join"], "difficulty": ["easy", "medium"] },
+            { "id": "multi-table-join", "name": "Multi-Table Join", "tags": ["3-table", "4-table", "multi-join"], "difficulty": ["medium", "hard"] },
+            { "id": "self-join", "name": "Self-Join", "tags": ["self-join", "hierarchy", "comparison"], "difficulty": ["medium", "hard"] },
+            { "id": "anti-join", "name": "Anti-Join", "tags": ["LEFT JOIN IS NULL", "NOT EXISTS", "NOT IN"], "difficulty": ["medium", "hard"] },
+            { "id": "exists-in", "name": "EXISTS & IN", "tags": ["EXISTS", "IN", "correlated-subquery"], "difficulty": ["medium", "hard"] },
+            { "id": "cross-join", "name": "Cross Join", "tags": ["CROSS JOIN", "cartesian"], "difficulty": ["medium"] }
+          ]
+        },
+        "Window Functions": {
+          "concepts": [
+            { "id": "row-number", "name": "ROW_NUMBER", "tags": ["ROW_NUMBER", "PARTITION BY", "ORDER BY"], "difficulty": ["easy", "medium"] },
+            { "id": "rank", "name": "RANK & DENSE_RANK", "tags": ["RANK", "DENSE_RANK", "ties"], "difficulty": ["medium"] },
+            { "id": "top-n", "name": "Top-N per Group", "tags": ["top-n", "ROW_NUMBER", "RANK"], "difficulty": ["medium", "hard"] },
+            { "id": "lag-lead", "name": "LAG & LEAD", "tags": ["LAG", "LEAD", "offset", "previous-row"], "difficulty": ["medium", "hard"] },
+            { "id": "running-total", "name": "Running Total", "tags": ["SUM OVER", "cumulative", "running"], "difficulty": ["medium"] },
+            { "id": "moving-avg", "name": "Moving Average", "tags": ["AVG OVER", "ROWS BETWEEN", "sliding-window"], "difficulty": ["medium", "hard"] },
+            { "id": "first-last", "name": "FIRST_VALUE & LAST_VALUE", "tags": ["FIRST_VALUE", "LAST_VALUE", "NTH_VALUE"], "difficulty": ["medium", "hard"] },
+            { "id": "ntile", "name": "NTILE & Percentile", "tags": ["NTILE", "PERCENTILE_CONT", "PERCENT_RANK"], "difficulty": ["medium", "hard"] }
+          ]
+        },
+        "Complex Patterns": {
+          "concepts": [
+            { "id": "yoy-growth", "name": "Period-over-Period", "tags": ["YoY", "MoM", "QoQ", "growth-rate"], "difficulty": ["medium", "hard"] },
+            { "id": "retention", "name": "Retention & Cohort", "tags": ["retention", "cohort", "DATE_TRUNC"], "difficulty": ["hard"] },
+            { "id": "gaps-islands", "name": "Gaps & Islands", "tags": ["consecutive", "streak", "gaps", "islands"], "difficulty": ["hard"] },
+            { "id": "sessionization", "name": "Sessionization", "tags": ["session", "timeout", "event-grouping"], "difficulty": ["hard"] },
+            { "id": "funnel", "name": "Funnel & Conversion", "tags": ["funnel", "conversion", "step-completion", "drop-off"], "difficulty": ["hard"] },
+            { "id": "active-users", "name": "Active User Metrics", "tags": ["DAU", "WAU", "MAU", "stickiness"], "difficulty": ["medium", "hard"] }
+          ]
+        },
+        "Advanced": {
+          "concepts": [
+            { "id": "recursive-cte", "name": "Recursive CTEs", "tags": ["WITH RECURSIVE", "hierarchy", "tree", "graph"], "difficulty": ["hard"] },
+            { "id": "median-percentile", "name": "Median & Percentiles", "tags": ["PERCENTILE_CONT", "median", "P95", "distribution"], "difficulty": ["hard"] },
+            { "id": "pivot-unpivot", "name": "Pivot & Unpivot", "tags": ["pivot", "unpivot", "CASE-pivot", "UNION-unpivot"], "difficulty": ["medium", "hard"] },
+            { "id": "date-functions", "name": "Date Functions", "tags": ["DATE_TRUNC", "EXTRACT", "DATEDIFF", "INTERVAL"], "difficulty": ["easy", "medium"] },
+            { "id": "string-functions", "name": "String Functions", "tags": ["LIKE", "SUBSTRING", "CONCAT", "SPLIT", "REGEXP"], "difficulty": ["easy", "medium"] },
+            { "id": "json-queries", "name": "JSON Queries", "tags": ["JSON_EXTRACT", "JSON_VALUE", "nested-json"], "difficulty": ["medium", "hard"] },
+            { "id": "attribution", "name": "Attribution & Bucketing", "tags": ["attribution", "last-touch", "histogram", "bucketing"], "difficulty": ["hard"] },
+            { "id": "query-optimization", "name": "Query Optimization", "tags": ["predicate-pushdown", "join-order", "index", "rewrite"], "difficulty": ["hard"] }
+          ]
+        }
+      }
+    },
+    "python": {
+      "categories": {
+        "DataFrame Basics": {
+          "concepts": [
+            { "id": "filter", "name": "Filter & Where", "tags": ["filter", "where", "col", "comparison"], "difficulty": ["easy"] },
+            { "id": "select", "name": "Select & Rename", "tags": ["select", "alias", "withColumnRenamed", "drop"], "difficulty": ["easy"] },
+            { "id": "complex-filter", "name": "Complex Conditions", "tags": ["AND", "OR", "isin", "between", "isNull"], "difficulty": ["easy", "medium"] }
+          ]
+        },
+        "Aggregation & Joins": {
+          "concepts": [
+            { "id": "groupby", "name": "GroupBy & Agg", "tags": ["groupBy", "agg", "sum", "count", "avg"], "difficulty": ["easy", "medium"] },
+            { "id": "conditional-agg", "name": "Conditional Aggregation", "tags": ["when", "otherwise", "conditional-sum"], "difficulty": ["medium"] },
+            { "id": "joins", "name": "DataFrame Joins", "tags": ["join", "inner", "left", "anti", "broadcast"], "difficulty": ["easy", "medium", "hard"] },
+            { "id": "window", "name": "Window Functions", "tags": ["Window", "partitionBy", "orderBy", "row_number", "rank"], "difficulty": ["medium", "hard"] },
+            { "id": "rolling", "name": "Cumulative & Rolling", "tags": ["rangeBetween", "rowsBetween", "cumulative", "moving-avg"], "difficulty": ["medium", "hard"] }
+          ]
+        },
+        "Transformations": {
+          "concepts": [
+            { "id": "dedup", "name": "Deduplication", "tags": ["dropDuplicates", "distinct", "window-dedup"], "difficulty": ["easy", "medium"] },
+            { "id": "null-handling", "name": "Null Handling", "tags": ["fillna", "isNull", "coalesce", "na.drop"], "difficulty": ["easy", "medium"] },
+            { "id": "pivot", "name": "Pivot & Unpivot", "tags": ["pivot", "stack", "melt", "unpivot"], "difficulty": ["medium", "hard"] },
+            { "id": "udf", "name": "UDFs", "tags": ["udf", "pandas_udf", "returnType"], "difficulty": ["medium", "hard"] },
+            { "id": "withColumn", "name": "Column Transforms", "tags": ["withColumn", "when", "regexp_replace", "cast"], "difficulty": ["easy", "medium"] },
+            { "id": "explode", "name": "Explode & Flatten", "tags": ["explode", "flatten", "getField", "ArrayType"], "difficulty": ["medium", "hard"] }
+          ]
+        },
+        "Advanced Patterns": {
+          "concepts": [
+            { "id": "repartition", "name": "Repartition & Coalesce", "tags": ["repartition", "coalesce", "partitions"], "difficulty": ["medium"] },
+            { "id": "cache", "name": "Cache & Persist", "tags": ["cache", "persist", "unpersist", "StorageLevel"], "difficulty": ["medium"] },
+            { "id": "partitioned-io", "name": "Partitioned I/O", "tags": ["partitionBy", "parquet", "read", "write"], "difficulty": ["medium", "hard"] },
+            { "id": "optimization", "name": "Optimization", "tags": ["predicate-pushdown", "column-pruning", "broadcast", "AQE"], "difficulty": ["hard"] }
+          ]
+        }
+      }
+    },
+    "debug": {
+      "categories": {
+        "Join & Filter Bugs": {
+          "concepts": [
+            { "id": "wrong-join", "name": "Wrong JOIN Type", "tags": ["INNER", "LEFT", "FULL", "join-type"], "difficulty": ["easy", "medium"] },
+            { "id": "where-kills-outer", "name": "WHERE Kills Outer Join", "tags": ["predicate-placement", "ON-vs-WHERE"], "difficulty": ["medium"] },
+            { "id": "fan-out", "name": "Fan-Out Duplicates", "tags": ["one-to-many", "duplicate-rows", "fan-out"], "difficulty": ["medium", "hard"] },
+            { "id": "null-comparison", "name": "NULL Comparison", "tags": ["IS NULL", "three-valued-logic", "NOT IN NULL"], "difficulty": ["easy", "medium", "hard"] },
+            { "id": "null-aggregates", "name": "NULL in Aggregates", "tags": ["COUNT vs COUNT(*)", "AVG NULL", "SUM NULL"], "difficulty": ["medium"] },
+            { "id": "wrong-operator", "name": "Wrong Operator", "tags": ["< vs <=", "> vs >=", "boundary"], "difficulty": ["easy"] },
+            { "id": "between-boundary", "name": "BETWEEN Boundaries", "tags": ["BETWEEN", "inclusive", "date-boundary"], "difficulty": ["medium"] }
+          ]
+        },
+        "Aggregation & Logic Bugs": {
+          "concepts": [
+            { "id": "missing-groupby", "name": "Missing GROUP BY", "tags": ["non-aggregated", "GROUP BY", "column-missing"], "difficulty": ["easy"] },
+            { "id": "wrong-aggregate", "name": "Wrong Aggregate", "tags": ["SUM-vs-COUNT", "double-counting", "wrong-function"], "difficulty": ["medium"] },
+            { "id": "window-partition", "name": "Wrong Window Partition", "tags": ["PARTITION BY", "missing-partition", "wrong-column"], "difficulty": ["medium"] },
+            { "id": "window-frame", "name": "Window Frame Errors", "tags": ["ROWS-vs-RANGE", "frame-boundary", "UNBOUNDED"], "difficulty": ["medium", "hard"] },
+            { "id": "subquery-correlation", "name": "Subquery Correlation", "tags": ["correlated", "wrong-reference", "scope"], "difficulty": ["medium", "hard"] }
+          ]
+        },
+        "Subtle Traps": {
+          "concepts": [
+            { "id": "integer-division", "name": "Integer Division", "tags": ["truncation", "CAST", "decimal"], "difficulty": ["easy"] },
+            { "id": "string-number", "name": "String vs Number", "tags": ["implicit-cast", "comparison", "type-mismatch"], "difficulty": ["medium"] },
+            { "id": "date-format", "name": "Date Format Traps", "tags": ["string-to-date", "format-mismatch", "timezone"], "difficulty": ["medium"] },
+            { "id": "case-sensitivity", "name": "Case Sensitivity", "tags": ["LOWER", "UPPER", "case-mismatch"], "difficulty": ["easy", "medium"] },
+            { "id": "whitespace", "name": "Whitespace Traps", "tags": ["TRIM", "trailing-space", "invisible-chars"], "difficulty": ["medium"] },
+            { "id": "order-by-gotchas", "name": "ORDER BY Gotchas", "tags": ["NULL-ordering", "string-sort", "numeric-sort"], "difficulty": ["medium"] }
+          ]
+        }
+      }
+    },
+    "architecture": {
+      "categories": {
+        "Pipeline Design": {
+          "concepts": [
+            { "id": "batch-etl", "name": "Batch ETL", "tags": ["ETL", "ELT", "orchestration", "Airflow"], "difficulty": ["medium"] },
+            { "id": "streaming", "name": "Streaming & Real-Time", "tags": ["Kafka", "Flink", "Spark-Streaming", "real-time"], "difficulty": ["medium", "hard"] },
+            { "id": "clickstream", "name": "Clickstream Pipeline", "tags": ["clickstream", "event-collection", "enrichment"], "difficulty": ["medium", "hard"] },
+            { "id": "cdc", "name": "Change Data Capture", "tags": ["CDC", "Debezium", "log-based", "replication"], "difficulty": ["medium", "hard"] }
+          ]
+        },
+        "System Patterns": {
+          "concepts": [
+            { "id": "lambda-kappa", "name": "Lambda & Kappa", "tags": ["Lambda", "Kappa", "batch-layer", "speed-layer"], "difficulty": ["medium", "hard"] },
+            { "id": "lakehouse", "name": "Data Lake & Lakehouse", "tags": ["lakehouse", "Delta-Lake", "Iceberg", "medallion"], "difficulty": ["medium", "hard"] }
+          ]
+        },
+        "Operational Concerns": {
+          "concepts": [
+            { "id": "data-quality", "name": "Data Quality", "tags": ["DQ", "Great-Expectations", "dbt-tests", "validation"], "difficulty": ["medium"] },
+            { "id": "schema-evolution", "name": "Schema Evolution", "tags": ["schema-registry", "Avro", "backward-compat", "forward-compat"], "difficulty": ["medium", "hard"] },
+            { "id": "idempotency", "name": "Idempotency", "tags": ["idempotent", "MERGE", "partition-overwrite"], "difficulty": ["medium"] },
+            { "id": "backfill", "name": "Backfill", "tags": ["backfill", "reprocessing", "late-arriving"], "difficulty": ["medium", "hard"] },
+            { "id": "gdpr", "name": "GDPR & Deletion", "tags": ["GDPR", "right-to-delete", "crypto-shredding", "PII"], "difficulty": ["medium", "hard"] },
+            { "id": "multi-region", "name": "Multi-Region", "tags": ["replication", "consistency", "geo-distribution"], "difficulty": ["hard"] },
+            { "id": "feature-store", "name": "Feature Store", "tags": ["feature-store", "online-offline", "ML-serving"], "difficulty": ["hard"] },
+            { "id": "cost-optimization", "name": "Cost Optimization", "tags": ["storage-tiers", "compute-sizing", "auto-scaling"], "difficulty": ["hard"] }
+          ]
+        }
+      }
+    },
+    "modeling": {
+      "categories": {
+        "Schema Fundamentals": {
+          "concepts": [
+            { "id": "star-schema", "name": "Star Schema", "tags": ["star-schema", "fact-table", "dimension-table"], "difficulty": ["easy", "medium"] },
+            { "id": "grain", "name": "Grain Definition", "tags": ["grain", "transaction", "snapshot", "accumulating"], "difficulty": ["medium"] },
+            { "id": "surrogate-keys", "name": "Surrogate Keys", "tags": ["surrogate-key", "natural-key", "sequence"], "difficulty": ["medium"] },
+            { "id": "scd", "name": "Slowly Changing Dimensions", "tags": ["SCD", "Type-1", "Type-2", "Type-3", "effective-date"], "difficulty": ["medium", "hard"] },
+            { "id": "snowflake-schema", "name": "Snowflake Schema", "tags": ["snowflake", "normalization", "3NF-dimension"], "difficulty": ["medium"] },
+            { "id": "norm-vs-denorm", "name": "Normalization vs Denormalization", "tags": ["normalization", "denormalization", "trade-offs"], "difficulty": ["medium"] },
+            { "id": "kimball", "name": "Kimball Methodology", "tags": ["Kimball", "bus-architecture", "conformed-dimensions"], "difficulty": ["medium", "hard"] },
+            { "id": "inmon", "name": "Inmon Methodology", "tags": ["Inmon", "3NF", "enterprise-warehouse", "CIF"], "difficulty": ["medium", "hard"] },
+            { "id": "data-vault", "name": "Data Vault 2.0", "tags": ["Data-Vault", "hub", "link", "satellite"], "difficulty": ["hard"] }
+          ]
+        },
+        "Dimension Patterns": {
+          "concepts": [
+            { "id": "degenerate-dim", "name": "Degenerate Dimensions", "tags": ["degenerate", "fact-dimension", "order-number"], "difficulty": ["medium"] },
+            { "id": "junk-dim", "name": "Junk Dimensions", "tags": ["junk-dimension", "flag-combination", "low-cardinality"], "difficulty": ["medium"] },
+            { "id": "role-playing-dim", "name": "Role-Playing Dimensions", "tags": ["role-playing", "date-dimension", "multiple-roles"], "difficulty": ["medium", "hard"] },
+            { "id": "bridge-table", "name": "Bridge Tables", "tags": ["bridge", "many-to-many", "weighting-factor"], "difficulty": ["hard"] },
+            { "id": "factless-fact", "name": "Factless Fact Tables", "tags": ["factless", "event-tracking", "coverage"], "difficulty": ["medium"] }
+          ]
+        },
+        "Advanced Modeling": {
+          "concepts": [
+            { "id": "obt", "name": "One Big Table", "tags": ["OBT", "wide-table", "denormalized"], "difficulty": ["medium"] },
+            { "id": "activity-schema", "name": "Activity Schema", "tags": ["activity-schema", "entity-event", "stream-table"], "difficulty": ["hard"] },
+            { "id": "schema-selection", "name": "Schema Selection", "tags": ["trade-offs", "use-case-driven", "pattern-matching"], "difficulty": ["hard"] }
+          ]
+        }
+      }
+    }
+  }
+}

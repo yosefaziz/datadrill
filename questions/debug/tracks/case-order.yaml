@@ -1,0 +1,34 @@
+id: debug-case-order
+name: "Case Sensitivity & Ordering"
+tagline: "Fix case sensitivity, whitespace & ORDER BY bugs"
+interviewer_says: "results look sorted but aren't, duplicate-looking rows"
+you_need: "LOWER/UPPER, TRIM, ORDER BY semantics, COLLATE"
+description: "Case sensitivity and ordering bugs are hard to catch visually. Learn to spot trailing spaces, case mismatches, and ORDER BY traps."
+icon: "sort-asc"
+category: "Subtle Traps"
+order: 8
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Case Mismatch"
+    description: "Fix joins and filters that fail on case differences"
+    concepts: ["LOWER", "UPPER", "case-insensitive comparison"]
+    questions:
+      - dbg-case-mismatch-join
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Whitespace Traps"
+    description: "Fix trailing spaces that break comparisons"
+    concepts: ["TRIM", "trailing spaces", "CHAR vs VARCHAR padding"]
+    questions:
+      - dbg-case-trailing-space
+      - dbg-case-char-padding
+
+  - level: 3
+    title: "ORDER BY Gotchas"
+    description: "Fix NULL ordering and string vs numeric sort issues"
+    concepts: ["NULLS FIRST/LAST", "string sort vs numeric sort", "COLLATE"]
+    questions:
+      - dbg-order-null-position

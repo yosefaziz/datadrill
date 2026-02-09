@@ -1,0 +1,41 @@
+id: modeling-scd
+name: "Slowly Changing Dimensions"
+tagline: "Handle dimension changes over time"
+interviewer_says: "customer changed address, how to track history"
+you_need: "SCD Type 1, 2, 3, effective dates"
+description: "SCDs are the #1 dimension modeling interview topic. Learn when to overwrite, version, or add columns for changes."
+icon: "clock"
+category: "Schema Fundamentals"
+order: 2
+prerequisites: [modeling-star-schema]
+
+levels:
+  - level: 1
+    title: "SCD Type 1"
+    description: "Overwrite old values with no history tracking"
+    concepts: ["SCD Type 1", "overwrite", "no history"]
+    questions:
+      - model-scd-type1
+    unlock: always_unlocked
+
+  - level: 2
+    title: "SCD Type 2"
+    description: "Versioned rows with effective dates"
+    concepts: ["SCD Type 2", "effective dates", "versioned rows"]
+    questions:
+      - model-scd-type2-basics
+
+  - level: 3
+    title: "SCD Type 2 Implementation"
+    description: "Merge logic, current flag, and effective date ranges"
+    concepts: ["merge logic", "current flag", "date ranges", "SCD2 implementation"]
+    questions:
+      - model-scd-type2-merge
+      - model-scd-type2-current-flag
+
+  - level: 4
+    title: "SCD Type 3 & Hybrid"
+    description: "Previous value columns and mixed SCD types"
+    concepts: ["SCD Type 3", "hybrid SCD", "previous value column"]
+    questions:
+      - model-scd-type3-hybrid

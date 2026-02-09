@@ -1,0 +1,41 @@
+id: modeling-dimension-patterns
+name: "Dimension Patterns"
+tagline: "Junk, degenerate, role-playing & bridge dimensions"
+interviewer_says: "what is a junk dimension, role-playing dimension"
+you_need: "Special dimension types, bridge tables, mini-dimensions"
+description: "Beyond basic dimensions, learn specialized patterns — junk dimensions for flags, role-playing for dates, and bridges for many-to-many."
+icon: "box"
+category: "Dimension Patterns"
+order: 5
+prerequisites: [modeling-star-schema]
+
+levels:
+  - level: 1
+    title: "Degenerate Dimensions"
+    description: "Dimensions stored directly in the fact table"
+    concepts: ["degenerate dimension", "order number", "invoice number"]
+    questions:
+      - model-dim-degenerate
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Junk Dimensions"
+    description: "Combining low-cardinality flags into a single dimension"
+    concepts: ["junk dimension", "flag combinations", "low cardinality"]
+    questions:
+      - model-dim-junk
+
+  - level: 3
+    title: "Role-Playing Dimensions"
+    description: "Multiple date or geography roles in a single schema"
+    concepts: ["role-playing dimension", "date roles", "geography roles"]
+    questions:
+      - model-dim-role-playing-dates
+      - model-dim-role-playing-geo
+
+  - level: 4
+    title: "Bridge Tables"
+    description: "Many-to-many relationships between facts and dimensions"
+    concepts: ["bridge table", "many-to-many", "weighting factor"]
+    questions:
+      - model-dim-bridge

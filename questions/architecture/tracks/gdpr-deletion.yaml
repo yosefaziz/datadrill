@@ -1,0 +1,36 @@
+id: architecture-gdpr-deletion
+name: "GDPR & Data Deletion"
+tagline: "Handle data deletion requests and privacy compliance"
+interviewer_says: "delete user data across the pipeline, GDPR compliance"
+you_need: "Soft/hard delete, data lineage, PII handling"
+description: "GDPR right-to-deletion is a top-3 architecture interview topic. Learn to design systems that can actually delete user data."
+icon: "lock"
+category: "Operational Concerns"
+order: 9
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Deletion Strategies"
+    description: "Understand approaches to data deletion"
+    concepts: ["soft delete", "hard delete", "crypto-shredding"]
+    questions:
+      - arch-gdpr-deletion-strategies
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Pipeline Impact"
+    description: "Propagate deletions through data pipelines"
+    concepts: ["deletion propagation", "lineage tracking", "downstream impact"]
+    questions:
+      - arch-gdpr-pipeline-propagation
+      - arch-gdpr-lineage-tracking
+    unlock: complete_previous
+
+  - level: 3
+    title: "Compliance Architecture"
+    description: "Design end-to-end privacy compliance systems"
+    concepts: ["PII catalog", "audit trail", "retention policies"]
+    questions:
+      - arch-gdpr-compliance-architecture
+    unlock: complete_previous

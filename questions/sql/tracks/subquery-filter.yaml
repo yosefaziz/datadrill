@@ -1,0 +1,36 @@
+id: sql-subquery-filter
+name: "Subquery Filtering"
+tagline: "Filter with EXISTS, IN & correlated subqueries"
+interviewer_says: "employees who have orders, products with reviews"
+you_need: "EXISTS, IN, correlated subqueries"
+description: "Learn to filter rows using subqueries — a powerful pattern that separates junior from senior SQL skills."
+icon: "filter"
+category: "Joins & Filtering"
+order: 3
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "IN Subquery"
+    description: "Basic IN (SELECT ...) filtering"
+    concepts: ["IN", "subquery"]
+    questions:
+      - subquery-in-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "EXISTS Pattern"
+    description: "Correlated EXISTS"
+    concepts: ["EXISTS", "correlated subquery"]
+    questions:
+      - subquery-exists-orders
+      - subquery-exists-correlated
+    unlock: complete_previous
+
+  - level: 3
+    title: "Complex Filtering"
+    description: "NOT EXISTS, nested"
+    concepts: ["NOT EXISTS", "nested subquery"]
+    questions:
+      - subquery-not-exists-complex
+    unlock: complete_previous

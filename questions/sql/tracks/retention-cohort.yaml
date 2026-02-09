@@ -1,0 +1,36 @@
+id: sql-retention-cohort
+name: "Retention & Cohort Analysis"
+tagline: "Build retention curves & cohort tables"
+interviewer_says: "30-day retention, monthly cohort analysis"
+you_need: "Self-join + DATE_TRUNC + conditional aggregation"
+description: "Cohort retention analysis is a top-10 data interview question. Learn to build retention tables from raw event data."
+icon: "users"
+category: "Complex Patterns"
+order: 2
+prerequisites: [sql-agg-groupby]
+
+levels:
+  - level: 1
+    title: "Simple Retention"
+    description: "Day 1 / Day 7 retention"
+    concepts: ["self-join", "DATE_DIFF", "retention"]
+    questions:
+      - retention-day1-day7
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Cohort Table"
+    description: "Monthly cohort matrix"
+    concepts: ["DATE_TRUNC", "cohort", "conditional aggregation"]
+    questions:
+      - retention-monthly-cohort
+      - retention-cohort-matrix
+    unlock: complete_previous
+
+  - level: 3
+    title: "Rolling Retention"
+    description: "N-day rolling retention"
+    concepts: ["rolling retention", "window function", "date range"]
+    questions:
+      - retention-rolling-nday
+    unlock: complete_previous

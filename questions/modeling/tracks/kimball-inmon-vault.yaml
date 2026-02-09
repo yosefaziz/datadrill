@@ -1,0 +1,41 @@
+id: modeling-kimball-inmon-vault
+name: "Kimball vs Inmon vs Vault"
+tagline: "Compare major data warehouse methodologies"
+interviewer_says: "Kimball vs Inmon, what is Data Vault"
+you_need: "Kimball bus architecture, Inmon CIF, Data Vault 2.0"
+description: "Understanding the three major warehouse methodologies shows architectural maturity. Learn their philosophies and trade-offs."
+icon: "library"
+category: "Schema Fundamentals"
+order: 4
+prerequisites: [modeling-star-schema]
+
+levels:
+  - level: 1
+    title: "Kimball Approach"
+    description: "Dimensional modeling and bus architecture"
+    concepts: ["Kimball", "dimensional modeling", "bus architecture", "conformed dimensions"]
+    questions:
+      - model-kimball-bus-arch
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Inmon Approach"
+    description: "3NF enterprise data warehouse"
+    concepts: ["Inmon", "3NF", "enterprise data warehouse", "CIF"]
+    questions:
+      - model-inmon-3nf-edw
+
+  - level: 3
+    title: "Data Vault 2.0"
+    description: "Hubs, links, and satellites"
+    concepts: ["Data Vault", "hubs", "links", "satellites", "hash keys"]
+    questions:
+      - model-vault-hubs-links
+      - model-vault-satellites
+
+  - level: 4
+    title: "Methodology Selection"
+    description: "When to use which warehouse approach"
+    concepts: ["methodology comparison", "architecture selection", "trade-offs"]
+    questions:
+      - model-methodology-selection

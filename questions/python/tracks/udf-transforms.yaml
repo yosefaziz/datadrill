@@ -1,0 +1,36 @@
+id: python-udf-transforms
+name: "UDFs & Column Transforms"
+tagline: "Create UDFs and transform columns"
+interviewer_says: "apply custom function, transform column, add computed column"
+you_need: "udf(), withColumn(), when/otherwise, regexp"
+description: "Learn to extend PySpark with custom transformations — UDFs, column expressions, and conditional logic."
+icon: "code"
+category: "Transformations"
+order: 8
+prerequisites: [python-filter-select]
+
+levels:
+  - level: 1
+    title: "withColumn"
+    description: "Add and transform columns"
+    concepts: ["withColumn", "lit", "col", "arithmetic"]
+    questions:
+      - py-transform-withcol
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Conditional Logic"
+    description: "Apply when/otherwise patterns"
+    concepts: ["when", "otherwise", "chained conditions"]
+    questions:
+      - py-transform-when
+      - py-transform-case-nested
+    unlock: complete_previous
+
+  - level: 3
+    title: "UDF Creation"
+    description: "Create a Python UDF with explicit return type"
+    concepts: ["udf", "returnType", "StringType", "IntegerType"]
+    questions:
+      - py-udf-create
+    unlock: complete_previous

@@ -1,0 +1,36 @@
+id: python-explode-nested
+name: "Explode & Flatten"
+tagline: "Flatten arrays, structs & nested JSON"
+interviewer_says: "explode the array column, flatten nested JSON"
+you_need: "explode(), flatten(), getField(), schema navigation"
+description: "Real-world data is rarely flat. Learn to handle arrays, structs, and nested JSON — common in event data and APIs."
+icon: "unfold-vertical"
+category: "Transformations"
+order: 9
+prerequisites: [python-filter-select]
+
+levels:
+  - level: 1
+    title: "Explode Arrays"
+    description: "Explode an array column into rows"
+    concepts: ["explode", "explode_outer", "arrays"]
+    questions:
+      - py-explode-array
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Access Structs"
+    description: "Navigate and extract nested struct fields"
+    concepts: ["getField", "dot notation", "struct"]
+    questions:
+      - py-nested-struct
+      - py-nested-map-access
+    unlock: complete_previous
+
+  - level: 3
+    title: "Flatten JSON"
+    description: "Parse and flatten deeply nested JSON"
+    concepts: ["from_json", "schema_of_json", "flatten"]
+    questions:
+      - py-nested-json-flatten
+    unlock: complete_previous

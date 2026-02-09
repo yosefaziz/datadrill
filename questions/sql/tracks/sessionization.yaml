@@ -1,0 +1,36 @@
+id: sql-sessionization
+name: "Sessionization"
+tagline: "Group events into sessions by time gaps"
+interviewer_says: "define sessions from clickstream, 30-minute timeout"
+you_need: "LAG + conditional SUM for session boundaries"
+description: "Sessionization converts raw event streams into meaningful sessions — a core pattern for web analytics and user behavior analysis."
+icon: "clock"
+category: "Complex Patterns"
+order: 4
+prerequisites: [sql-window-lag-lead]
+
+levels:
+  - level: 1
+    title: "Time Gaps"
+    description: "Detect gaps between events"
+    concepts: ["LAG", "TIMESTAMPDIFF", "gap threshold"]
+    questions:
+      - session-time-gaps
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Session Assignment"
+    description: "Assign session IDs"
+    concepts: ["conditional SUM", "session boundary", "running total"]
+    questions:
+      - session-assign-ids
+      - session-boundary-flag
+    unlock: complete_previous
+
+  - level: 3
+    title: "Session Metrics"
+    description: "Duration, event count per session"
+    concepts: ["session duration", "event count", "aggregation"]
+    questions:
+      - session-metrics-summary
+    unlock: complete_previous

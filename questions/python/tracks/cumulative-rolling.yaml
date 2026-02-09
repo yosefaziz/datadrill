@@ -1,0 +1,36 @@
+id: python-cumulative-rolling
+name: "Cumulative & Rolling"
+tagline: "Running totals, moving averages & cumulative stats"
+interviewer_says: "rolling 7-day average, running total, cumulative count"
+you_need: "Window with rangeBetween/rowsBetween"
+description: "Build on window functions to calculate rolling and cumulative metrics — critical for time-series analysis in PySpark."
+icon: "trending-up"
+category: "Aggregation & Joins"
+order: 5
+prerequisites: [python-window-functions]
+
+levels:
+  - level: 1
+    title: "Cumulative Sum"
+    description: "Compute a running total using Window"
+    concepts: ["sum", "unboundedPreceding", "currentRow"]
+    questions:
+      - py-rolling-cumsum
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Rolling Average"
+    description: "Calculate N-day moving averages"
+    concepts: ["rangeBetween", "rowsBetween", "avg"]
+    questions:
+      - py-rolling-avg-7day
+      - py-rolling-avg-30day
+    unlock: complete_previous
+
+  - level: 3
+    title: "Cumulative Distinct"
+    description: "Approximate distinct counts over time"
+    concepts: ["approx_count_distinct", "collect_set", "size"]
+    questions:
+      - py-rolling-cumdistinct
+    unlock: complete_previous

@@ -1,0 +1,36 @@
+id: sql-query-optimization
+name: "Query Optimization"
+tagline: "Rewrite slow queries for better performance"
+interviewer_says: "optimize this query, why is this slow"
+you_need: "Index awareness, predicate pushdown, join ordering"
+description: "Query optimization questions test your understanding of how databases execute queries and how to make them faster."
+icon: "zap"
+category: "Advanced"
+order: 6
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Predicate Pushdown"
+    description: "Filter early"
+    concepts: ["predicate pushdown", "WHERE placement", "early filtering"]
+    questions:
+      - optimize-predicate-pushdown
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Join Optimization"
+    description: "Reorder joins, avoid cartesian products"
+    concepts: ["join order", "cartesian product", "filter before join"]
+    questions:
+      - optimize-join-reorder
+      - optimize-avoid-cartesian
+    unlock: complete_previous
+
+  - level: 3
+    title: "Rewrite Patterns"
+    description: "Eliminate correlated subqueries"
+    concepts: ["correlated subquery elimination", "JOIN rewrite", "CTE"]
+    questions:
+      - optimize-rewrite-correlated
+    unlock: complete_previous

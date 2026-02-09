@@ -1,0 +1,36 @@
+id: sql-pivot-unpivot
+name: "Pivot & Unpivot"
+tagline: "Reshape data between wide and long formats"
+interviewer_says: "pivot monthly sales, convert rows to columns"
+you_need: "CASE + aggregation for pivot, UNION ALL for unpivot"
+description: "Pivoting converts rows to columns and vice versa — a common data transformation in reporting and ETL."
+icon: "table"
+category: "Advanced"
+order: 3
+prerequisites: [sql-agg-groupby]
+
+levels:
+  - level: 1
+    title: "Basic Pivot"
+    description: "Rows to columns with CASE"
+    concepts: ["CASE", "conditional aggregation", "pivot"]
+    questions:
+      - pivot-basic-case
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Dynamic Pivot"
+    description: "Variable columns"
+    concepts: ["dynamic pivot", "multi-value", "crosstab"]
+    questions:
+      - pivot-dynamic-months
+      - pivot-dynamic-categories
+    unlock: complete_previous
+
+  - level: 3
+    title: "Unpivot"
+    description: "Columns to rows"
+    concepts: ["UNION ALL", "unpivot", "wide to long"]
+    questions:
+      - pivot-unpivot-to-rows
+    unlock: complete_previous

@@ -1,0 +1,36 @@
+id: sql-yoy-growth
+name: "Period-over-Period Growth"
+tagline: "Calculate YoY, MoM & QoQ growth rates"
+interviewer_says: "year-over-year growth, month-over-month change"
+you_need: "Self-join or LAG + date arithmetic"
+description: "Period-over-period comparison is a staple of analytics interviews. Learn to calculate growth rates cleanly."
+icon: "trending-up"
+category: "Complex Patterns"
+order: 1
+prerequisites: [sql-window-lag-lead]
+
+levels:
+  - level: 1
+    title: "Month-over-Month"
+    description: "Basic MoM with LAG"
+    concepts: ["LAG", "month-over-month", "percent change"]
+    questions:
+      - yoy-mom-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Year-over-Year"
+    description: "YoY with self-join"
+    concepts: ["self-join", "year-over-year", "date arithmetic"]
+    questions:
+      - yoy-annual-selfjoin
+      - yoy-quarterly-growth
+    unlock: complete_previous
+
+  - level: 3
+    title: "Growth with Gaps"
+    description: "Handle missing periods"
+    concepts: ["COALESCE", "missing periods", "gap handling"]
+    questions:
+      - yoy-growth-missing-periods
+    unlock: complete_previous

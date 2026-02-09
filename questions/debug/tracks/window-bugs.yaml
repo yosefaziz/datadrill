@@ -1,0 +1,34 @@
+id: debug-window-bugs
+name: "Window Function Bugs"
+tagline: "Fix wrong frames, partitions & ordering in window functions"
+interviewer_says: "running total is wrong, rank gives unexpected results"
+you_need: "Window frame specs, PARTITION BY, ORDER BY"
+description: "Window function bugs are subtle — wrong frame boundaries, missing PARTITION BY, or incorrect ORDER BY produce silently wrong results."
+icon: "columns"
+category: "Aggregation & Logic Bugs"
+order: 5
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Wrong Partition"
+    description: "Fix missing or incorrect PARTITION BY clauses"
+    concepts: ["PARTITION BY", "window scope", "global vs partitioned"]
+    questions:
+      - dbg-window-wrong-partition
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Frame Errors"
+    description: "Fix ROWS vs RANGE and wrong frame boundaries"
+    concepts: ["ROWS vs RANGE", "UNBOUNDED PRECEDING", "CURRENT ROW"]
+    questions:
+      - dbg-window-rows-vs-range
+      - dbg-window-wrong-boundary
+
+  - level: 3
+    title: "Order Mismatch"
+    description: "Fix wrong ORDER BY direction and tie-breaking issues"
+    concepts: ["ORDER BY direction", "tie handling", "RANK vs ROW_NUMBER"]
+    questions:
+      - dbg-window-order-ties

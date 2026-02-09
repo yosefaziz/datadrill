@@ -1,0 +1,43 @@
+id: sql-date-string-json
+name: "Date, String & JSON"
+tagline: "Parse dates, manipulate strings & query JSON"
+interviewer_says: "extract year from date, parse JSON field, string matching"
+you_need: "DATE_TRUNC, EXTRACT, string functions, JSON operators"
+description: "Date arithmetic, string manipulation, and JSON querying are essential utility skills that appear across many interview questions."
+icon: "code"
+category: "Advanced"
+order: 4
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Date Functions"
+    description: "DATE_TRUNC, EXTRACT, DATEDIFF"
+    concepts: ["DATE_TRUNC", "EXTRACT", "DATEDIFF"]
+    questions:
+      - parse-date-functions
+    unlock: always_unlocked
+
+  - level: 2
+    title: "String Functions"
+    description: "LIKE, SUBSTRING, CONCAT, SPLIT"
+    concepts: ["LIKE", "SUBSTRING", "CONCAT", "SPLIT_PART"]
+    questions:
+      - parse-string-manipulation
+    unlock: complete_previous
+
+  - level: 3
+    title: "JSON Queries"
+    description: "JSON_EXTRACT, nested access"
+    concepts: ["JSON_EXTRACT", "JSON path", "nested JSON"]
+    questions:
+      - parse-json-extract
+    unlock: complete_previous
+
+  - level: 4
+    title: "Combined Parsing"
+    description: "Real-world parsing challenge"
+    concepts: ["date + string + JSON", "combined parsing"]
+    questions:
+      - parse-combined-challenge
+    unlock: complete_previous
