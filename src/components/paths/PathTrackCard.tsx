@@ -1,5 +1,13 @@
 import { Link } from 'react-router-dom';
-import { TrendingUp, SearchX, LucideIcon } from 'lucide-react';
+import {
+  TrendingUp, SearchX, LucideIcon,
+  BarChart2, CopyMinus, Combine, GitMerge, Filter, ArrowRightLeft,
+  Trophy, ArrowLeftRight, Users, GitBranch, Clock, Activity, Network,
+  Percent, Table, Code, Target, Zap, CircleSlash, Crosshair, Columns,
+  Link as LinkIcon, Shuffle, SortAsc, Database, MousePointer, RefreshCw,
+  Layers, Shield, Repeat, Lock, Globe, Star, Snowflake, Library, Box,
+  Layout, UnfoldVertical, Funnel,
+} from 'lucide-react';
 import { SkillTrackMeta } from '@/types';
 import { useTrackStore } from '@/stores/trackStore';
 
@@ -7,6 +15,45 @@ import { useTrackStore } from '@/stores/trackStore';
 const ICON_MAP: Record<string, LucideIcon> = {
   'trending-up': TrendingUp,
   'search-x': SearchX,
+  'bar-chart-2': BarChart2,
+  'copy-minus': CopyMinus,
+  'combine': Combine,
+  'git-merge': GitMerge,
+  'filter': Filter,
+  'arrow-right-left': ArrowRightLeft,
+  'trophy': Trophy,
+  'arrow-left-right': ArrowLeftRight,
+  'users': Users,
+  'git-branch': GitBranch,
+  'clock': Clock,
+  'funnel': Funnel,
+  'activity': Activity,
+  'network': Network,
+  'percent': Percent,
+  'table': Table,
+  'code': Code,
+  'target': Target,
+  'zap': Zap,
+  'circle-slash': CircleSlash,
+  'crosshair': Crosshair,
+  'columns': Columns,
+  'link': LinkIcon,
+  'shuffle': Shuffle,
+  'sort-asc': SortAsc,
+  'database': Database,
+  'mouse-pointer': MousePointer,
+  'refresh-cw': RefreshCw,
+  'layers': Layers,
+  'shield': Shield,
+  'repeat': Repeat,
+  'lock': Lock,
+  'globe': Globe,
+  'star': Star,
+  'snowflake': Snowflake,
+  'library': Library,
+  'box': Box,
+  'layout': Layout,
+  'unfold-vertical': UnfoldVertical,
 };
 
 // Category accent colors (left border)
@@ -16,6 +63,19 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Aggregation & Logic': 'border-l-success',
   'Complex Patterns': 'border-l-warning',
   'Advanced': 'border-l-error',
+  'DataFrame Basics': 'border-l-primary',
+  'Aggregation & Joins': 'border-l-accent',
+  'Transformations': 'border-l-success',
+  'Advanced Patterns': 'border-l-warning',
+  'Join & Filter Bugs': 'border-l-primary',
+  'Aggregation & Logic Bugs': 'border-l-accent',
+  'Subtle Traps': 'border-l-warning',
+  'Pipeline Design': 'border-l-primary',
+  'System Patterns': 'border-l-accent',
+  'Operational Concerns': 'border-l-warning',
+  'Schema Fundamentals': 'border-l-primary',
+  'Dimension Patterns': 'border-l-accent',
+  'Advanced Modeling': 'border-l-warning',
 };
 
 interface PathTrackCardProps {
