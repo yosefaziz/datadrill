@@ -69,8 +69,7 @@ Use a correlated `EXISTS` subquery that joins `assignments` and `projects`.
 Return the employee `name` and `department`, ordered by name.
 
 ## Expected Output
-| name    | department  |
-|---------|-------------|
-| Alice   | Engineering |
-| Charlie | Engineering |
-| Eve     | Engineering |
+name,department
+Alice,Engineering
+Charlie,Engineering
+Eve,Engineering

@@ -41,7 +41,6 @@ Return the `account_id`, `total_credits`, and `total_debits`.
 Order the results by `account_id`.
 
 ## Expected Output
-| account_id | total_credits | total_debits |
-|------------|---------------|--------------|
-| 1          | 800           | 200          |
-| 2          | 600           | 250          |
+account_id,total_credits,total_debits
+1,800,200
+2,600,250

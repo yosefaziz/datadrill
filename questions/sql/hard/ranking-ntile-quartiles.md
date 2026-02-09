@@ -41,13 +41,12 @@ Quartile 1 has the lowest salaries, quartile 4 has the highest.
 Return `name`, `salary`, and `salary_quartile`, ordered by salary ascending.
 
 ## Expected Output
-| name    | salary | salary_quartile |
-|---------|--------|-----------------|
-| Alice   | 50000  | 1               |
-| Eve     | 55000  | 1               |
-| Bob     | 60000  | 2               |
-| Grace   | 65000  | 2               |
-| Charlie | 70000  | 3               |
-| Frank   | 75000  | 3               |
-| Diana   | 80000  | 4               |
-| Henry   | 90000  | 4               |
+name,salary,salary_quartile
+Alice,50000,1
+Eve,55000,1
+Bob,60000,2
+Grace,65000,2
+Charlie,70000,3
+Frank,75000,3
+Diana,80000,4
+Henry,90000,4

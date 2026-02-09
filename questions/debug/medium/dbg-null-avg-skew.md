@@ -47,7 +47,6 @@ Fix the query to treat NULL bonuses as $0.
 **The Bug:** `AVG(bonus)` ignores NULLs, so only employees with actual bonuses are averaged. Use `COALESCE(bonus, 0)` to treat NULLs as zero.
 
 ## Expected Output
-| department  | avg_bonus |
-|-------------|-----------|
-| Engineering | 2667      |
-| Marketing   | 2000      |
+department,avg_bonus
+Engineering,2667
+Marketing,2000

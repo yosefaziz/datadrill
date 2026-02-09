@@ -35,10 +35,9 @@ Use `LAG()` to compute: `100 * (current - previous) / previous`, rounded to 1 de
 Return `month`, `total_sales`, and `mom_pct_change`. The first month has `NULL`.
 
 ## Expected Output
-| month   | total_sales | mom_pct_change |
-|---------|-------------|----------------|
-| 2024-01 | 10000       |                |
-| 2024-02 | 12000       | 20.0           |
-| 2024-03 | 11400       | -5.0           |
-| 2024-04 | 13680       | 20.0           |
-| 2024-05 | 15048       | 10.0           |
+month,total_sales,mom_pct_change
+2024-01,10000,
+2024-02,12000,20.0
+2024-03,11400,-5.0
+2024-04,13680,20.0
+2024-05,15048,10.0

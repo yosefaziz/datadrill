@@ -37,9 +37,8 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.select()` with `.alias()` to rename columns.
 
 ## Expected Output
-| id | first   | last  | email               |
-|----|---------|-------|---------------------|
-| 1  | Alice   | Smith | alice@example.com   |
-| 2  | Bob     | Jones | bob@example.com     |
-| 3  | Charlie | Brown | charlie@example.com |
-| 4  | Diana   | Lee   | diana@example.com   |
+id,first,last,email
+1,Alice,Smith,alice@example.com
+2,Bob,Jones,bob@example.com
+3,Charlie,Brown,charlie@example.com
+4,Diana,Lee,diana@example.com

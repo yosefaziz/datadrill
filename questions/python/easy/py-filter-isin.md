@@ -40,9 +40,8 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `col("status").isin("shipped", "delivered")`.
 
 ## Expected Output
-| id | customer_id | product  | status    |
-|----|-------------|----------|-----------|
-| 1  | 101         | Laptop   | shipped   |
-| 3  | 103         | Tablet   | delivered |
-| 5  | 105         | Keyboard | shipped   |
-| 6  | 106         | Mouse    | delivered |
+id,customer_id,product,status
+1,101,Laptop,shipped
+3,103,Tablet,delivered
+5,105,Keyboard,shipped
+6,106,Mouse,delivered

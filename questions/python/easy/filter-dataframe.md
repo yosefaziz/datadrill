@@ -36,8 +36,7 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.filter()` or `.where()` with a column condition.
 
 ## Expected Output
-| id | name    | department  | salary |
-|----|---------|-------------|--------|
-| 1  | Alice   | Engineering | 75000  |
-| 3  | Charlie | Engineering | 80000  |
-| 5  | Eve     | Engineering | 70000  |
+id,name,department,salary
+1,Alice,Engineering,75000
+3,Charlie,Engineering,80000
+5,Eve,Engineering,70000

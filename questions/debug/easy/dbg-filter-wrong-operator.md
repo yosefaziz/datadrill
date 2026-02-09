@@ -46,9 +46,8 @@ Fix the comparison operator to include the boundary value.
 **The Bug:** `>` (strictly greater than) excludes the boundary. Use `>=` (greater than or equal) to include products with exactly 10 in stock.
 
 ## Expected Output
-| name     | price | stock |
-|----------|-------|-------|
-| Keyboard | 79    | 25    |
-| Laptop   | 999   | 15    |
-| Monitor  | 349   | 10    |
-| Phone    | 699   | 10    |
+name,price,stock
+Keyboard,79,25
+Laptop,999,15
+Monitor,349,10
+Phone,699,10

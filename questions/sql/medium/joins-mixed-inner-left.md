@@ -69,10 +69,9 @@ Return the `employee` name, `department` name, and `project` title.
 Order the results by employee name.
 
 ## Expected Output
-| employee | department  | project |
-|----------|-------------|---------|
-| Alice    | Engineering | Alpha   |
-| Bob      | Engineering | NULL    |
-| Charlie  | Sales       | Beta    |
-| David    | Sales       | Alpha   |
-| Eve      | Engineering | NULL    |
+employee,department,project
+Alice,Engineering,Alpha
+Bob,Engineering,NULL
+Charlie,Sales,Beta
+David,Sales,Alpha
+Eve,Engineering,NULL

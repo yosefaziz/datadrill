@@ -37,8 +37,7 @@ Use `ROW_NUMBER()` partitioned by `user_id`, ordered by `login_date DESC`, then 
 Return `user_id`, `login_date`, and `ip_address`, ordered by user_id.
 
 ## Expected Output
-| user_id | login_date | ip_address |
-|---------|------------|------------|
-| 1       | 2024-01-10 | 10.0.0.3   |
-| 2       | 2024-01-08 | 10.0.1.2   |
-| 3       | 2024-01-03 | 10.0.2.1   |
+user_id,login_date,ip_address
+1,2024-01-10,10.0.0.3
+2,2024-01-08,10.0.1.2
+3,2024-01-03,10.0.2.1

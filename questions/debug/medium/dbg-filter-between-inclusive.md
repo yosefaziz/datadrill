@@ -48,9 +48,8 @@ Fix the operators to include boundary values.
 **The Bug:** `>` and `<` exclude the boundaries. Use `BETWEEN` (which is inclusive) or `>=` and `<=`.
 
 ## Expected Output
-| name       | price |
-|------------|-------|
-| Notebook   | 10    |
-| Binder     | 15    |
-| Stapler    | 25    |
-| Calculator | 50    |
+name,price
+Notebook,10
+Binder,15
+Stapler,25
+Calculator,50

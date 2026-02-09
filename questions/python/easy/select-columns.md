@@ -31,9 +31,8 @@ Select only the `name` and `price` columns from the `products` DataFrame.
 Your result should be stored in a variable called `result`.
 
 ## Expected Output
-| name       | price |
-|------------|-------|
-| Laptop     | 999   |
-| Headphones | 199   |
-| Desk       | 299   |
-| Chair      | 149   |
+name,price
+Laptop,999
+Headphones,199
+Desk,299
+Chair,149

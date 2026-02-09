@@ -67,10 +67,9 @@ Write a query that joins three tables to show which courses each student is enro
 Return the `student_name` and `course_name`, ordered by student name then course name.
 
 ## Expected Output
-| student_name | course_name     |
-|--------------|-----------------|
-| Alice        | Data Structures |
-| Alice        | Intro to SQL    |
-| Bob          | Intro to SQL    |
-| Bob          | Statistics      |
-| Charlie      | Statistics      |
+student_name,course_name
+Alice,Data Structures
+Alice,Intro to SQL
+Bob,Intro to SQL
+Bob,Statistics
+Charlie,Statistics

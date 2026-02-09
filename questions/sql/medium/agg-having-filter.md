@@ -43,7 +43,6 @@ Return the `customer_id`, the number of orders as `order_count`, and the sum of 
 Order the results by `customer_id`.
 
 ## Expected Output
-| customer_id | order_count | total |
-|-------------|-------------|-------|
-| 101         | 3           | 105   |
-| 102         | 3           | 175   |
+customer_id,order_count,total
+101,3,105
+102,3,175

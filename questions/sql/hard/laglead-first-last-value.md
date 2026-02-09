@@ -42,13 +42,12 @@ Use `FIRST_VALUE()` on revenue ordered DESC to get the max, and `LAST_VALUE()` t
 Return `quarter`, `department`, `revenue`, `max_revenue`, and `min_revenue`, ordered by department then quarter.
 
 ## Expected Output
-| quarter | department  | revenue | max_revenue | min_revenue |
-|---------|-------------|---------|-------------|-------------|
-| Q1      | Engineering | 80000   | 90000       | 75000       |
-| Q2      | Engineering | 75000   | 90000       | 75000       |
-| Q3      | Engineering | 90000   | 90000       | 75000       |
-| Q4      | Engineering | 85000   | 90000       | 75000       |
-| Q1      | Sales       | 50000   | 70000       | 45000       |
-| Q2      | Sales       | 60000   | 70000       | 45000       |
-| Q3      | Sales       | 45000   | 70000       | 45000       |
-| Q4      | Sales       | 70000   | 70000       | 45000       |
+quarter,department,revenue,max_revenue,min_revenue
+Q1,Engineering,80000,90000,75000
+Q2,Engineering,75000,90000,75000
+Q3,Engineering,90000,90000,75000
+Q4,Engineering,85000,90000,75000
+Q1,Sales,50000,70000,45000
+Q2,Sales,60000,70000,45000
+Q3,Sales,45000,70000,45000
+Q4,Sales,70000,70000,45000

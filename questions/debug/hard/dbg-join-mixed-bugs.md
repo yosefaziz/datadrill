@@ -87,8 +87,7 @@ Find and fix both bugs.
 **Bug 2:** `COUNT(*)` counts item rows, not distinct orders. Use `COUNT(DISTINCT o.id)`.
 
 ## Expected Output
-| name    | order_count |
-|---------|-------------|
-| Alice   | 2           |
-| Bob     | 1           |
-| Charlie | 0           |
+name,order_count
+Alice,2
+Bob,1
+Charlie,0

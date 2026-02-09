@@ -37,10 +37,9 @@ Return the `name`, `score`, `score_rank` (using RANK), and `score_dense_rank` (u
 Order by score descending, then by name ascending for ties.
 
 ## Expected Output
-| name    | score | score_rank | score_dense_rank |
-|---------|-------|------------|------------------|
-| Alice   | 95    | 1          | 1                |
-| Charlie | 95    | 1          | 1                |
-| Bob     | 88    | 3          | 2                |
-| Eve     | 88    | 3          | 2                |
-| David   | 82    | 5          | 3                |
+name,score,score_rank,score_dense_rank
+Alice,95,1,1
+Charlie,95,1,1
+Bob,88,3,2
+Eve,88,3,2
+David,82,5,3

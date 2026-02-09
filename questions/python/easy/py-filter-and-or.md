@@ -38,7 +38,6 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.filter()` with `(col("department") == "Engineering") & (col("salary") > 70000)`.
 
 ## Expected Output
-| id | name    | department  | salary |
-|----|---------|-------------|--------|
-| 1  | Alice   | Engineering | 85000  |
-| 3  | Charlie | Engineering | 72000  |
+id,name,department,salary
+1,Alice,Engineering,85000
+3,Charlie,Engineering,72000

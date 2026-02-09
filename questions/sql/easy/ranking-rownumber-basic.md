@@ -35,10 +35,9 @@ Write a query that assigns a row number to each product based on its price, from
 Return the product `name`, `price`, and the row number as `row_num`.
 
 ## Expected Output
-| name       | price | row_num |
-|------------|-------|---------|
-| Laptop     | 999   | 1       |
-| Phone      | 699   | 2       |
-| Tablet     | 499   | 3       |
-| Monitor    | 349   | 4       |
-| Headphones | 149   | 5       |
+name,price,row_num
+Laptop,999,1
+Phone,699,2
+Tablet,499,3
+Monitor,349,4
+Headphones,149,5

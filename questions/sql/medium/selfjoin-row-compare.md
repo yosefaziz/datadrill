@@ -39,7 +39,6 @@ Return the `trade_date`, `prev_price`, `curr_price`, and `price_change` (current
 Only include rows where the price went up. Order the results by `trade_date`.
 
 ## Expected Output
-| trade_date | prev_price | curr_price | price_change |
-|------------|------------|------------|--------------|
-| 2024-01-02 | 100        | 105        | 5            |
-| 2024-01-04 | 102        | 110        | 8            |
+trade_date,prev_price,curr_price,price_change
+2024-01-02,100,105,5
+2024-01-04,102,110,8

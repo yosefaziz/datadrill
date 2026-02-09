@@ -53,8 +53,7 @@ Use a `LEFT JOIN` with an `IS NULL` check to identify customers without matching
 Return only the customer `name`, ordered alphabetically.
 
 ## Expected Output
-| name    |
-|---------|
-| Charlie |
-| David   |
-| Eve     |
+name
+Charlie
+David
+Eve

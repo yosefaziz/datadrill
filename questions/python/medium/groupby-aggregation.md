@@ -44,8 +44,7 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.groupBy()` followed by `.agg()` with aggregation functions.
 
 ## Expected Output
-| customer_id | total_amount | order_count |
-|-------------|--------------|-------------|
-| 101         | 1547         | 3           |
-| 102         | 778          | 2           |
-| 103         | 499          | 1           |
+customer_id,total_amount,order_count
+101,1547,3
+102,778,2
+103,499,1

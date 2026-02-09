@@ -33,6 +33,5 @@ Given the `orders` table, find the customer with the highest total order amount.
 Return the `customer_id` and their `total` order amount.
 
 ## Expected Output
-| customer_id | total |
-|-------------|-------|
-| 1           | 300   |
+customer_id,total
+1,300

@@ -35,10 +35,9 @@ Write a query that calculates a running total of daily sales amounts.
 Return the `sale_date`, `amount`, and the cumulative sum as `running_total`, ordered by date.
 
 ## Expected Output
-| sale_date  | amount | running_total |
-|------------|--------|---------------|
-| 2024-01-01 | 500    | 500           |
-| 2024-01-02 | 300    | 800           |
-| 2024-01-03 | 700    | 1500          |
-| 2024-01-04 | 200    | 1700          |
-| 2024-01-05 | 600    | 2300          |
+sale_date,amount,running_total
+2024-01-01,500,500
+2024-01-02,300,800
+2024-01-03,700,1500
+2024-01-04,200,1700
+2024-01-05,600,2300

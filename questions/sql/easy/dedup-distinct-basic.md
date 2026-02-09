@@ -37,10 +37,9 @@ Write a query that finds all distinct user and page combinations, removing dupli
 Return the `user_id` and `page`, ordered by user_id then page name.
 
 ## Expected Output
-| user_id | page  |
-|---------|-------|
-| 1       | About |
-| 1       | Home  |
-| 2       | About |
-| 2       | Home  |
-| 3       | Home  |
+user_id,page
+1,About
+1,Home
+2,About
+2,Home
+3,Home

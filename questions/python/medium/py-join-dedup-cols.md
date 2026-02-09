@@ -57,9 +57,8 @@ Your result should be stored in a variable called `result`.
 **Hint:** After joining, use `.select()` with `orders["id"].alias("order_id")` to rename.
 
 ## Expected Output
-| order_id | product_name | quantity | price |
-|----------|--------------|----------|-------|
-| 1        | Laptop       | 2        | 999   |
-| 2        | Phone        | 1        | 699   |
-| 3        | Laptop       | 3        | 999   |
-| 4        | Tablet       | 1        | 499   |
+order_id,product_name,quantity,price
+1,Laptop,2,999
+2,Phone,1,699
+3,Laptop,3,999
+4,Tablet,1,499

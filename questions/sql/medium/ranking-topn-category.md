@@ -41,9 +41,8 @@ Return the `name`, `category`, and `price`.
 Order the results by `category`, then by `price` descending.
 
 ## Expected Output
-| name   | category    | price |
-|--------|-------------|-------|
-| Laptop | Electronics | 999   |
-| Phone  | Electronics | 699   |
-| Desk   | Furniture   | 350   |
-| Chair  | Furniture   | 275   |
+name,category,price
+Laptop,Electronics,999
+Phone,Electronics,699
+Desk,Furniture,350
+Chair,Furniture,275

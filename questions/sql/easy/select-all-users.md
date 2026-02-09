@@ -28,8 +28,7 @@ expected_output_query: "SELECT * FROM users"
 Write a query to select all columns from the `users` table.
 
 ## Expected Output
-| id | name    | email               |
-|----|---------|---------------------|
-| 1  | Alice   | alice@example.com   |
-| 2  | Bob     | bob@example.com     |
-| 3  | Charlie | charlie@example.com |
+id,name,email
+1,Alice,alice@example.com
+2,Bob,bob@example.com
+3,Charlie,charlie@example.com

@@ -41,7 +41,6 @@ The following query is supposed to calculate the total sales amount per category
 **The Bug:** The query uses SUM() without a GROUP BY clause, which would either error or return a single row instead of per-category totals.
 
 ## Expected Output
-| category    | total |
-|-------------|-------|
-| Electronics | 2197  |
-| Furniture   | 448   |
+category,total
+Electronics,2197
+Furniture,448

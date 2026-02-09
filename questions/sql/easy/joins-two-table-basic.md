@@ -51,10 +51,9 @@ Return the customer `name`, `product`, and `amount`.
 Order by customer name, then by amount descending.
 
 ## Expected Output
-| name    | product  | amount |
-|---------|----------|--------|
-| Alice   | Laptop   | 999    |
-| Alice   | Monitor  | 349    |
-| Bob     | Phone    | 699    |
-| Bob     | Keyboard | 79     |
-| Charlie | Tablet   | 499    |
+name,product,amount
+Alice,Laptop,999
+Alice,Monitor,349
+Bob,Phone,699
+Bob,Keyboard,79
+Charlie,Tablet,499

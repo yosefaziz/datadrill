@@ -42,8 +42,7 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `events.groupBy("event_type").count()`.
 
 ## Expected Output
-| event_type | count |
-|------------|-------|
-| click      | 3     |
-| view       | 2     |
-| purchase   | 2     |
+event_type,count
+click,3
+view,2
+purchase,2

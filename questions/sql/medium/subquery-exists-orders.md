@@ -50,8 +50,7 @@ Write a query that finds all customers who have placed at least one order using 
 Return the customer `name` and `city`, ordered by name.
 
 ## Expected Output
-| name    | city |
-|---------|------|
-| Alice   | NYC  |
-| Charlie | NYC  |
-| Eve     | LA   |
+name,city
+Alice,NYC
+Charlie,NYC
+Eve,LA

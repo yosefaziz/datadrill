@@ -52,9 +52,8 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.join()` with the join condition and `"inner"`, then `.select()` the columns you need.
 
 ## Expected Output
-| order_id | name    | amount |
-|----------|---------|--------|
-| 1        | Alice   | 500    |
-| 2        | Bob     | 300    |
-| 3        | Alice   | 700    |
-| 4        | Charlie | 200    |
+order_id,name,amount
+1,Alice,500
+2,Bob,300
+3,Alice,700
+4,Charlie,200

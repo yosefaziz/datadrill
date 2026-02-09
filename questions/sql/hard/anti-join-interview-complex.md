@@ -59,8 +59,7 @@ Join customers with orders, group by customer, and use `HAVING` to filter for th
 Return the customer `name` and `last_order_date`, ordered by last order date.
 
 ## Expected Output
-| name    | last_order_date |
-|---------|-----------------|
-| David   | 2023-05-10      |
-| Charlie | 2023-07-20      |
-| Bob     | 2023-08-10      |
+name,last_order_date
+David,2023-05-10
+Charlie,2023-07-20
+Bob,2023-08-10

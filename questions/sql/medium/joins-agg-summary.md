@@ -56,8 +56,7 @@ Return the `customer` name, `order_count`, and `total_amount`.
 Order the results by `total_amount` in descending order.
 
 ## Expected Output
-| customer | order_count | total_amount |
-|----------|-------------|--------------|
-| Alice    | 3           | 500          |
-| Charlie  | 1           | 300          |
-| Bob      | 2           | 200          |
+customer,order_count,total_amount
+Alice,3,500
+Charlie,1,300
+Bob,2,200

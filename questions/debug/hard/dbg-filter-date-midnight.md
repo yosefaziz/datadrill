@@ -46,9 +46,8 @@ Fix the date comparison to capture the full day.
 **The Bug:** `<= '2024-03-15'` is interpreted as `<= '2024-03-15 00:00:00'`, which excludes everything after midnight on March 15. Use `< '2024-03-16'` instead.
 
 ## Expected Output
-| user_id | login_time          | duration_minutes |
-|---------|---------------------|------------------|
-| 1       | 2024-03-14 22:00:00 | 30               |
-| 2       | 2024-03-15 09:00:00 | 45               |
-| 3       | 2024-03-15 14:30:00 | 60               |
-| 4       | 2024-03-15 23:45:00 | 15               |
+user_id,login_time,duration_minutes
+1,2024-03-14 22:00:00,30
+2,2024-03-15 09:00:00,45
+3,2024-03-15 14:30:00,60
+4,2024-03-15 23:45:00,15

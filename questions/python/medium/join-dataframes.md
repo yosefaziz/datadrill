@@ -51,9 +51,8 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.join()` with the join key, then `.select()` the columns you need.
 
 ## Expected Output
-| name    | dept_name   |
-|---------|-------------|
-| Alice   | Engineering |
-| Bob     | Marketing   |
-| Charlie | Engineering |
-| Diana   | Sales       |
+name,dept_name
+Alice,Engineering
+Bob,Marketing
+Charlie,Engineering
+Diana,Sales

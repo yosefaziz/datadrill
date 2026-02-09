@@ -37,10 +37,9 @@ Use `LAG()` to get the previous day's revenue and subtract it from the current d
 Return `rev_date`, `revenue`, and `daily_change`. The first row should have `NULL` for `daily_change`.
 
 ## Expected Output
-| rev_date   | revenue | daily_change |
-|------------|---------|--------------|
-| 2024-01-01 | 5000    |              |
-| 2024-01-02 | 5500    | 500          |
-| 2024-01-03 | 4800    | -700         |
-| 2024-01-04 | 6200    | 1400         |
-| 2024-01-05 | 5900    | -300         |
+rev_date,revenue,daily_change
+2024-01-01,5000,
+2024-01-02,5500,500
+2024-01-03,4800,-700
+2024-01-04,6200,1400
+2024-01-05,5900,-300

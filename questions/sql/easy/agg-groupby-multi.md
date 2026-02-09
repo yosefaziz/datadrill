@@ -35,9 +35,8 @@ Write a query that counts employees in each department and city combination.
 Return the `department`, `city`, and `employee_count`, ordered by department then city.
 
 ## Expected Output
-| department  | city | employee_count |
-|-------------|------|----------------|
-| Engineering | NYC  | 2              |
-| Engineering | SF   | 1              |
-| Marketing   | NYC  | 1              |
-| Marketing   | SF   | 2              |
+department,city,employee_count
+Engineering,NYC,2
+Engineering,SF,1
+Marketing,NYC,1
+Marketing,SF,2

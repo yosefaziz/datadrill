@@ -55,7 +55,6 @@ The following query is supposed to show order amounts for customers, but it's in
 **The Bug:** The query uses LEFT JOIN, which includes all orders even if there's no matching customer.
 
 ## Expected Output
-| name  | amount |
-|-------|--------|
-| Alice | 150    |
-| Bob   | 200    |
+name,amount
+Alice,150
+Bob,200

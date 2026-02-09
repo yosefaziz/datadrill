@@ -38,7 +38,6 @@ The following PySpark code is supposed to find all completed transactions with a
 **The Bug:** The code uses `|` (OR) instead of `&` (AND), and is missing parentheses for correct operator precedence.
 
 ## Expected Output
-| id | customer | amount | status    |
-|----|----------|--------|-----------|
-| 1  | Alice    | 150    | completed |
-| 5  | Eve      | 125    | completed |
+id,customer,amount,status
+1,Alice,150,completed
+5,Eve,125,completed

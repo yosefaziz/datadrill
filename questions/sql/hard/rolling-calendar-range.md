@@ -39,11 +39,10 @@ Return `sale_date`, `amount`, and `rolling_3day_sum`.
 Notice how Jan 4 only includes itself (Jan 3 is missing), and Jan 8 only includes itself (Jan 6-7 missing).
 
 ## Expected Output
-| sale_date  | amount | rolling_3day_sum |
-|------------|--------|------------------|
-| 2024-01-01 | 500    | 500              |
-| 2024-01-02 | 300    | 800              |
-| 2024-01-04 | 700    | 700              |
-| 2024-01-05 | 200    | 900              |
-| 2024-01-08 | 600    | 600              |
-| 2024-01-09 | 400    | 1000             |
+sale_date,amount,rolling_3day_sum
+2024-01-01,500,500
+2024-01-02,300,800
+2024-01-04,700,700
+2024-01-05,200,900
+2024-01-08,600,600
+2024-01-09,400,1000

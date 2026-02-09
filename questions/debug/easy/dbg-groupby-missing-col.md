@@ -48,9 +48,8 @@ Fix the query by adding the missing column to GROUP BY.
 **The Bug:** `category` is in SELECT but not in GROUP BY. DuckDB may error or produce unexpected results.
 
 ## Expected Output
-| region | category    | total |
-|--------|-------------|-------|
-| East   | Clothing    | 200   |
-| East   | Electronics | 800   |
-| West   | Clothing    | 150   |
-| West   | Electronics | 1100  |
+region,category,total
+East,Clothing,200
+East,Electronics,800
+West,Clothing,150
+West,Electronics,1100

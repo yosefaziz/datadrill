@@ -49,7 +49,6 @@ Fix the query to show the true average (treating NULL as 0) and distinguish rate
 **The Bug:** `AVG(rating)` skips NULLs, inflating the average. `COUNT(*)` counts all rows including unrated ones. Use `COALESCE(rating, 0)` and show both `COUNT(rating)` and `COUNT(*)`.
 
 ## Expected Output
-| product_id | avg_rating | rated_count | total_count |
-|------------|------------|-------------|-------------|
-| 1          | 3.0        | 2           | 3           |
-| 2          | 1.0        | 1           | 3           |
+product_id,avg_rating,rated_count,total_count
+1,3.0,2,3
+2,1.0,1,3

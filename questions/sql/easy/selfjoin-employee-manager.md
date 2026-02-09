@@ -37,9 +37,8 @@ Return `employee_name` and `manager_name`. Only include employees who have a man
 Order the results by employee name.
 
 ## Expected Output
-| employee_name | manager_name |
-|---------------|--------------|
-| Bob           | Alice        |
-| Charlie       | Alice        |
-| David         | Bob          |
-| Eve           | Bob          |
+employee_name,manager_name
+Bob,Alice
+Charlie,Alice
+David,Bob
+Eve,Bob

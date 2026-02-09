@@ -55,8 +55,7 @@ Use a subquery with the `IN` operator to filter employees.
 Return only the employee `name`, ordered alphabetically.
 
 ## Expected Output
-| name    |
-|---------|
-| Alice   |
-| Charlie |
-| David   |
+name
+Alice
+Charlie
+David

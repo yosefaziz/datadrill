@@ -48,7 +48,6 @@ Fix the query to count all rows.
 **The Bug:** `COUNT(answer)` skips NULL values. Use `COUNT(*)` to count all rows regardless of NULL.
 
 ## Expected Output
-| question_id | total_responses |
-|-------------|-----------------|
-| Q1          | 3               |
-| Q2          | 3               |
+question_id,total_responses
+Q1,3
+Q2,3

@@ -52,7 +52,6 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.join(active_users, "user_id", "left_anti")`.
 
 ## Expected Output
-| user_id | name  | signup_date |
-|---------|-------|-------------|
-| 2       | Bob   | 2024-01-05  |
-| 4       | Diana | 2024-01-15  |
+user_id,name,signup_date
+2,Bob,2024-01-05
+4,Diana,2024-01-15

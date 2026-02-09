@@ -91,15 +91,16 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
             ))}
           </div>
 
-          <div>
-            <h2 className="text-lg font-semibold text-text-primary mb-3">
-              Expected Output
-            </h2>
-            <div
-              className="prose prose-slate max-w-none prose-invert"
-              dangerouslySetInnerHTML={{ __html: question.expectedOutput }}
-            />
-          </div>
+          {question.expectedOutput && (
+            <div>
+              <h2 className="text-lg font-semibold text-text-primary mb-3">
+                Expected Output
+              </h2>
+              <div className="overflow-x-auto">
+                <Table csvData={question.expectedOutput} />
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

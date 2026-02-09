@@ -37,7 +37,6 @@ Return the `department`, `total_sales` (sum), and `avg_sale` (average, rounded t
 Order by department name alphabetically.
 
 ## Expected Output
-| department  | total_sales | avg_sale |
-|-------------|-------------|----------|
-| Clothing    | 1800        | 600      |
-| Electronics | 3000        | 1000     |
+department,total_sales,avg_sale
+Clothing,1800,600
+Electronics,3000,1000

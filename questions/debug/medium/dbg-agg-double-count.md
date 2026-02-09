@@ -66,7 +66,6 @@ Fix the query to count distinct orders.
 **The Bug:** `COUNT(*)` counts every row after the JOIN, including duplicated order rows. Use `COUNT(DISTINCT o.id)` to count unique orders.
 
 ## Expected Output
-| customer_id | order_count |
-|-------------|-------------|
-| 1           | 2           |
-| 2           | 1           |
+customer_id,order_count
+1,2
+2,1

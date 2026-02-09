@@ -38,7 +38,6 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.agg(avg("salary").alias("avg_salary"), max("years_experience").alias("max_experience"))`.
 
 ## Expected Output
-| department  | avg_salary | max_experience |
-|-------------|------------|----------------|
-| Engineering | 85000.0    | 8              |
-| Marketing   | 67500.0    | 6              |
+department,avg_salary,max_experience
+Engineering,85000.0,8
+Marketing,67500.0,6

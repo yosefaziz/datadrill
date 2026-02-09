@@ -52,9 +52,8 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.join(sales_2024, ["region", "product"], "inner")`.
 
 ## Expected Output
-| region | product | revenue_2023 | revenue_2024 |
-|--------|---------|--------------|--------------|
-| East   | Laptop  | 50000        | 55000        |
-| East   | Phone   | 30000        | 32000        |
-| West   | Laptop  | 45000        | 48000        |
-| West   | Phone   | 35000        | 38000        |
+region,product,revenue_2023,revenue_2024
+East,Laptop,50000,55000
+East,Phone,30000,32000
+West,Laptop,45000,48000
+West,Phone,35000,38000

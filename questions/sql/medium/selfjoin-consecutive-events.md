@@ -41,8 +41,7 @@ Return the `user_id`, `from_date`, `from_type`, `to_date`, and `to_type` for eac
 Order the results by `user_id`, then by `from_date`.
 
 ## Expected Output
-| user_id | from_date  | from_type | to_date    | to_type  |
-|---------|------------|-----------|------------|----------|
-| 1       | 2024-01-01 | login     | 2024-01-02 | purchase |
-| 1       | 2024-01-02 | purchase  | 2024-01-03 | login    |
-| 2       | 2024-01-02 | login     | 2024-01-03 | purchase |
+user_id,from_date,from_type,to_date,to_type
+1,2024-01-01,login,2024-01-02,purchase
+1,2024-01-02,purchase,2024-01-03,login
+2,2024-01-02,login,2024-01-03,purchase

@@ -35,10 +35,9 @@ Write a query that shows each month's revenue alongside the previous month's rev
 Return the `month`, `revenue`, and the previous month's revenue as `prev_revenue`. The first month should have `NULL` for `prev_revenue`.
 
 ## Expected Output
-| month   | revenue | prev_revenue |
-|---------|---------|--------------|
-| 2024-01 | 10000   |              |
-| 2024-02 | 12000   | 10000        |
-| 2024-03 | 11500   | 12000        |
-| 2024-04 | 13000   | 11500        |
-| 2024-05 | 14500   | 13000        |
+month,revenue,prev_revenue
+2024-01,10000,
+2024-02,12000,10000
+2024-03,11500,12000
+2024-04,13000,11500
+2024-05,14500,13000

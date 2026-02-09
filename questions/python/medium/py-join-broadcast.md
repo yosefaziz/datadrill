@@ -56,10 +56,9 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `sales.join(broadcast(regions), "region_id", "inner")`.
 
 ## Expected Output
-| region_id | id | product  | amount | region_name |
-|-----------|----|----------|--------|-------------|
-| 1         | 1  | Laptop   | 999    | East        |
-| 2         | 2  | Phone    | 699    | West        |
-| 1         | 3  | Tablet   | 499    | East        |
-| 3         | 4  | Monitor  | 349    | Central     |
-| 2         | 5  | Keyboard | 79     | West        |
+region_id,id,product,amount,region_name
+1,1,Laptop,999,East
+2,2,Phone,699,West
+1,3,Tablet,499,East
+3,4,Monitor,349,Central
+2,5,Keyboard,79,West

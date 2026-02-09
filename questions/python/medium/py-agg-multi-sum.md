@@ -43,7 +43,6 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.agg(sum("quantity").alias("total_quantity"), sum("revenue").alias("total_revenue"))`.
 
 ## Expected Output
-| region | total_quantity | total_revenue |
-|--------|----------------|---------------|
-| East   | 9              | 5700          |
-| West   | 8              | 5300          |
+region,total_quantity,total_revenue
+East,9,5700
+West,8,5300

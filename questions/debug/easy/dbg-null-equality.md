@@ -48,7 +48,6 @@ Fix the query so it correctly finds users with NULL emails.
 **The Bug:** `email = NULL` always evaluates to `NULL` (not TRUE), so no rows match. Use `IS NULL` instead.
 
 ## Expected Output
-| name  |
-|-------|
-| Bob   |
-| Diana |
+name
+Bob
+Diana

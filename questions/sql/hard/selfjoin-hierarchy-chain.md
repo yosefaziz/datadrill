@@ -42,10 +42,9 @@ Use a double self-join. Only include employees who have both a manager and a gra
 Return `employee`, `manager`, and `grand_manager`, ordered by employee name.
 
 ## Expected Output
-| employee    | manager   | grand_manager |
-|-------------|-----------|---------------|
-| Dev Frank   | Mgr Charlie | VP Alice    |
-| Dev Grace   | Mgr David | VP Alice      |
-| Mgr Charlie | VP Alice  | CEO Sara      |
-| Mgr David   | VP Alice  | CEO Sara      |
-| Mgr Eve     | VP Bob    | CEO Sara      |
+employee,manager,grand_manager
+Dev Frank,Mgr Charlie,VP Alice
+Dev Grace,Mgr David,VP Alice
+Mgr Charlie,VP Alice,CEO Sara
+Mgr David,VP Alice,CEO Sara
+Mgr Eve,VP Bob,CEO Sara

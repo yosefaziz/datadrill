@@ -73,8 +73,7 @@ Use a cross join between employees and required courses, then `NOT EXISTS` to ch
 Return distinct employee `name`, ordered alphabetically.
 
 ## Expected Output
-| name   |
-|--------|
-| Bob    |
-| David  |
-| Eve    |
+name
+Bob
+David
+Eve

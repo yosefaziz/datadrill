@@ -43,7 +43,6 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `sum(when(col("type") == "credit", col("amount")).otherwise(0)).alias("total_credits")`.
 
 ## Expected Output
-| account_id | total_credits | total_debits |
-|------------|---------------|--------------|
-| A001       | 800           | 200          |
-| A002       | 700           | 250          |
+account_id,total_credits,total_debits
+A001,800,200
+A002,700,250

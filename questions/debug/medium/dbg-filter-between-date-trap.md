@@ -46,9 +46,8 @@ Fix the date range to capture the full day.
 **The Bug:** `BETWEEN '2024-01-01' AND '2024-01-31'` treats Jan 31 as midnight (00:00:00), missing events at 10:00 and 18:30 on that day. Use `< '2024-02-01'` instead.
 
 ## Expected Output
-| event_name | event_timestamp     |
-|------------|---------------------|
-| Login      | 2024-01-01 09:00:00 |
-| Purchase   | 2024-01-15 14:30:00 |
-| Signup     | 2024-01-31 10:00:00 |
-| Logout     | 2024-01-31 18:30:00 |
+event_name,event_timestamp
+Login,2024-01-01 09:00:00
+Purchase,2024-01-15 14:30:00
+Signup,2024-01-31 10:00:00
+Logout,2024-01-31 18:30:00

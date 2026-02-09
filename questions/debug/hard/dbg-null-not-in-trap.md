@@ -61,8 +61,7 @@ Fix the subquery to handle NULLs.
 **The Bug:** The `terminated_employees` table has a NULL `employee_id`. When `NOT IN` encounters NULL in the list, the entire expression evaluates to NULL (not TRUE), so no rows are returned. Filter out NULLs in the subquery.
 
 ## Expected Output
-| name    |
-|---------|
-| Alice   |
-| Charlie |
-| Eve     |
+name
+Alice
+Charlie
+Eve

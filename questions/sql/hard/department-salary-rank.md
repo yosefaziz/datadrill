@@ -52,10 +52,9 @@ Return the department name, employee name, salary, and their rank within the dep
 Order the results by department name, then by rank.
 
 ## Expected Output
-| department  | employee | salary | salary_rank |
-|-------------|----------|--------|-------------|
-| Engineering | Bob      | 60000  | 1           |
-| Engineering | Charlie  | 55000  | 2           |
-| Engineering | Alice    | 50000  | 3           |
-| Sales       | David    | 70000  | 1           |
-| Sales       | Eve      | 65000  | 2           |
+department,employee,salary,salary_rank
+Engineering,Bob,60000,1
+Engineering,Charlie,55000,2
+Engineering,Alice,50000,3
+Sales,David,70000,1
+Sales,Eve,65000,2

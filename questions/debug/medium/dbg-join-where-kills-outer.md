@@ -65,9 +65,8 @@ Move the filter condition from WHERE to the ON clause.
 **The Bug:** `WHERE o.status = 'shipped'` filters out NULL rows from the LEFT JOIN, effectively turning it into an INNER JOIN. Move the predicate to the ON clause.
 
 ## Expected Output
-| name    | amount |
-|---------|--------|
-| Alice   | 500    |
-| Bob     | 300    |
-| Charlie |        |
-| Diana   |        |
+name,amount
+Alice,500
+Bob,300
+Charlie,
+Diana,

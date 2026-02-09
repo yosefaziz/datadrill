@@ -35,7 +35,6 @@ Write a query that counts the number of orders in each product category.
 Return the `category` and the count as `order_count`, ordered alphabetically by category.
 
 ## Expected Output
-| category    | order_count |
-|-------------|-------------|
-| Electronics | 3           |
-| Furniture   | 3           |
+category,order_count
+Electronics,3
+Furniture,3

@@ -42,7 +42,6 @@ Return the `department`, `open_count`, `closed_count`, and `pending_count`.
 Order the results by `department`.
 
 ## Expected Output
-| department  | open_count | closed_count | pending_count |
-|-------------|------------|--------------|---------------|
-| Engineering | 1          | 2            | 1             |
-| Sales       | 2          | 1            | 0             |
+department,open_count,closed_count,pending_count
+Engineering,1,2,1
+Sales,2,1,0

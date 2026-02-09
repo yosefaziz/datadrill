@@ -551,7 +551,7 @@ async function processQuestion(
   // Parse markdown content
   const parts = markdownContent.split(/^## Expected Output$/m);
   const description = await marked(parts[0].trim());
-  const expectedOutput = parts[1] ? await marked(parts[1].trim()) : '';
+  const expectedOutput = parts[1] ? parts[1].trim() : '';
 
   const tables = (data.tables as TableFrontmatter[]).map(processTable);
 

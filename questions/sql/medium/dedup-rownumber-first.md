@@ -37,8 +37,7 @@ Use `ROW_NUMBER()` partitioned by `customer_id`, ordered by `order_date ASC`, th
 Return `customer_id`, `order_date`, and `amount`, ordered by customer_id.
 
 ## Expected Output
-| customer_id | order_date | amount |
-|-------------|------------|--------|
-| 1           | 2024-01-05 | 150    |
-| 2           | 2024-01-03 | 200    |
-| 3           | 2024-01-08 | 100    |
+customer_id,order_date,amount
+1,2024-01-05,150
+2,2024-01-03,200
+3,2024-01-08,100

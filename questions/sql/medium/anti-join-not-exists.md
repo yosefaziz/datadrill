@@ -50,7 +50,6 @@ Write a query that finds products that have never been ordered using `NOT EXISTS
 Return the product `name` and `price`, ordered by name.
 
 ## Expected Output
-| name   | price |
-|--------|-------|
-| Desk   | 349   |
-| Tablet | 499   |
+name,price
+Desk,349
+Tablet,499

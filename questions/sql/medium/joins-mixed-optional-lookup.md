@@ -56,10 +56,9 @@ Return the `product` name and `category` name.
 Order the results by product name.
 
 ## Expected Output
-| product  | category      |
-|----------|---------------|
-| Desk     | Furniture     |
-| Laptop   | Electronics   |
-| Mouse    | Electronics   |
-| Notebook | Uncategorized |
-| Pen      | Uncategorized |
+product,category
+Desk,Furniture
+Laptop,Electronics
+Mouse,Electronics
+Notebook,Uncategorized
+Pen,Uncategorized

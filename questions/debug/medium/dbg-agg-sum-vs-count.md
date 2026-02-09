@@ -46,7 +46,6 @@ Fix the aggregate function.
 **The Bug:** `COUNT(salary)` counts the number of salary values, not their sum. Use `SUM(salary)` for the total.
 
 ## Expected Output
-| department  | total_payroll |
-|-------------|---------------|
-| Engineering | 255000        |
-| Marketing   | 135000        |
+department,total_payroll
+Engineering,255000
+Marketing,135000

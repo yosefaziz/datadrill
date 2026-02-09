@@ -38,9 +38,8 @@ Your result should be stored in a variable called `result`.
 **Hint:** Use `.filter()` with `col("price") > 50`.
 
 ## Expected Output
-| id | name    | category    | price |
-|----|---------|-------------|-------|
-| 1  | Laptop  | Electronics | 999   |
-| 3  | Desk    | Furniture   | 349   |
-| 5  | Monitor | Electronics | 449   |
-| 6  | Chair   | Furniture   | 199   |
+id,name,category,price
+1,Laptop,Electronics,999
+3,Desk,Furniture,349
+5,Monitor,Electronics,449
+6,Chair,Furniture,199

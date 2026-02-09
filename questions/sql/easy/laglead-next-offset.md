@@ -35,10 +35,9 @@ Write a query that shows each task alongside the due date of the next task using
 Return the `task_name`, `due_date`, and the next task's due date as `next_due_date`. The last task should have `NULL` for `next_due_date`.
 
 ## Expected Output
-| task_name      | due_date   | next_due_date |
-|----------------|------------|---------------|
-| Design mockups | 2024-03-01 | 2024-03-05    |
-| Build API      | 2024-03-05 | 2024-03-08    |
-| Write tests    | 2024-03-08 | 2024-03-12    |
-| Code review    | 2024-03-12 | 2024-03-15    |
-| Deploy app     | 2024-03-15 |               |
+task_name,due_date,next_due_date
+Design mockups,2024-03-01,2024-03-05
+Build API,2024-03-05,2024-03-08
+Write tests,2024-03-08,2024-03-12
+Code review,2024-03-12,2024-03-15
+Deploy app,2024-03-15,

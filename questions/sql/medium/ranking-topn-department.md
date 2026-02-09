@@ -40,9 +40,8 @@ Return the `name`, `department`, and `salary`.
 Order the results by `department`, then by `salary` descending.
 
 ## Expected Output
-| name  | department  | salary |
-|-------|-------------|--------|
-| Alice | Engineering | 95000  |
-| Bob   | Engineering | 88000  |
-| Frank | Sales       | 82000  |
-| Eve   | Sales       | 75000  |
+name,department,salary
+Alice,Engineering,95000
+Bob,Engineering,88000
+Frank,Sales,82000
+Eve,Sales,75000

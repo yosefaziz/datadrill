@@ -60,8 +60,7 @@ The following query is meant to list all products that have at least one review,
 **The Bug:** The JOIN creates duplicate rows when a product has multiple reviews. We need DISTINCT to get unique products.
 
 ## Expected Output
-| name   | price |
-|--------|-------|
-| Laptop | 999   |
-| Phone  | 699   |
-| Tablet | 499   |
+name,price
+Laptop,999
+Phone,699
+Tablet,499

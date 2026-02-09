@@ -38,9 +38,8 @@ Use `ROW_NUMBER()` partitioned by `user_id, event_type`, ordered by `event_time 
 Return `user_id`, `event_type`, `event_time`, and `source`, ordered by user_id then event_type.
 
 ## Expected Output
-| user_id | event_type | event_time          | source |
-|---------|------------|---------------------|--------|
-| 1       | login      | 2024-01-05 09:00:00 | web    |
-| 1       | purchase   | 2024-01-06 14:00:00 | mobile |
-| 2       | login      | 2024-01-06 09:00:00 | mobile |
-| 2       | purchase   | 2024-01-05 11:00:00 | web    |
+user_id,event_type,event_time,source
+1,login,2024-01-05 09:00:00,web
+1,purchase,2024-01-06 14:00:00,mobile
+2,login,2024-01-06 09:00:00,mobile
+2,purchase,2024-01-05 11:00:00,web

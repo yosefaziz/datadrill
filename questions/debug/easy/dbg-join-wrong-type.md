@@ -61,10 +61,9 @@ Fix the query so that employees without a department still appear.
 **The Bug:** `INNER JOIN` excludes employees with NULL `department_id`. Use `LEFT JOIN` instead.
 
 ## Expected Output
-| name    | dept_name   |
-|---------|-------------|
-| Alice   | Engineering |
-| Bob     | Marketing   |
-| Charlie |             |
-| David   | Engineering |
-| Eve     |             |
+name,dept_name
+Alice,Engineering
+Bob,Marketing
+Charlie,
+David,Engineering
+Eve,
