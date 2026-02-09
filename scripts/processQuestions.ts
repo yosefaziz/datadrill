@@ -21,6 +21,7 @@ interface BaseFrontmatter {
   tags: string[];
   tables: TableFrontmatter[];
   expected_output_query: string;
+  hints?: string[];
 }
 
 interface SqlFrontmatter extends BaseFrontmatter {}
@@ -60,6 +61,7 @@ interface ConstraintsFrontmatter {
   clarifying_questions: ClarifyingQuestionFrontmatter[];
   architecture_options: ArchitectureOptionFrontmatter[];
   max_questions: number;
+  hints?: string[];
 }
 
 // Architecture canvas question frontmatter types
@@ -84,6 +86,7 @@ interface CanvasFrontmatter {
   prompt: string;
   available_components: string[];
   steps: CanvasStepFrontmatter[];
+  hints?: string[];
 }
 
 // Quiz question frontmatter types
@@ -102,6 +105,7 @@ interface QuizFrontmatter {
   multi_select: boolean;
   answers: QuizAnswerFrontmatter[];
   explanation?: string;
+  hints?: string[];
 }
 
 // Modeling question frontmatter types
@@ -139,6 +143,7 @@ interface ModelingFrontmatter {
   fields: ModelingFieldFrontmatter[];
   expected_tables: ModelingTableConfigFrontmatter[];
   score_thresholds: ModelingScoreThresholdsFrontmatter;
+  hints?: string[];
 }
 
 interface ProcessedTable {
@@ -155,6 +160,7 @@ interface BaseProcessedQuestion {
   tags: string[];
   description: string;
   expectedOutput: string;
+  hints?: string[];
 }
 
 interface SqlProcessedQuestion extends BaseProcessedQuestion {
@@ -191,6 +197,7 @@ interface ConstraintsProcessedQuestion {
   architectureOptions: ArchitectureOptionFrontmatter[];
   maxQuestions: number;
   guidance?: string;
+  hints?: string[];
 }
 
 interface CanvasStepChoice {
@@ -219,6 +226,7 @@ interface CanvasProcessedQuestion {
   steps: CanvasStep[];
   availableComponents: string[];
   guidance?: string;
+  hints?: string[];
 }
 
 interface QuizAnswer {
@@ -240,6 +248,7 @@ interface QuizProcessedQuestion {
   answers: QuizAnswer[];
   multiSelect: boolean;
   explanation?: string;
+  hints?: string[];
 }
 
 type ArchitectureProcessedQuestion = ConstraintsProcessedQuestion | CanvasProcessedQuestion | QuizProcessedQuestion;
@@ -280,6 +289,7 @@ interface ModelingProcessedQuestion {
   expectedTables: ModelingTableConfig[];
   scoreThresholds: ModelingScoreThresholds;
   guidance?: string;
+  hints?: string[];
 }
 
 type ProcessedQuestion =
@@ -424,6 +434,7 @@ async function processConstraintsQuestion(
     architectureOptions: frontmatter.architecture_options,
     maxQuestions: frontmatter.max_questions,
     guidance,
+    hints: frontmatter.hints,
   };
 }
 
@@ -449,6 +460,7 @@ async function processCanvasQuestion(
     steps: frontmatter.steps.map(processCanvasStep),
     availableComponents: frontmatter.available_components,
     guidance,
+    hints: frontmatter.hints,
   };
 }
 
@@ -477,6 +489,7 @@ async function processQuizQuestion(
     })),
     multiSelect: frontmatter.multi_select,
     explanation: frontmatter.explanation,
+    hints: frontmatter.hints,
   };
 }
 
@@ -519,6 +532,7 @@ async function processModelingQuestion(
       queryCost: frontmatter.score_thresholds.query_cost,
     },
     guidance,
+    hints: frontmatter.hints,
   };
 }
 
@@ -563,6 +577,7 @@ async function processQuestion(
     tags: data.tags as string[],
     description,
     expectedOutput,
+    hints: data.hints as string[] | undefined,
   };
 
   switch (skill) {

@@ -12,6 +12,12 @@ import { RelationshipLines } from './RelationshipLines';
 import { ScoreBars } from './ScoreBars';
 import { ModelingFeedback } from './ModelingFeedback';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { BugReportPopover } from '@/components/question-view/BugReportPopover';
+import { TimerWidget } from '@/components/question-view/TimerWidget';
+import { QuestionTabs, QuestionTab } from '@/components/question-view/QuestionTabs';
+import { HintsPanel } from '@/components/question-view/HintsPanel';
+import { DiscussionPanel } from '@/components/question-view/DiscussionPanel';
+import { useAuthGate, useSubmissionGate } from '@/hooks/useAuthGate';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -55,6 +61,10 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
   const [selectedFieldIds, setSelectedFieldIds] = useState<Set<string>>(new Set());
   const [isQuestionExpanded, setIsQuestionExpanded] = useState(true);
   const [editingTableId, setEditingTableId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<QuestionTab>('description');
+  const { isAuthenticated, requireAuth } = useAuthGate();
+  const { hasSubmitted: hasSubmittedForGate } = useSubmissionGate(question.id);
+  const hints = question.hints || [];
 
   const tableColumnsContainerRef = useRef<HTMLDivElement>(null);
   const fieldRowRefs = useRef<Map<string, HTMLElement>>(new Map());
@@ -73,6 +83,7 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
     setSelectedFieldIds(new Set());
     setEditingTableId(null);
     setIsQuestionExpanded(true);
+    setActiveTab('description');
   }, [question.id, reset]);
 
   // Auto-collapse question card after first table is created
@@ -81,6 +92,39 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
       setIsQuestionExpanded(false);
     }
   }, [tables.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleTabChange = (tab: QuestionTab) => {
+    if (tab === 'hints' || tab === 'discussion') {
+      if (!requireAuth()) return;
+    }
+    if (tab === 'discussion' && !hasSubmittedForGate) return;
+    setActiveTab(tab);
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'description':
+        return (
+          <>
+            <div className="flex flex-wrap gap-1 mt-2">
+              {question.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs bg-bg-secondary text-text-secondary px-2 py-0.5 rounded"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <p className="mt-2 text-sm text-text-secondary">{question.prompt}</p>
+          </>
+        );
+      case 'hints':
+        return <HintsPanel hints={hints} />;
+      case 'discussion':
+        return <DiscussionPanel questionId={question.id} hasSubmitted={hasSubmittedForGate} />;
+    }
+  };
 
   const handleDragStart = (event: DragStartEvent) => {
     const fieldId = event.active.id as string;
@@ -214,11 +258,11 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
           className="bg-surface rounded-lg shadow-md flex-shrink-0"
           onClick={(e) => e.stopPropagation()}
         >
-          <button
-            onClick={() => setIsQuestionExpanded(!isQuestionExpanded)}
-            className="w-full px-4 py-3 flex items-center justify-between text-left"
-          >
-            <div className="flex items-center gap-3 min-w-0">
+          <div className="px-4 py-3 flex items-center justify-between">
+            <button
+              onClick={() => setIsQuestionExpanded(!isQuestionExpanded)}
+              className="flex items-center gap-3 min-w-0 flex-1 text-left"
+            >
               <h1 className="text-lg font-bold text-text-primary truncate">{question.title}</h1>
               <span
                 className={`text-xs font-medium px-2 py-0.5 rounded flex-shrink-0 ${
@@ -234,27 +278,31 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
               <span className="text-xs text-warning truncate flex-shrink-0">
                 {question.constraint}
               </span>
+              {isQuestionExpanded ? (
+                <ChevronUp className="w-4 h-4 text-text-muted flex-shrink-0" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-text-muted flex-shrink-0" />
+              )}
+            </button>
+            <div className="flex items-center gap-1 flex-shrink-0 ml-2" onClick={(e) => e.stopPropagation()}>
+              <TimerWidget />
+              <BugReportPopover questionId={question.id} />
             </div>
-            {isQuestionExpanded ? (
-              <ChevronUp className="w-4 h-4 text-text-muted flex-shrink-0" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-text-muted flex-shrink-0" />
-            )}
-          </button>
+          </div>
           {isQuestionExpanded && (
-            <div className="px-4 pb-3 border-t border-border">
-              <div className="flex flex-wrap gap-1 mt-2">
-                {question.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs bg-bg-secondary text-text-secondary px-2 py-0.5 rounded"
-                  >
-                    {tag}
-                  </span>
-                ))}
+            <>
+              <QuestionTabs
+                activeTab={activeTab}
+                onTabChange={handleTabChange}
+                hasHints={hints.length > 0}
+                isAuthenticated={isAuthenticated}
+                hasSubmitted={hasSubmittedForGate}
+                showSolutions={false}
+              />
+              <div className="px-4 pb-3">
+                {renderTabContent()}
               </div>
-              <p className="mt-2 text-sm text-text-secondary">{question.prompt}</p>
-            </div>
+            </>
           )}
         </div>
 

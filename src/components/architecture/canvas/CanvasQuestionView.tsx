@@ -11,6 +11,12 @@ import { Toolbox } from './Toolbox';
 import { PipelineBuilder } from './PipelineBuilder';
 import { CanvasFeedback } from './CanvasFeedback';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { BugReportPopover } from '@/components/question-view/BugReportPopover';
+import { TimerWidget } from '@/components/question-view/TimerWidget';
+import { QuestionTabs, QuestionTab } from '@/components/question-view/QuestionTabs';
+import { HintsPanel } from '@/components/question-view/HintsPanel';
+import { DiscussionPanel } from '@/components/question-view/DiscussionPanel';
+import { useAuthGate, useSubmissionGate } from '@/hooks/useAuthGate';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -46,6 +52,10 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
   const isMobile = useIsMobile();
   const [activeComponent, setActiveComponent] = useState<ToolboxComponent | null>(null);
   const [selectedComponentId, setSelectedComponentId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<QuestionTab>('description');
+  const { isAuthenticated, requireAuth } = useAuthGate();
+  const { hasSubmitted: hasSubmittedForGate } = useSubmissionGate(question.id);
+  const hints = question.hints || [];
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -55,7 +65,42 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
   useEffect(() => {
     reset();
     setSelectedComponentId(null);
+    setActiveTab('description');
   }, [question.id, reset]);
+
+  const handleTabChange = (tab: QuestionTab) => {
+    if (tab === 'hints' || tab === 'discussion') {
+      if (!requireAuth()) return;
+    }
+    if (tab === 'discussion' && !hasSubmittedForGate) return;
+    setActiveTab(tab);
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'description':
+        return (
+          <div className="prose prose-slate max-w-none prose-invert">
+            <h3 className="text-lg font-semibold mb-3 text-text-primary">Requirements</h3>
+            <p className="text-text-primary whitespace-pre-wrap">{question.prompt}</p>
+
+            {question.guidance && (
+              <>
+                <h3 className="text-lg font-semibold mt-6 mb-3 text-text-primary">Guidance</h3>
+                <div
+                  className="text-text-secondary"
+                  dangerouslySetInnerHTML={{ __html: question.guidance }}
+                />
+              </>
+            )}
+          </div>
+        );
+      case 'hints':
+        return <HintsPanel hints={hints} />;
+      case 'discussion':
+        return <DiscussionPanel questionId={question.id} hasSubmitted={hasSubmittedForGate} />;
+    }
+  };
 
   const handleDragStart = (event: DragStartEvent) => {
     const componentId = event.active.id as string;
@@ -138,10 +183,16 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
           {/* Left Panel - Question Description */}
           <div className="w-full lg:w-2/5 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col flex-shrink-0 lg:flex-shrink">
             <div className="p-6 border-b border-border">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-medium px-2 py-0.5 rounded bg-accent/20 text-accent">
-                  Canvas
-                </span>
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-medium px-2 py-0.5 rounded bg-accent/20 text-accent">
+                    Canvas
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <TimerWidget />
+                  <BugReportPopover questionId={question.id} />
+                </div>
               </div>
               <h1 className="text-2xl font-bold text-text-primary">{question.title}</h1>
               <div className="flex items-center gap-3 mt-2">
@@ -167,21 +218,16 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
               </div>
             </div>
 
+            <QuestionTabs
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+              hasHints={hints.length > 0}
+              isAuthenticated={isAuthenticated}
+              hasSubmitted={hasSubmittedForGate}
+              showSolutions={false}
+            />
             <div className="flex-1 overflow-y-auto p-6">
-              <div className="prose prose-slate max-w-none prose-invert">
-                <h3 className="text-lg font-semibold mb-3 text-text-primary">Requirements</h3>
-                <p className="text-text-primary whitespace-pre-wrap">{question.prompt}</p>
-
-                {question.guidance && (
-                  <>
-                    <h3 className="text-lg font-semibold mt-6 mb-3 text-text-primary">Guidance</h3>
-                    <div
-                      className="text-text-secondary"
-                      dangerouslySetInnerHTML={{ __html: question.guidance }}
-                    />
-                  </>
-                )}
-              </div>
+              {renderTabContent()}
             </div>
           </div>
 

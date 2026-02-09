@@ -2,6 +2,10 @@
 title: "Count Orders by Category"
 difficulty: "Easy"
 tags: ["COUNT", "GROUP BY", "aggregation"]
+hints:
+  - "Think about which SQL function counts rows in a group."
+  - "You'll need GROUP BY to split results by category."
+  - "Use ORDER BY category to sort alphabetically."
 tables:
   - name: orders
     visible_data: |

@@ -16,6 +16,7 @@ interface BaseQuestion {
   tags: string[];
   description: string;
   expectedOutput: string;
+  hints?: string[];
 }
 
 // SQL question - write queries from scratch
@@ -83,6 +84,7 @@ export interface ConstraintsQuestion {
   architectureOptions: ArchitectureOption[];
   maxQuestions: number;
   guidance?: string;
+  hints?: string[];
 }
 
 // Canvas question types
@@ -112,6 +114,7 @@ export interface CanvasQuestion {
   steps: CanvasStep[];
   availableComponents: string[];
   guidance?: string;
+  hints?: string[];
 }
 
 export interface CanvasStepResult {
@@ -150,6 +153,7 @@ export interface QuizQuestion {
   answers: QuizAnswer[];
   multiSelect: boolean; // true if multiple answers can be correct
   explanation?: string; // Overall explanation shown after answering
+  hints?: string[];
 }
 
 export interface QuizValidationResult {
@@ -208,6 +212,7 @@ export interface ModelingQuestion {
   expectedTables: ModelingTableConfig[];
   scoreThresholds: ModelingScoreThresholds;
   guidance?: string;
+  hints?: string[];
 }
 
 export interface UserTable {
@@ -478,6 +483,47 @@ export interface AnonymousActivity {
   totalSessionTime: number;
   firstSeen: string;
   lastSeen: string;
+}
+
+// ── Community Types ────────────────────────────────────────────────
+
+export type ReportCategory = 'wrong_output' | 'unclear_description' | 'broken_test' | 'typo' | 'other';
+
+export interface QuestionReport {
+  id: string;
+  user_id: string;
+  question_id: string;
+  category: ReportCategory;
+  details: string | null;
+  created_at: string;
+}
+
+export interface Discussion {
+  id: string;
+  user_id: string;
+  question_id: string;
+  content: string;
+  created_at: string;
+  profiles?: { display_name: string | null };
+}
+
+export interface Solution {
+  id: string;
+  user_id: string;
+  question_id: string;
+  title: string;
+  content: string;
+  language: string;
+  vote_count: number;
+  created_at: string;
+  profiles?: { display_name: string | null };
+}
+
+export interface SolutionVote {
+  id: string;
+  user_id: string;
+  solution_id: string;
+  vote: 1 | -1;
 }
 
 // ── Stats Types ────────────────────────────────────────────────────

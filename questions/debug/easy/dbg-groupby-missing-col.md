@@ -37,6 +37,9 @@ expected_output_query: |
   GROUP BY region, category
   ORDER BY region, category
 hint: "Every non-aggregated column in SELECT must appear in the GROUP BY clause."
+hints:
+  - "Compare the columns in SELECT to the columns in GROUP BY — do they match?"
+  - "When using GROUP BY, every column in SELECT that isn't inside an aggregate function (like SUM) must also be listed in GROUP BY."
 ---
 
 # Missing Column in GROUP BY

@@ -1,10 +1,16 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { QuizQuestion } from '@/types';
 import { useQuizStore } from '@/stores/quizStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useSubmissionStore } from '@/stores/submissionStore';
 import { validateQuizQuestion } from '@/services/validation/QuizValidator';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { BugReportPopover } from '@/components/question-view/BugReportPopover';
+import { TimerWidget } from '@/components/question-view/TimerWidget';
+import { QuestionTabs, QuestionTab } from '@/components/question-view/QuestionTabs';
+import { HintsPanel } from '@/components/question-view/HintsPanel';
+import { DiscussionPanel } from '@/components/question-view/DiscussionPanel';
+import { useAuthGate, useSubmissionGate } from '@/hooks/useAuthGate';
 
 interface QuizQuestionViewProps {
   question: QuizQuestion;
@@ -21,9 +27,14 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
   } = useQuizStore();
   const user = useAuthStore((s) => s.user);
   const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
+  const [activeTab, setActiveTab] = useState<QuestionTab>('description');
+  const { isAuthenticated, requireAuth } = useAuthGate();
+  const { hasSubmitted: hasSubmittedForGate } = useSubmissionGate(question.id);
+  const hints = question.hints || [];
 
   useEffect(() => {
     reset();
+    setActiveTab('description');
   }, [question.id, reset]);
 
   const handleSubmit = async () => {
@@ -51,6 +62,37 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
     reset();
   };
 
+  const handleTabChange = (tab: QuestionTab) => {
+    if (tab === 'hints' || tab === 'discussion') {
+      if (!requireAuth()) return;
+    }
+    if (tab === 'discussion' && !hasSubmittedForGate) return;
+    setActiveTab(tab);
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'description':
+        return (
+          <div className="prose prose-slate max-w-none prose-invert">
+            <p className="text-lg text-text-primary whitespace-pre-wrap">
+              {question.question}
+            </p>
+            {question.description && (
+              <div
+                className="text-text-secondary mt-4"
+                dangerouslySetInnerHTML={{ __html: question.description }}
+              />
+            )}
+          </div>
+        );
+      case 'hints':
+        return <HintsPanel hints={hints} />;
+      case 'discussion':
+        return <DiscussionPanel questionId={question.id} hasSubmitted={hasSubmittedForGate} />;
+    }
+  };
+
   const hasSelection = selectedAnswers.length > 0;
 
   return (
@@ -65,15 +107,21 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
         {/* Left Panel - Question */}
         <div className="w-full lg:w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col flex-shrink-0 lg:flex-shrink">
           <div className="p-6 border-b border-border">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-medium px-2 py-0.5 rounded bg-info/20 text-info">
-                Quiz
-              </span>
-              {question.multiSelect && (
-                <span className="text-xs font-medium px-2 py-0.5 rounded bg-warning/20 text-warning">
-                  Multiple Answers
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-medium px-2 py-0.5 rounded bg-info/20 text-info">
+                  Quiz
                 </span>
-              )}
+                {question.multiSelect && (
+                  <span className="text-xs font-medium px-2 py-0.5 rounded bg-warning/20 text-warning">
+                    Multiple Answers
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <TimerWidget />
+                <BugReportPopover questionId={question.id} />
+              </div>
             </div>
             <h1 className="text-2xl font-bold text-text-primary">{question.title}</h1>
             <div className="flex items-center gap-3 mt-2 flex-wrap">
@@ -99,18 +147,16 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
             </div>
           </div>
 
+          <QuestionTabs
+            activeTab={activeTab}
+            onTabChange={handleTabChange}
+            hasHints={hints.length > 0}
+            isAuthenticated={isAuthenticated}
+            hasSubmitted={hasSubmittedForGate}
+            showSolutions={false}
+          />
           <div className="flex-1 overflow-y-auto p-6">
-            <div className="prose prose-slate max-w-none prose-invert">
-              <p className="text-lg text-text-primary whitespace-pre-wrap">
-                {question.question}
-              </p>
-              {question.description && (
-                <div
-                  className="text-text-secondary mt-4"
-                  dangerouslySetInnerHTML={{ __html: question.description }}
-                />
-              )}
-            </div>
+            {renderTabContent()}
           </div>
         </div>
 

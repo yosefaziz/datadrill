@@ -52,7 +52,10 @@ Always run `npm run build` to verify changes before claiming work is complete.
 **React patterns:**
 - Async effects must handle cleanup (mounted flags or request IDs to prevent stale updates)
 - Effects with listeners/timers must return cleanup functions
-- Env vars: `import.meta.env.VITE_*` — optional features typed as `string | undefined`
+- Env vars: `import.meta.env.VITE_*` - optional features typed as `string | undefined`
+
+**Writing:**
+- Never use em-dashes (-) - use hyphens (-) instead
 
 ## Gotchas — Do Not "Fix" These
 

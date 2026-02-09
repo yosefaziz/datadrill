@@ -2,6 +2,9 @@
 title: "Orders with Customer Names"
 difficulty: "Easy"
 tags: ["INNER JOIN", "basics"]
+hints:
+  - "You need to combine data from two tables — think about which JOIN type keeps only matching rows."
+  - "The customer_id column in orders matches the id column in customers."
 tables:
   - name: orders
     visible_data: |
