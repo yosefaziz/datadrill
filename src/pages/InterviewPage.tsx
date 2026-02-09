@@ -4,6 +4,7 @@ import { useInterviewStore } from '@/stores/interviewStore';
 import { useAuthStore } from '@/stores/authStore';
 import { InterviewLobby } from '@/components/interview/InterviewLobby';
 import { InterviewSession } from '@/components/interview/InterviewSession';
+import { InterviewResults } from '@/components/interview/InterviewResults';
 
 export function InterviewPage() {
   const { scenarioId } = useParams<{ scenarioId?: string }>();
@@ -24,12 +25,7 @@ export function InterviewPage() {
   }
 
   if (isResults || isComplete) {
-    // Results placeholder until Task 9
-    return (
-      <div className="max-w-4xl mx-auto px-6 py-12 text-center">
-        <div className="text-text-secondary">Results - coming in Task 9</div>
-      </div>
-    );
+    return <InterviewResults />;
   }
 
   if (!user) {
