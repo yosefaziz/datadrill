@@ -63,6 +63,20 @@ export function UserMenu() {
           >
             Edit Profile
           </Link>
+          <Link
+            to="/dashboard"
+            onClick={() => setIsOpen(false)}
+            className="block w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-primary transition-colors"
+          >
+            Insights
+          </Link>
+          <Link
+            to="/history"
+            onClick={() => setIsOpen(false)}
+            className="block w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-primary transition-colors"
+          >
+            History
+          </Link>
           <div className="border-t border-border-color my-1" />
           <button
             onClick={toggleTheme}
