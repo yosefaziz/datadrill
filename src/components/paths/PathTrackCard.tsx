@@ -6,7 +6,8 @@ import {
   Percent, Table, Code, Target, Zap, CircleSlash, Crosshair, Columns,
   Link as LinkIcon, Shuffle, SortAsc, Database, MousePointer, RefreshCw,
   Layers, Shield, Repeat, Lock, Globe, Star, Snowflake, Library, Box,
-  Layout, UnfoldVertical, Funnel,
+  Layout, UnfoldVertical, Funnel, Cpu, Grid3x3, HardDrive, Merge,
+  Sparkles, Radio,
 } from 'lucide-react';
 import { SkillTrackMeta } from '@/types';
 import { useTrackStore } from '@/stores/trackStore';
@@ -54,6 +55,12 @@ const ICON_MAP: Record<string, LucideIcon> = {
   'box': Box,
   'layout': Layout,
   'unfold-vertical': UnfoldVertical,
+  'cpu': Cpu,
+  'grid-3x3': Grid3x3,
+  'hard-drive': HardDrive,
+  'merge': Merge,
+  'sparkles': Sparkles,
+  'radio': Radio,
 };
 
 // Category accent colors (left border)
@@ -76,6 +83,9 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Schema Fundamentals': 'border-l-primary',
   'Dimension Patterns': 'border-l-accent',
   'Advanced Modeling': 'border-l-warning',
+  'Spark Core': 'border-l-primary',
+  'Spark Performance': 'border-l-accent',
+  'Spark Advanced': 'border-l-warning',
 };
 
 interface PathTrackCardProps {
