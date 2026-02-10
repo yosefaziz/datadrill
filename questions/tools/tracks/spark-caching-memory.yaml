@@ -1,0 +1,36 @@
+id: tools-spark-caching-memory
+name: "Caching & Memory"
+tagline: "Optimize memory usage and caching strategies"
+interviewer_says: "explain Spark's memory model"
+you_need: "cache vs persist, storage levels, memory regions, tuning"
+description: "Understand how Spark manages memory across storage and execution, and when caching helps vs hurts performance."
+icon: "hard-drive"
+category: "Spark Performance"
+order: 4
+prerequisites: ["tools-spark-architecture"]
+
+levels:
+  - level: 1
+    title: "Cache & Persist"
+    description: "Learn when and how to cache DataFrames"
+    concepts: ["cache", "persist", "storage levels"]
+    questions:
+      - spark-cache-vs-persist
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Memory Model"
+    description: "Understand Spark's unified memory manager"
+    concepts: ["storage memory", "execution memory", "unified memory"]
+    questions:
+      - spark-memory-model
+    unlock: complete_previous
+
+  - level: 3
+    title: "Resource Management"
+    description: "Tune executor resources and dynamic allocation"
+    concepts: ["dynamic allocation", "executor memory", "overhead"]
+    questions:
+      - spark-dynamic-allocation
+      - spark-speculation
+    unlock: complete_previous

@@ -1,0 +1,37 @@
+id: tools-spark-joins
+name: "Spark Joins"
+tagline: "Master join strategies and optimization"
+interviewer_says: "how does Spark choose a join strategy?"
+you_need: "broadcast, sort-merge, shuffle hash, join selection"
+description: "Joins are the most expensive operations in Spark. Learn the different strategies, when each is used, and how to optimize them."
+icon: "merge"
+category: "Spark Performance"
+order: 5
+prerequisites: ["tools-spark-partitioning"]
+
+levels:
+  - level: 1
+    title: "Broadcast Joins"
+    description: "Use broadcast joins for small-large table joins"
+    concepts: ["broadcast join", "broadcast threshold", "auto-broadcast"]
+    questions:
+      - spark-broadcast-join-basics
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Sort-Merge & Hash Joins"
+    description: "Understand large-table join strategies"
+    concepts: ["sort-merge join", "shuffle hash join", "join selection"]
+    questions:
+      - spark-sort-merge-join
+      - spark-accumulator-broadcast
+    unlock: complete_previous
+
+  - level: 3
+    title: "Skew Joins & Optimization"
+    description: "Handle join skew and read query plans"
+    concepts: ["skew join", "AQE", "query plans"]
+    questions:
+      - spark-skew-join-optimization
+      - spark-query-plan-analysis
+    unlock: complete_previous

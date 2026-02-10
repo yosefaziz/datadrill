@@ -1,0 +1,37 @@
+id: tools-spark-structured-streaming
+name: "Structured Streaming"
+tagline: "Build reliable streaming pipelines with Spark"
+interviewer_says: "design a real-time pipeline with exactly-once guarantees"
+you_need: "micro-batch, watermarks, output modes, state, exactly-once"
+description: "Master Spark's streaming engine. From basic micro-batch processing to advanced stateful operations and exactly-once delivery."
+icon: "radio"
+category: "Spark Advanced"
+order: 7
+prerequisites: ["tools-spark-architecture"]
+
+levels:
+  - level: 1
+    title: "Streaming Fundamentals"
+    description: "Understand the unbounded table model and micro-batch processing"
+    concepts: ["micro-batch", "unbounded table", "triggers"]
+    questions:
+      - spark-structured-streaming-basics
+      - spark-output-modes
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Watermarks & Late Data"
+    description: "Handle late-arriving data with watermarks"
+    concepts: ["watermarks", "late data", "window aggregations"]
+    questions:
+      - spark-watermarks
+    unlock: complete_previous
+
+  - level: 3
+    title: "State & Exactly-Once"
+    description: "Manage state and guarantee exactly-once processing"
+    concepts: ["state management", "checkpoints", "exactly-once"]
+    questions:
+      - spark-state-management-streaming
+      - spark-exactly-once-streaming
+    unlock: complete_previous

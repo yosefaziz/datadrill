@@ -1,0 +1,36 @@
+id: tools-spark-architecture
+name: "Spark Architecture"
+tagline: "Master Spark's distributed execution model"
+interviewer_says: "explain how Spark executes a job"
+you_need: "driver/executor model, DAGs, stages, tasks"
+description: "Understand the fundamentals of how Spark distributes and executes work across a cluster. This is the foundation for all other Spark topics."
+icon: "cpu"
+category: "Spark Core"
+order: 1
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Driver & Executors"
+    description: "Learn the roles of Driver and Executor processes"
+    concepts: ["driver", "executors", "cluster manager"]
+    questions:
+      - spark-driver-executor-roles
+    unlock: always_unlocked
+
+  - level: 2
+    title: "DAG Execution"
+    description: "Understand how Spark creates and executes a DAG of stages"
+    concepts: ["DAG", "stages", "tasks", "shuffle boundaries"]
+    questions:
+      - spark-dag-stages-tasks
+      - spark-deploy-modes
+    unlock: complete_previous
+
+  - level: 3
+    title: "Shuffle Internals"
+    description: "Deep dive into the shuffle process between stages"
+    concepts: ["shuffle write", "shuffle read", "block transfer"]
+    questions:
+      - spark-shuffle-internals
+    unlock: complete_previous

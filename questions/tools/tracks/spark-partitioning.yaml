@@ -1,0 +1,36 @@
+id: tools-spark-partitioning
+name: "Partitioning & Shuffles"
+tagline: "Control data distribution for optimal performance"
+interviewer_says: "how would you handle a slow Spark job with data skew?"
+you_need: "partitioning strategies, shuffle mechanics, skew handling"
+description: "Partitioning is the #1 lever for Spark performance. Learn to control data distribution, minimize shuffles, and handle skew."
+icon: "grid-3x3"
+category: "Spark Performance"
+order: 3
+prerequisites: ["tools-spark-architecture"]
+
+levels:
+  - level: 1
+    title: "Partition Basics"
+    description: "Understand how data is divided into partitions"
+    concepts: ["partitions", "repartition", "coalesce"]
+    questions:
+      - spark-partition-basics
+      - spark-coalesce-vs-repartition
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Shuffle Operations"
+    description: "Identify which operations cause shuffles and why"
+    concepts: ["wide transformations", "shuffle", "exchange"]
+    questions:
+      - spark-shuffle-operations
+    unlock: complete_previous
+
+  - level: 3
+    title: "Data Skew"
+    description: "Diagnose and fix data skew problems"
+    concepts: ["skew", "salting", "hot keys"]
+    questions:
+      - spark-data-skew
+    unlock: complete_previous

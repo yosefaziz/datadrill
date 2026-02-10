@@ -1,0 +1,35 @@
+id: tools-spark-sql-catalyst
+name: "Spark SQL & Catalyst"
+tagline: "Understand query optimization from SQL to execution"
+interviewer_says: "walk me through how Spark optimizes a query"
+you_need: "Catalyst phases, predicate pushdown, AQE, codegen"
+description: "Learn how Spark transforms SQL and DataFrame operations into optimized physical execution plans through the Catalyst optimizer."
+icon: "sparkles"
+category: "Spark Advanced"
+order: 6
+prerequisites: ["tools-spark-rdd-dataframe"]
+
+levels:
+  - level: 1
+    title: "Catalyst Pipeline"
+    description: "Walk through the query optimization phases"
+    concepts: ["analysis", "logical optimization", "physical planning"]
+    questions:
+      - spark-catalyst-optimizer
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Adaptive Query Execution"
+    description: "Runtime optimizations based on actual data statistics"
+    concepts: ["AQE", "runtime re-optimization", "partition coalescing"]
+    questions:
+      - spark-aqe
+    unlock: complete_previous
+
+  - level: 3
+    title: "Table Design"
+    description: "Choose partitioning and bucketing strategies for optimal query performance"
+    concepts: ["partitionBy", "bucketBy", "file layout"]
+    questions:
+      - spark-partition-strategy-choice
+    unlock: complete_previous
