@@ -57,6 +57,7 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     debug: [],
     architecture: [],
     modeling: [],
+    tools: [],
   },
   questionsById: {},
   questionStatuses: {},

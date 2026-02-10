@@ -15,7 +15,7 @@ import { ModelingQuestionView } from '@/components/modeling/ModelingQuestionView
 import { SkillType, getInitialCode, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion, isModelingQuestion } from '@/types';
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
-  return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
+  return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling' || skill === 'tools';
 }
 
 export function QuestionPage() {
@@ -108,7 +108,7 @@ export function QuestionPage() {
   }
 
   // Architecture and modeling questions don't need executor loading
-  const needsExecutor = skill !== 'architecture' && skill !== 'modeling';
+  const needsExecutor = skill !== 'architecture' && skill !== 'modeling' && skill !== 'tools';
   const showExecutorLoading = needsExecutor && isExecutorLoading;
 
   if (isLoading || showExecutorLoading) {

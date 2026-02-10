@@ -10,6 +10,7 @@ const SKILL_LABELS: Record<SkillType, string> = {
   debug: 'Debug',
   architecture: 'Architecture',
   modeling: 'Modeling',
+  tools: 'Tools & Frameworks',
 };
 
 interface BarProps {

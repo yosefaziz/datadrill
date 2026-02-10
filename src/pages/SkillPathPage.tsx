@@ -6,7 +6,7 @@ import { PathTimeline } from '@/components/paths/PathTimeline';
 import { SkillType } from '@/types';
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
-  return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
+  return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling' || skill === 'tools';
 }
 
 const SKILL_NAMES: Record<SkillType, string> = {
@@ -15,6 +15,7 @@ const SKILL_NAMES: Record<SkillType, string> = {
   debug: 'Debug',
   architecture: 'Architecture',
   modeling: 'Modeling',
+  tools: 'Tools & Frameworks',
 };
 
 export function SkillPathPage() {

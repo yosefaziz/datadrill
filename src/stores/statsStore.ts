@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { SkillType, SkillStats, UserStats, Submission } from '@/types';
 
-const ALL_SKILLS: SkillType[] = ['sql', 'python', 'debug', 'architecture', 'modeling'];
+const ALL_SKILLS: SkillType[] = ['sql', 'python', 'debug', 'architecture', 'modeling', 'tools'];
 
 interface QuestionTotals {
   [skill: string]: {

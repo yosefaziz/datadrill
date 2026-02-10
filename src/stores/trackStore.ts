@@ -22,6 +22,7 @@ export const useTrackStore = create<TrackState>((set, get) => ({
     debug: [],
     architecture: [],
     modeling: [],
+    tools: [],
   },
   tracksById: {},
   trackProgress: {},

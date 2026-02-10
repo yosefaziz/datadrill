@@ -19,6 +19,7 @@ const skillBadges = {
   debug: { bg: 'bg-accent/20', text: 'text-accent', label: 'Debug' },
   architecture: { bg: 'bg-primary/20', text: 'text-primary', label: 'Architecture' },
   modeling: { bg: 'bg-success/20', text: 'text-success', label: 'Modeling' },
+  tools: { bg: 'bg-info/20', text: 'text-info', label: 'Tools & Frameworks' },
 };
 
 export function QuestionHeader({ question, children }: QuestionHeaderProps) {

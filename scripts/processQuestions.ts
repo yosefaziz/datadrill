@@ -5,9 +5,10 @@ import matter from 'gray-matter';
 import { marked } from 'marked';
 import * as yaml from 'js-yaml';
 
-type SkillType = 'sql' | 'python' | 'debug' | 'architecture' | 'modeling';
+type SkillType = 'sql' | 'python' | 'debug' | 'architecture' | 'modeling' | 'tools';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
 type ArchitectureQuestionType = 'constraints' | 'canvas' | 'quiz';
+type ToolsQuestionType = 'quiz';
 
 interface TableFrontmatter {
   name: string;
@@ -238,7 +239,7 @@ interface QuizAnswer {
 
 interface QuizProcessedQuestion {
   id: string;
-  skill: 'architecture';
+  skill: 'architecture' | 'tools';
   questionType: 'quiz';
   title: string;
   difficulty: Difficulty;
@@ -252,6 +253,8 @@ interface QuizProcessedQuestion {
 }
 
 type ArchitectureProcessedQuestion = ConstraintsProcessedQuestion | CanvasProcessedQuestion | QuizProcessedQuestion;
+
+type ToolsProcessedQuestion = QuizProcessedQuestion;
 
 // Modeling processed types
 interface ModelingField {
@@ -297,12 +300,13 @@ type ProcessedQuestion =
   | PythonProcessedQuestion
   | DebugProcessedQuestion
   | ArchitectureProcessedQuestion
-  | ModelingProcessedQuestion;
+  | ModelingProcessedQuestion
+  | ToolsProcessedQuestion;
 
 interface QuestionMeta {
   id: string;
   skill: SkillType;
-  questionType?: ArchitectureQuestionType;
+  questionType?: ArchitectureQuestionType | ToolsQuestionType;
   title: string;
   difficulty: Difficulty;
   tags: string[];
@@ -459,7 +463,7 @@ interface ProcessedInterviewMeta {
   tags: string[];
 }
 
-const SKILL_DIRS: SkillType[] = ['sql', 'python', 'debug', 'architecture', 'modeling'];
+const SKILL_DIRS: SkillType[] = ['sql', 'python', 'debug', 'architecture', 'modeling', 'tools'];
 
 function processTable(table: TableFrontmatter): ProcessedTable {
   return {
@@ -543,14 +547,15 @@ async function processCanvasQuestion(
 async function processQuizQuestion(
   id: string,
   frontmatter: QuizFrontmatter,
-  markdownContent: string
+  markdownContent: string,
+  skill: 'architecture' | 'tools' = 'architecture'
 ): Promise<QuizProcessedQuestion> {
   // Parse markdown content for description
   const description = markdownContent.trim() ? await marked(markdownContent.trim()) : '';
 
   return {
     id,
-    skill: 'architecture',
+    skill,
     questionType: 'quiz',
     title: frontmatter.title,
     difficulty: frontmatter.difficulty,
@@ -631,6 +636,11 @@ async function processQuestion(
       // Default to constraints
       return processConstraintsQuestion(id, data as ConstraintsFrontmatter, markdownContent);
     }
+  }
+
+  // Handle tools questions (all tools questions are quiz type)
+  if (skill === 'tools') {
+    return processQuizQuestion(id, data as QuizFrontmatter, markdownContent, 'tools');
   }
 
   // Handle modeling questions
@@ -773,6 +783,10 @@ async function processQuestions() {
           // Default to constraints for backwards compatibility
           architectureType = 'constraints';
         }
+      } else if (skill === 'tools') {
+        if (file.startsWith('quiz/')) {
+          architectureType = 'quiz';
+        }
       }
 
       try {
@@ -794,8 +808,8 @@ async function processQuestions() {
           tags: question.tags,
         };
 
-        // Add questionType for architecture questions
-        if (skill === 'architecture' && 'questionType' in question) {
+        // Add questionType for architecture and tools questions
+        if ((skill === 'architecture' || skill === 'tools') && 'questionType' in question) {
           meta.questionType = question.questionType;
         }
 

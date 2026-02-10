@@ -1,5 +1,5 @@
 // Skill types
-export type SkillType = 'sql' | 'python' | 'debug' | 'architecture' | 'modeling';
+export type SkillType = 'sql' | 'python' | 'debug' | 'architecture' | 'modeling' | 'tools';
 
 export interface TableData {
   name: string;
@@ -45,6 +45,7 @@ export interface DebugQuestion extends BaseQuestion {
 
 // Architecture question types
 export type ArchitectureQuestionType = 'constraints' | 'canvas' | 'quiz';
+export type ToolsQuestionType = 'quiz';
 export type ClarifyingQuestionCategory = 'crucial' | 'helpful' | 'irrelevant';
 
 export interface ClarifyingQuestion {
@@ -143,7 +144,7 @@ export interface QuizAnswer {
 
 export interface QuizQuestion {
   id: string;
-  skill: 'architecture';
+  skill: 'architecture' | 'tools';
   questionType: 'quiz';
   title: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
@@ -172,6 +173,8 @@ export interface QuizValidationResult {
 
 // Union of architecture question types
 export type ArchitectureQuestion = ConstraintsQuestion | CanvasQuestion | QuizQuestion;
+
+export type ToolsQuestion = QuizQuestion & { skill: 'tools' };
 
 // Data Modeling question types
 export type FieldDataType = 'integer' | 'string' | 'timestamp' | 'decimal' | 'boolean';
@@ -257,13 +260,13 @@ export interface ArchitectureValidationResult {
 }
 
 // Discriminated union of all question types
-export type Question = SqlQuestion | PythonQuestion | DebugQuestion | ArchitectureQuestion | ModelingQuestion;
+export type Question = SqlQuestion | PythonQuestion | DebugQuestion | ArchitectureQuestion | ModelingQuestion | ToolsQuestion;
 
 // Metadata for question listings (minimal data for index)
 export interface QuestionMeta {
   id: string;
   skill: SkillType;
-  questionType?: ArchitectureQuestionType; // Only for architecture questions
+  questionType?: ArchitectureQuestionType | ToolsQuestionType;
   title: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   tags: string[];
@@ -443,16 +446,24 @@ export function isCanvasQuestion(question: Question): question is CanvasQuestion
 }
 
 export function isQuizQuestion(question: Question): question is QuizQuestion {
-  return question.skill === 'architecture' && (question as ArchitectureQuestion).questionType === 'quiz';
+  return 'questionType' in question && (question as QuizQuestion).questionType === 'quiz';
 }
 
 export function isModelingQuestion(question: Question): question is ModelingQuestion {
   return question.skill === 'modeling';
 }
 
+export function isToolsQuestion(question: Question): question is ToolsQuestion {
+  return question.skill === 'tools';
+}
+
+export function isToolsQuizQuestion(question: Question): question is ToolsQuestion {
+  return question.skill === 'tools' && 'questionType' in question && (question as ToolsQuestion).questionType === 'quiz';
+}
+
 // Helper to get tables from any question type (not applicable to architecture/modeling questions)
 export function getQuestionTables(question: Question): TableData[] {
-  if (isArchitectureQuestion(question) || isModelingQuestion(question)) {
+  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isToolsQuestion(question)) {
     return [];
   }
   return question.tables;
@@ -460,7 +471,7 @@ export function getQuestionTables(question: Question): TableData[] {
 
 // Helper to get expected query from any question type (not applicable to architecture/modeling questions)
 export function getExpectedQuery(question: Question): string {
-  if (isArchitectureQuestion(question) || isModelingQuestion(question)) {
+  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isToolsQuestion(question)) {
     return '';
   }
   return question.expectedOutputQuery;
@@ -485,7 +496,7 @@ export function getInitialCode(question: Question): string {
 
 export type UserRole = 'student' | 'junior' | 'mid' | 'senior' | 'staff';
 export type UserGoal = 'interview_prep' | 'skill_building' | 'career_switch';
-export type WeakestSkill = 'sql' | 'python' | 'architecture' | 'modeling';
+export type WeakestSkill = 'sql' | 'python' | 'architecture' | 'modeling' | 'tools';
 
 export interface UserProfile {
   id: string;

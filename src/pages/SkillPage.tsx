@@ -11,6 +11,7 @@ const SKILL_NAMES: Record<SkillType, string> = {
   debug: 'Debug',
   architecture: 'Data Architecture',
   modeling: 'Data Modeling',
+  tools: 'Tools & Frameworks',
 };
 
 const SKILL_DESCRIPTIONS: Record<SkillType, string> = {
@@ -19,10 +20,11 @@ const SKILL_DESCRIPTIONS: Record<SkillType, string> = {
   debug: 'Fix broken SQL or Python pipelines',
   architecture: 'Practice asking the right questions before choosing an architecture',
   modeling: 'Design schemas by assigning fields to Fact and Dimension tables',
+  tools: 'Learn the tools and frameworks used in modern data engineering',
 };
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
-  return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling';
+  return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling' || skill === 'tools';
 }
 
 type TabId = 'questions' | 'paths';

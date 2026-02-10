@@ -45,7 +45,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
       await submitAnswer(
         {
           question_id: question.id,
-          skill: 'architecture',
+          skill: question.skill,
           difficulty: question.difficulty,
           answer: JSON.stringify(selectedAnswers),
           passed: result.passed,
@@ -99,7 +99,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
     <div className="flex-1 p-4 h-full overflow-hidden flex flex-col">
       <Breadcrumb
         items={[
-          { label: 'Architecture', href: '/architecture' },
+          { label: question.skill === 'tools' ? 'Tools & Frameworks' : 'Architecture', href: `/${question.skill}` },
           { label: question.title },
         ]}
       />

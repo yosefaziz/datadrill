@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Database, Zap, Bug, Network, Table2, LucideIcon } from 'lucide-react';
+import { Database, Zap, Bug, Network, Table2, Wrench, LucideIcon } from 'lucide-react';
 import { SkillCard } from '@/components/questions/SkillCard';
 import { SkillType } from '@/types';
 
@@ -80,6 +80,12 @@ const SKILLS: SkillConfig[] = [
     Icon: Table2,
     description: 'Design schemas by assigning fields to Fact and Dimension tables',
   },
+  {
+    skill: 'tools',
+    name: 'Tools & Frameworks',
+    Icon: Wrench,
+    description: 'Learn the tools and frameworks used in modern data engineering',
+  },
 ];
 
 export function HomePage() {
@@ -89,6 +95,7 @@ export function HomePage() {
     debug: 0,
     architecture: 0,
     modeling: 0,
+    tools: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [hoveredCardCount, setHoveredCardCount] = useState(0);
@@ -116,7 +123,7 @@ export function HomePage() {
         })
       );
 
-      const counts: Record<SkillType, number> = { sql: 0, python: 0, debug: 0, architecture: 0, modeling: 0 };
+      const counts: Record<SkillType, number> = { sql: 0, python: 0, debug: 0, architecture: 0, modeling: 0, tools: 0 };
       results.forEach(({ skill, count }) => {
         counts[skill] = count;
       });
@@ -141,7 +148,7 @@ export function HomePage() {
 
       {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(6)].map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
