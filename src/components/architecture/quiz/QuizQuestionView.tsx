@@ -29,6 +29,7 @@ export function QuizQuestionView({ question, trackId, prevUrl, nextUrl }: QuizQu
     toggleAnswer,
     setValidationResult,
     reset,
+    shuffleKey,
   } = useQuizStore();
   const user = useAuthStore((s) => s.user);
   const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
@@ -45,8 +46,7 @@ export function QuizQuestionView({ question, trackId, prevUrl, nextUrl }: QuizQu
       [answers[i], answers[j]] = [answers[j], answers[i]];
     }
     return answers;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [question.id]);
+  }, [question.id, shuffleKey]);
 
   useEffect(() => {
     reset();

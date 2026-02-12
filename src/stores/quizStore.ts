@@ -5,6 +5,7 @@ interface QuizState {
   selectedAnswers: string[];
   validationResult: QuizValidationResult | null;
   isSubmitted: boolean;
+  shuffleKey: number;
 
   toggleAnswer: (answerId: string, multiSelect: boolean) => void;
   setValidationResult: (result: QuizValidationResult) => void;
@@ -15,6 +16,7 @@ export const useQuizStore = create<QuizState>((set) => ({
   selectedAnswers: [],
   validationResult: null,
   isSubmitted: false,
+  shuffleKey: 0,
 
   toggleAnswer: (answerId, multiSelect) =>
     set((state) => {
@@ -40,9 +42,10 @@ export const useQuizStore = create<QuizState>((set) => ({
     set({ validationResult: result, isSubmitted: true }),
 
   reset: () =>
-    set({
+    set((state) => ({
       selectedAnswers: [],
       validationResult: null,
       isSubmitted: false,
-    }),
+      shuffleKey: state.shuffleKey + 1,
+    })),
 }));
