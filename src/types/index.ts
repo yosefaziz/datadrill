@@ -772,6 +772,7 @@ export interface UserProfile {
   primary_goal: UserGoal | null;
   weakest_skill: WeakestSkill | null;
   onboarding_completed: boolean;
+  is_admin: boolean;
   pre_registration_activity: AnonymousActivity | null;
   created_at: string;
   updated_at: string;
@@ -842,14 +843,27 @@ export interface QuestionReaction {
 // ── Community Types ────────────────────────────────────────────────
 
 export type ReportCategory = 'wrong_output' | 'unclear_description' | 'broken_test' | 'typo' | 'other';
+export type ReportStatus = 'new' | 'reviewing' | 'resolved' | 'dismissed';
 
 export interface QuestionReport {
   id: string;
   user_id: string;
   question_id: string;
   category: ReportCategory;
+  status: ReportStatus;
   details: string | null;
   created_at: string;
+}
+
+export interface AdminReport {
+  id: string;
+  user_id: string;
+  question_id: string;
+  category: ReportCategory;
+  status: ReportStatus;
+  details: string | null;
+  created_at: string;
+  profiles: { display_name: string | null };
 }
 
 export interface Discussion {

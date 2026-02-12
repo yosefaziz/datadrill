@@ -77,6 +77,18 @@ export function UserMenu() {
           >
             History
           </Link>
+          {profile?.is_admin && (
+            <>
+              <div className="border-t border-border-color my-1" />
+              <Link
+                to="/admin/reports"
+                onClick={() => setIsOpen(false)}
+                className="block w-full text-left px-4 py-2 text-sm text-text-primary hover:bg-bg-primary transition-colors"
+              >
+                Admin Reports
+              </Link>
+            </>
+          )}
           <div className="border-t border-border-color my-1" />
           <button
             onClick={toggleTheme}

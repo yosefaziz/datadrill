@@ -12,8 +12,7 @@ create table public.question_reports (
   question_id text not null,
   category public.report_category not null,
   details text check (char_length(details) <= 500),
-  created_at timestamptz default now(),
-  unique(user_id, question_id)
+  created_at timestamptz default now()
 );
 
 alter table public.question_reports enable row level security;

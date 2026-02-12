@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { AdminRoute } from '@/components/auth/AdminRoute';
 import { AuthCallback } from '@/components/auth/AuthCallback';
 import { HomePage } from '@/pages/HomePage';
 import { SkillPage } from '@/pages/SkillPage';
@@ -11,6 +12,7 @@ import { DashboardPage } from '@/pages/DashboardPage';
 import { HistoryPage } from '@/pages/HistoryPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { InterviewPage } from '@/pages/InterviewPage';
+import { AdminReportsPage } from '@/pages/AdminReportsPage';
 
 function App() {
   return (
@@ -42,6 +44,14 @@ function App() {
                 <ProtectedRoute>
                   <ProfilePage />
                 </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <AdminRoute>
+                  <AdminReportsPage />
+                </AdminRoute>
               }
             />
             <Route path="/interview" element={<InterviewPage />} />

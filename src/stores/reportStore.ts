@@ -1,45 +1,46 @@
 import { create } from 'zustand';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
-import { ReportCategory } from '@/types';
+import { ReportCategory, ReportStatus, AdminReport } from '@/types';
+
+const ADMIN_PAGE_SIZE = 20;
+
+interface AdminFilters {
+  category: ReportCategory | null;
+  showDismissed: boolean;
+  showResolved: boolean;
+}
 
 interface ReportState {
-  reportedQuestions: Set<string>;
   isSubmitting: boolean;
 
-  checkReport: (questionId: string, userId: string) => Promise<void>;
+  // Admin state
+  adminReports: AdminReport[];
+  adminHasMore: boolean;
+  adminIsLoading: boolean;
+  adminFilters: AdminFilters;
+  adminTotalCount: number;
+
   submitReport: (
     questionId: string,
     userId: string,
     category: ReportCategory,
     details: string | null,
   ) => Promise<void>;
+
+  // Admin actions
+  fetchAdminReports: (reset?: boolean) => Promise<void>;
+  setAdminFilter: (key: keyof AdminFilters, value: ReportCategory | boolean | null) => void;
+  updateReportStatus: (reportId: string, status: ReportStatus) => Promise<void>;
 }
 
-export const useReportStore = create<ReportState>((set) => ({
-  reportedQuestions: new Set(),
+export const useReportStore = create<ReportState>((set, get) => ({
   isSubmitting: false,
 
-  checkReport: async (questionId: string, userId: string) => {
-    if (!isSupabaseConfigured) return;
-
-    const { data, error } = await supabase
-      .from('question_reports')
-      .select('id')
-      .eq('user_id', userId)
-      .eq('question_id', questionId)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Failed to check report:', error);
-      return;
-    }
-
-    if (data) {
-      set((state) => ({
-        reportedQuestions: new Set([...state.reportedQuestions, questionId]),
-      }));
-    }
-  },
+  adminReports: [],
+  adminHasMore: true,
+  adminIsLoading: false,
+  adminFilters: { category: null, showDismissed: false, showResolved: false },
+  adminTotalCount: 0,
 
   submitReport: async (
     questionId: string,
@@ -52,15 +53,12 @@ export const useReportStore = create<ReportState>((set) => ({
 
     const { error } = await supabase
       .from('question_reports')
-      .upsert(
-        {
-          user_id: userId,
-          question_id: questionId,
-          category,
-          details,
-        },
-        { onConflict: 'user_id,question_id' },
-      );
+      .insert({
+        user_id: userId,
+        question_id: questionId,
+        category,
+        details,
+      });
 
     set({ isSubmitting: false });
 
@@ -68,9 +66,106 @@ export const useReportStore = create<ReportState>((set) => ({
       console.error('Failed to submit report:', error);
       throw error;
     }
+  },
 
+  fetchAdminReports: async (reset = false) => {
+    if (!isSupabaseConfigured) {
+      set({ adminIsLoading: false });
+      return;
+    }
+
+    const state = get();
+    if (state.adminIsLoading && !reset) return;
+
+    if (state.adminReports.length === 0) {
+      set({ adminIsLoading: true });
+    }
+
+    const offset = reset ? 0 : state.adminReports.length;
+
+    try {
+      let query = supabase
+        .from('question_reports')
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .range(offset, offset + ADMIN_PAGE_SIZE - 1);
+
+      if (state.adminFilters.category) {
+        query = query.eq('category', state.adminFilters.category);
+      }
+
+      if (!state.adminFilters.showDismissed) {
+        query = query.neq('status', 'dismissed');
+      }
+      if (!state.adminFilters.showResolved) {
+        query = query.neq('status', 'resolved');
+      }
+
+      const { data, error, count } = await query;
+
+      if (error) throw error;
+
+      // Fetch display names for unique user IDs
+      const reports = (data || []) as Omit<AdminReport, 'profiles'>[];
+      const userIds = [...new Set(reports.map((r) => r.user_id))];
+
+      let profileMap: Record<string, string | null> = {};
+      if (userIds.length > 0) {
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('id, display_name')
+          .in('id', userIds);
+
+        if (profiles) {
+          profileMap = Object.fromEntries(profiles.map((p) => [p.id, p.display_name]));
+        }
+      }
+
+      const enrichedReports: AdminReport[] = reports.map((r) => ({
+        ...r,
+        profiles: { display_name: profileMap[r.user_id] ?? null },
+      }));
+
+      set({
+        adminReports: reset ? enrichedReports : [...state.adminReports, ...enrichedReports],
+        adminHasMore: enrichedReports.length === ADMIN_PAGE_SIZE,
+        adminIsLoading: false,
+        adminTotalCount: count ?? 0,
+      });
+    } catch (error) {
+      console.error('Failed to fetch admin reports:', error);
+      set({ adminIsLoading: false });
+    }
+  },
+
+  setAdminFilter: (key, value) => {
     set((state) => ({
-      reportedQuestions: new Set([...state.reportedQuestions, questionId]),
+      adminFilters: { ...state.adminFilters, [key]: value },
+      adminReports: [],
+      adminHasMore: true,
     }));
+  },
+
+  updateReportStatus: async (reportId: string, status: ReportStatus) => {
+    if (!isSupabaseConfigured) return;
+
+    // Optimistic update
+    set((state) => ({
+      adminReports: state.adminReports.map((r) =>
+        r.id === reportId ? { ...r, status } : r,
+      ),
+    }));
+
+    const { data, error } = await supabase
+      .from('question_reports')
+      .update({ status })
+      .eq('id', reportId)
+      .select('id');
+
+    if (error || !data || data.length === 0) {
+      console.error('Failed to update report status:', error ?? 'No rows affected - check RLS policies');
+      // Revert on failure
+      get().fetchAdminReports(true);
+    }
   },
 }));
