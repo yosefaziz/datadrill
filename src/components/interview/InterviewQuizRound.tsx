@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { InterviewQuizOption } from '@/types';
 
 interface InterviewQuizRoundProps {
@@ -7,11 +7,26 @@ interface InterviewQuizRoundProps {
 }
 
 export function InterviewQuizRound({ questions, onSubmit }: InterviewQuizRoundProps) {
+  const shuffledQuestions = useMemo(() => {
+    return questions.map((q) => {
+      const indices = Array.from({ length: q.options.length }, (_, i) => i);
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      return {
+        ...q,
+        options: indices.map((i) => q.options[i]),
+        correctAnswer: indices.indexOf(q.correctAnswer),
+      };
+    });
+  }, [questions]);
+
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const scoreRef = useRef({ allCorrect: false, score: 0 });
 
-  const allAnswered = questions.length > 0 && Object.keys(selectedAnswers).length === questions.length;
+  const allAnswered = shuffledQuestions.length > 0 && Object.keys(selectedAnswers).length === shuffledQuestions.length;
 
   const handleSelect = (questionIndex: number, optionIndex: number) => {
     if (isSubmitted) return;
@@ -23,15 +38,15 @@ export function InterviewQuizRound({ questions, onSubmit }: InterviewQuizRoundPr
     setIsSubmitted(true);
 
     let correctCount = 0;
-    for (let i = 0; i < questions.length; i++) {
-      if (selectedAnswers[i] === questions[i].correctAnswer) {
+    for (let i = 0; i < shuffledQuestions.length; i++) {
+      if (selectedAnswers[i] === shuffledQuestions[i].correctAnswer) {
         correctCount++;
       }
     }
 
     scoreRef.current = {
-      allCorrect: correctCount === questions.length,
-      score: correctCount / questions.length,
+      allCorrect: correctCount === shuffledQuestions.length,
+      score: correctCount / shuffledQuestions.length,
     };
   };
 
@@ -43,7 +58,7 @@ export function InterviewQuizRound({ questions, onSubmit }: InterviewQuizRoundPr
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
-        {questions.map((q, qIndex) => {
+        {shuffledQuestions.map((q, qIndex) => {
           const isCorrect = isSubmitted && selectedAnswers[qIndex] === q.correctAnswer;
           const isWrong = isSubmitted && selectedAnswers[qIndex] !== q.correctAnswer;
 
@@ -158,7 +173,7 @@ export function InterviewQuizRound({ questions, onSubmit }: InterviewQuizRoundPr
                 : 'bg-border text-text-muted cursor-not-allowed'
             }`}
           >
-            Submit Answers ({Object.keys(selectedAnswers).length}/{questions.length} answered)
+            Submit Answers ({Object.keys(selectedAnswers).length}/{shuffledQuestions.length} answered)
           </button>
         </div>
       )}
@@ -166,7 +181,7 @@ export function InterviewQuizRound({ questions, onSubmit }: InterviewQuizRoundPr
       {isSubmitted && (
         <div className="flex-shrink-0 p-4 border-t border-border flex items-center justify-between">
           <div className="text-sm text-text-secondary">
-            Score: {questions.filter((_, i) => selectedAnswers[i] === questions[i].correctAnswer).length}/{questions.length} correct
+            Score: {shuffledQuestions.filter((q, i) => selectedAnswers[i] === q.correctAnswer).length}/{shuffledQuestions.length} correct
           </div>
           <button
             onClick={handleContinue}

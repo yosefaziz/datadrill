@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { QuizQuestion } from '@/types';
 import { useQuizStore } from '@/stores/quizStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -37,6 +37,16 @@ export function QuizQuestionView({ question, trackId, prevUrl, nextUrl }: QuizQu
   const { isAuthenticated, requireAuth } = useAuthGate();
   const { hasSubmitted: hasSubmittedForGate } = useSubmissionGate(question.id);
   const hints = question.hints || [];
+
+  const shuffledAnswers = useMemo(() => {
+    const answers = [...question.answers];
+    for (let i = answers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [answers[i], answers[j]] = [answers[j], answers[i]];
+    }
+    return answers;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question.id]);
 
   useEffect(() => {
     reset();
@@ -215,7 +225,7 @@ export function QuizQuestionView({ question, trackId, prevUrl, nextUrl }: QuizQu
               role={question.multiSelect ? 'group' : 'radiogroup'}
               aria-label={question.multiSelect ? 'Select all correct answers' : 'Select the correct answer'}
             >
-              {question.answers.map((answer) => {
+              {shuffledAnswers.map((answer) => {
                 const isSelected = selectedAnswers.includes(answer.id);
                 const result = validationResult?.answerResults.find(
                   (r) => r.answerId === answer.id
