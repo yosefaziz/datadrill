@@ -65,13 +65,10 @@ export function QuestionPage() {
     if (trackId) fetchTrack(trackId);
   }, [trackId, fetchTrack]);
 
-  // Set initial code for debug questions
+  // Set initial code when question changes (e.g. debug questions get brokenCode, Python coding gets template)
   useEffect(() => {
     if (currentQuestion) {
-      const initialCode = getInitialCode(currentQuestion);
-      if (initialCode) {
-        setCode(initialCode);
-      }
+      setCode(getInitialCode(currentQuestion));
     }
   }, [currentQuestion, setCode]);
 
