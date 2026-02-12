@@ -152,7 +152,10 @@ export function PredictQuestionView({ question, trackId, prevUrl, nextUrl }: Pre
             { label: question.title },
           ]}
         />
-        <QuestionNavButtons prevUrl={prevUrl} nextUrl={nextUrl} />
+        <div className="flex items-center gap-3">
+          <TimerWidget />
+          <QuestionNavButtons prevUrl={prevUrl} nextUrl={nextUrl} />
+        </div>
       </div>
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4 overflow-auto lg:overflow-hidden">
         {/* Left Panel - Code & Data */}
@@ -165,7 +168,6 @@ export function PredictQuestionView({ question, trackId, prevUrl, nextUrl }: Pre
                 </span>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <TimerWidget />
                 <BugReportPopover questionId={question.id} />
               </div>
             </div>

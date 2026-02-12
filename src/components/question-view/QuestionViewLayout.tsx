@@ -106,13 +106,15 @@ export function QuestionViewLayout({
             { label: question.title },
           ]}
         />
-        <QuestionNavButtons prevUrl={prevUrl} nextUrl={nextUrl} />
+        <div className="flex items-center gap-3">
+          <TimerWidget />
+          <QuestionNavButtons prevUrl={prevUrl} nextUrl={nextUrl} />
+        </div>
       </div>
       <PanelGroup direction={isMobile ? 'vertical' : 'horizontal'} className="flex-1 min-h-0">
         <Panel defaultSize={isMobile ? 30 : 40} minSize={20}>
           <div className="h-full bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">
             <QuestionHeader question={question}>
-              <TimerWidget />
               <BugReportPopover questionId={question.id} />
             </QuestionHeader>
             <QuestionTabs

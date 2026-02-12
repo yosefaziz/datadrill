@@ -120,7 +120,10 @@ export function TradeoffQuestionView({ question, trackId, prevUrl, nextUrl }: Tr
             { label: question.title },
           ]}
         />
-        <QuestionNavButtons prevUrl={prevUrl} nextUrl={nextUrl} />
+        <div className="flex items-center gap-3">
+          <TimerWidget />
+          <QuestionNavButtons prevUrl={prevUrl} nextUrl={nextUrl} />
+        </div>
       </div>
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4 overflow-auto lg:overflow-hidden">
         {/* Left Panel - Scenario */}
@@ -133,7 +136,6 @@ export function TradeoffQuestionView({ question, trackId, prevUrl, nextUrl }: Tr
                 </span>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <TimerWidget />
                 <BugReportPopover questionId={question.id} />
               </div>
             </div>
