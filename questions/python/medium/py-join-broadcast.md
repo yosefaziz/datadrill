@@ -1,7 +1,8 @@
 ---
 title: "Broadcast Join for Small Lookup Table"
 difficulty: "Medium"
-tags: ["join", "broadcast", "optimization", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "join", "broadcast", "optimization"]
 tables:
   - name: sales
     visible_data: |

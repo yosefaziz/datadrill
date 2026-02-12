@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { useQuestionStore } from '@/stores/questionStore';
+import { useTrackStore } from '@/stores/trackStore';
 import { useEditorStore } from '@/stores/editorStore';
 import { useExecutor } from '@/hooks/useExecutor';
 import { useValidation } from '@/hooks/useValidation';
@@ -12,7 +13,7 @@ import { ArchitectureQuestionView } from '@/components/architecture/Architecture
 import { CanvasQuestionView } from '@/components/architecture/canvas/CanvasQuestionView';
 import { QuizQuestionView } from '@/components/architecture/quiz/QuizQuestionView';
 import { ModelingQuestionView } from '@/components/modeling/ModelingQuestionView';
-import { SkillType, getInitialCode, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion, isModelingQuestion } from '@/types';
+import { SkillType, getInitialCode, getQuestionTables, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion, isModelingQuestion, isPythonCodingQuestion, isPandasQuestion } from '@/types';
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
   return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling' || skill === 'tools';
@@ -20,7 +21,9 @@ function isValidSkill(skill: string | undefined): skill is SkillType {
 
 export function QuestionPage() {
   const { skill, id } = useParams<{ skill: string; id: string }>();
-  const { currentQuestion, isLoading, error, fetchQuestion } = useQuestionStore();
+  const [searchParams] = useSearchParams();
+  const trackId = searchParams.get('track');
+  const { currentQuestion, isLoading, error, fetchQuestion, fetchQuestionsForSkill, getAdjacentQuestionIds } = useQuestionStore();
   const { code, setCode, clearCode } = useEditorStore();
   const {
     isInitialized,
@@ -37,16 +40,25 @@ export function QuestionPage() {
   const canSubmit = useSubmissionStore((s) => s.canSubmit);
   const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
 
+  const fetchTrack = useTrackStore((s) => s.fetchTrack);
+  const getNextInTrack = useTrackStore((s) => s.getNextQuestionInTrack);
+  const getPrevInTrack = useTrackStore((s) => s.getPrevQuestionInTrack);
+
   useAnonymousTracking(id);
 
   useEffect(() => {
     if (isValidSkill(skill) && id) {
       fetchQuestion(skill, id);
+      fetchQuestionsForSkill(skill);
       clearCode();
       clearResult();
       clearValidation();
     }
-  }, [skill, id, fetchQuestion, clearCode, clearResult, clearValidation]);
+  }, [skill, id, fetchQuestion, fetchQuestionsForSkill, clearCode, clearResult, clearValidation]);
+
+  useEffect(() => {
+    if (trackId) fetchTrack(trackId);
+  }, [trackId, fetchTrack]);
 
   // Set initial code for debug questions
   useEffect(() => {
@@ -61,7 +73,7 @@ export function QuestionPage() {
   const handleRun = async () => {
     if (!currentQuestion || !isInitialized || isArchitectureQuestion(currentQuestion) || isModelingQuestion(currentQuestion)) return;
     clearValidation();
-    await executeCode(code, currentQuestion.tables);
+    await executeCode(code, getQuestionTables(currentQuestion));
   };
 
   const handleSubmit = async () => {
@@ -94,6 +106,22 @@ export function QuestionPage() {
     }
   };
 
+  // Compute prev/next navigation URLs
+  let prevUrl: string | null = null;
+  let nextUrl: string | null = null;
+  if (isValidSkill(skill) && id) {
+    if (trackId) {
+      const prev = getPrevInTrack(trackId, id);
+      const next = getNextInTrack(trackId, id);
+      if (prev) prevUrl = `/${skill}/question/${prev.questionId}?track=${trackId}`;
+      if (next) nextUrl = `/${skill}/question/${next.questionId}?track=${trackId}`;
+    } else {
+      const { prevId, nextId } = getAdjacentQuestionIds(skill, id);
+      if (prevId) prevUrl = `/${skill}/question/${prevId}`;
+      if (nextId) nextUrl = `/${skill}/question/${nextId}`;
+    }
+  }
+
   if (!isValidSkill(skill)) {
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -112,11 +140,18 @@ export function QuestionPage() {
   const showExecutorLoading = needsExecutor && isExecutorLoading;
 
   if (isLoading || showExecutorLoading) {
-    const loadingMessage = showExecutorLoading
-      ? skill === 'python'
-        ? 'Initializing Python engine...'
-        : 'Initializing SQL engine...'
-      : 'Loading question...';
+    let loadingMessage = 'Loading question...';
+    if (showExecutorLoading) {
+      if (currentQuestion && isPandasQuestion(currentQuestion)) {
+        loadingMessage = 'Installing Pandas...';
+      } else if (currentQuestion && isPythonCodingQuestion(currentQuestion)) {
+        loadingMessage = 'Initializing Python...';
+      } else if (skill === 'python') {
+        loadingMessage = 'Initializing PySpark...';
+      } else {
+        loadingMessage = 'Initializing SQL engine...';
+      }
+    }
 
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -172,7 +207,7 @@ export function QuestionPage() {
   }
 
   if (isQuizQuestion(currentQuestion)) {
-    return <QuizQuestionView question={currentQuestion} />;
+    return <QuizQuestionView question={currentQuestion} trackId={trackId} prevUrl={prevUrl} nextUrl={nextUrl} />;
   }
 
   if (isConstraintsQuestion(currentQuestion)) {
@@ -188,6 +223,8 @@ export function QuestionPage() {
       isValidating={isValidating}
       onRun={handleRun}
       onSubmit={handleSubmit}
+      prevUrl={prevUrl}
+      nextUrl={nextUrl}
     />
   );
 }

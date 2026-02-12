@@ -42,6 +42,7 @@ function buildQuestion(round: InterviewRound): Question {
     return {
       id: round.id,
       skill: 'python',
+      pythonType: 'pyspark' as const,
       title: round.title,
       difficulty: 'Medium',
       tags: [],

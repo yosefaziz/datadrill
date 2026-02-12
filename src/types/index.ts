@@ -26,12 +26,38 @@ export interface SqlQuestion extends BaseQuestion {
   expectedOutputQuery: string;
 }
 
-// Python question - write DataFrame transformations
-export interface PythonQuestion extends BaseQuestion {
-  skill: 'python';
-  tables: TableData[]; // Input DataFrames
-  expectedOutputQuery: string; // PySpark solution
+// Python question subtypes
+export type PythonType = 'pyspark' | 'coding' | 'pandas';
+
+export interface TestCase {
+  call: string;
+  expected: string;
+  label?: string;
 }
+
+export interface PySparkQuestion extends BaseQuestion {
+  skill: 'python';
+  pythonType: 'pyspark';
+  tables: TableData[];
+  expectedOutputQuery: string;
+}
+
+export interface PythonCodingQuestion extends BaseQuestion {
+  skill: 'python';
+  pythonType: 'coding';
+  functionName: string;
+  testCases: TestCase[];
+  hiddenTestCases: TestCase[];
+}
+
+export interface PandasQuestion extends BaseQuestion {
+  skill: 'python';
+  pythonType: 'pandas';
+  tables: TableData[];
+  expectedOutputQuery: string;
+}
+
+export type PythonQuestion = PySparkQuestion | PythonCodingQuestion | PandasQuestion;
 
 // Debug question - fix broken pipelines
 export interface DebugQuestion extends BaseQuestion {
@@ -429,6 +455,18 @@ export function isPythonQuestion(question: Question): question is PythonQuestion
   return question.skill === 'python';
 }
 
+export function isPySparkQuestion(question: Question): question is PySparkQuestion {
+  return question.skill === 'python' && (question as PySparkQuestion).pythonType === 'pyspark';
+}
+
+export function isPythonCodingQuestion(question: Question): question is PythonCodingQuestion {
+  return question.skill === 'python' && (question as PythonCodingQuestion).pythonType === 'coding';
+}
+
+export function isPandasQuestion(question: Question): question is PandasQuestion {
+  return question.skill === 'python' && (question as PandasQuestion).pythonType === 'pandas';
+}
+
 export function isDebugQuestion(question: Question): question is DebugQuestion {
   return question.skill === 'debug';
 }
@@ -461,20 +499,20 @@ export function isToolsQuizQuestion(question: Question): question is ToolsQuesti
   return question.skill === 'tools' && 'questionType' in question && (question as ToolsQuestion).questionType === 'quiz';
 }
 
-// Helper to get tables from any question type (not applicable to architecture/modeling questions)
+// Helper to get tables from any question type (not applicable to architecture/modeling/coding questions)
 export function getQuestionTables(question: Question): TableData[] {
-  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isToolsQuestion(question)) {
+  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isToolsQuestion(question) || isPythonCodingQuestion(question)) {
     return [];
   }
   return question.tables;
 }
 
-// Helper to get expected query from any question type (not applicable to architecture/modeling questions)
+// Helper to get expected query from any question type (not applicable to architecture/modeling/coding questions)
 export function getExpectedQuery(question: Question): string {
-  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isToolsQuestion(question)) {
+  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isToolsQuestion(question) || isPythonCodingQuestion(question)) {
     return '';
   }
-  return question.expectedOutputQuery;
+  return question.expectedOutputQuery ?? '';
 }
 
 // Helper to get editor language for a question
@@ -488,6 +526,9 @@ export function getEditorLanguage(question: Question): 'sql' | 'python' {
 export function getInitialCode(question: Question): string {
   if (isDebugQuestion(question)) {
     return question.brokenCode;
+  }
+  if (isPythonCodingQuestion(question)) {
+    return `def ${question.functionName}():\n    pass\n`;
   }
   return '';
 }

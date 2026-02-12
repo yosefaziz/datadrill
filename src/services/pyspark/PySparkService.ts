@@ -1,33 +1,22 @@
-import { loadPyodide, PyodideInterface } from 'pyodide';
+import { pyodideService } from '@/services/python/PyodideService';
 import { QueryResult } from '@/types';
 import mockPySparkCode from './mockPySpark.py?raw';
 
 class PySparkService {
-  private pyodide: PyodideInterface | null = null;
-  private initPromise: Promise<void> | null = null;
+  private mockLoaded = false;
   private dataframes: Map<string, string> = new Map();
 
   async initialize(): Promise<void> {
-    if (this.pyodide) return;
-    if (this.initPromise) return this.initPromise;
+    await pyodideService.initialize();
 
-    this.initPromise = this.doInitialize();
-    return this.initPromise;
-  }
-
-  private async doInitialize(): Promise<void> {
-    this.pyodide = await loadPyodide({
-      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.29.3/full/',
-    });
-
-    // Install the mock PySpark module
-    // Functions (col, lit, count, sum, avg, max, min) are defined in mockPySparkCode
-    // and will be available in the global namespace for user code
-    await this.pyodide.runPythonAsync(mockPySparkCode);
+    if (!this.mockLoaded) {
+      await pyodideService.runPython(mockPySparkCode);
+      this.mockLoaded = true;
+    }
   }
 
   async createDataFrame(name: string, csvData: string): Promise<void> {
-    if (!this.pyodide) throw new Error('PySparkService not initialized');
+    if (!pyodideService.isInitialized()) throw new Error('PySparkService not initialized');
 
     // Parse CSV to create DataFrame
     const lines = csvData.trim().split('\n');
@@ -50,7 +39,7 @@ class PySparkService {
     const dataJson = JSON.stringify(rows);
     const headersJson = JSON.stringify(headers);
 
-    await this.pyodide.runPythonAsync(`
+    await pyodideService.runPython(`
 import json
 ${name} = DataFrame(json.loads('${dataJson.replace(/'/g, "\\'")}'), json.loads('${headersJson.replace(/'/g, "\\'")}'))
 `);
@@ -59,11 +48,11 @@ ${name} = DataFrame(json.loads('${dataJson.replace(/'/g, "\\'")}'), json.loads('
   }
 
   async dropAllDataFrames(): Promise<void> {
-    if (!this.pyodide) return;
+    if (!pyodideService.isInitialized()) return;
 
     for (const name of this.dataframes.keys()) {
       try {
-        await this.pyodide.runPythonAsync(`del ${name}`);
+        await pyodideService.runPython(`del ${name}`);
       } catch {
         // Ignore if variable doesn't exist
       }
@@ -72,7 +61,7 @@ ${name} = DataFrame(json.loads('${dataJson.replace(/'/g, "\\'")}'), json.loads('
   }
 
   async executeCode(code: string): Promise<QueryResult> {
-    if (!this.pyodide) throw new Error('PySparkService not initialized');
+    if (!pyodideService.isInitialized()) throw new Error('PySparkService not initialized');
 
     try {
       // Execute the user code and capture the result
@@ -102,7 +91,7 @@ if _result is None:
 _result.toJSON() if _result is not None else json.dumps({"columns": [], "data": [], "error": "No result DataFrame found. Assign your result to a variable named 'result'."})
 `;
 
-      const resultJson = await this.pyodide.runPythonAsync(wrappedCode);
+      const resultJson = await pyodideService.runPython(wrappedCode);
       const result = JSON.parse(resultJson);
 
       if (result.error) {
@@ -130,7 +119,7 @@ _result.toJSON() if _result is not None else json.dumps({"columns": [], "data": 
   }
 
   isInitialized(): boolean {
-    return this.pyodide !== null;
+    return pyodideService.isInitialized() && this.mockLoaded;
   }
 }
 

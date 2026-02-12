@@ -1,7 +1,8 @@
 ---
 title: "Department Salary Stats"
 difficulty: "Medium"
-tags: ["groupBy", "agg", "avg", "max", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "groupBy", "agg", "avg", "max"]
 tables:
   - name: employees
     visible_data: |

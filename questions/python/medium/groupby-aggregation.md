@@ -1,7 +1,8 @@
 ---
 title: "Group By Aggregation"
 difficulty: "Medium"
-tags: ["groupBy", "agg", "sum", "count", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "groupBy", "agg", "sum", "count"]
 tables:
   - name: orders
     visible_data: |

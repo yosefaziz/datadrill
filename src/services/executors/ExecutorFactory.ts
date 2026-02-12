@@ -1,7 +1,9 @@
 import { IExecutor } from './IExecutor';
 import { sqlExecutor } from './SqlExecutor';
 import { pythonExecutor } from './PythonExecutor';
-import { SkillType } from '@/types';
+import { codingExecutor } from './CodingExecutor';
+import { pandasExecutor } from './PandasExecutor';
+import { SkillType, Question, isPySparkQuestion, isPythonCodingQuestion, isPandasQuestion, isDebugQuestion } from '@/types';
 
 export function getExecutor(skill: SkillType): IExecutor {
   switch (skill) {
@@ -28,4 +30,20 @@ export function getExecutorForDebug(language: 'sql' | 'python'): IExecutor {
     default:
       return sqlExecutor;
   }
+}
+
+export function getQuestionExecutor(question: Question): IExecutor {
+  if (isDebugQuestion(question)) {
+    return getExecutorForDebug(question.language);
+  }
+  if (isPySparkQuestion(question)) {
+    return pythonExecutor;
+  }
+  if (isPythonCodingQuestion(question)) {
+    return codingExecutor;
+  }
+  if (isPandasQuestion(question)) {
+    return pandasExecutor;
+  }
+  return getExecutor(question.skill);
 }

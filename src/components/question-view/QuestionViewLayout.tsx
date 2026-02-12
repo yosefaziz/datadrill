@@ -9,6 +9,7 @@ import { DiscussionPanel } from './DiscussionPanel';
 import { SolutionsPanel } from './SolutionsPanel';
 import { BugReportPopover } from './BugReportPopover';
 import { TimerWidget } from './TimerWidget';
+import { QuestionNavButtons } from './QuestionNavButtons';
 import { CodeEditor } from '@/components/editor/CodeEditor';
 import { OutputPanel } from '@/components/editor/OutputPanel';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
@@ -43,6 +44,8 @@ interface QuestionViewLayoutProps {
   isValidating: boolean;
   onRun: () => void;
   onSubmit: () => void;
+  prevUrl: string | null;
+  nextUrl: string | null;
 }
 
 export function QuestionViewLayout({
@@ -53,6 +56,8 @@ export function QuestionViewLayout({
   isValidating,
   onRun,
   onSubmit,
+  prevUrl,
+  nextUrl,
 }: QuestionViewLayoutProps) {
   const language = getEditorLanguage(question);
   const isMobile = useIsMobile();
@@ -94,12 +99,15 @@ export function QuestionViewLayout({
 
   return (
     <div className="flex-1 p-4 h-full overflow-hidden flex flex-col">
-      <Breadcrumb
-        items={[
-          { label: skillNames[question.skill] || question.skill, href: `/${question.skill}` },
-          { label: question.title },
-        ]}
-      />
+      <div className="flex items-start justify-between">
+        <Breadcrumb
+          items={[
+            { label: skillNames[question.skill] || question.skill, href: `/${question.skill}` },
+            { label: question.title },
+          ]}
+        />
+        <QuestionNavButtons prevUrl={prevUrl} nextUrl={nextUrl} />
+      </div>
       <PanelGroup direction={isMobile ? 'vertical' : 'horizontal'} className="flex-1 min-h-0">
         <Panel defaultSize={isMobile ? 30 : 40} minSize={20}>
           <div className="h-full bg-surface rounded-lg shadow-md overflow-hidden flex flex-col">

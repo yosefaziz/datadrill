@@ -1,7 +1,8 @@
 ---
 title: "Join DataFrames"
 difficulty: "Medium"
-tags: ["join", "inner join", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "join", "inner join"]
 tables:
   - name: employees
     visible_data: |

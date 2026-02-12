@@ -5,9 +5,9 @@ interviewer_says: "optimize this job, reduce shuffle, partition strategy"
 you_need: "repartition(), coalesce(), cache(), partitionBy"
 description: "Performance optimization and I/O patterns separate production-ready PySpark code from toy examples."
 icon: "zap"
-category: "Advanced Patterns"
-order: 10
-prerequisites: [python-joins]
+category: "PySpark"
+order: 6
+prerequisites: [python-dataframe-basics]
 
 levels:
   - level: 1

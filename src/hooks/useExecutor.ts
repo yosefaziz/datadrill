@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getExecutor, getExecutorForDebug } from '@/services/executors/ExecutorFactory';
-import { TableData, QueryResult, Question, isDebugQuestion } from '@/types';
+import { getQuestionExecutor } from '@/services/executors/ExecutorFactory';
+import { TableData, QueryResult, Question } from '@/types';
 
 export function useExecutor(question: Question | null) {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -9,18 +9,14 @@ export function useExecutor(question: Question | null) {
   const [result, setResult] = useState<QueryResult | null>(null);
   const [isExecuting, setIsExecuting] = useState(false);
 
-  // Get the appropriate executor based on question type
-  const getQuestionExecutor = useCallback(() => {
+  const getExecutor = useCallback(() => {
     if (!question) return null;
-    if (isDebugQuestion(question)) {
-      return getExecutorForDebug(question.language);
-    }
-    return getExecutor(question.skill);
+    return getQuestionExecutor(question);
   }, [question]);
 
   useEffect(() => {
     let mounted = true;
-    const executor = getQuestionExecutor();
+    const executor = getExecutor();
 
     if (!executor) {
       setIsLoading(false);
@@ -55,10 +51,10 @@ export function useExecutor(question: Question | null) {
     return () => {
       mounted = false;
     };
-  }, [getQuestionExecutor]);
+  }, [getExecutor]);
 
   const executeCode = useCallback(async (code: string, tables: TableData[]) => {
-    const executor = getQuestionExecutor();
+    const executor = getExecutor();
     if (!executor) {
       setResult({ columns: [], rows: [], error: 'No executor available' });
       return;
@@ -73,7 +69,7 @@ export function useExecutor(question: Question | null) {
     } finally {
       setIsExecuting(false);
     }
-  }, [getQuestionExecutor]);
+  }, [getExecutor]);
 
   const clearResult = useCallback(() => {
     setResult(null);

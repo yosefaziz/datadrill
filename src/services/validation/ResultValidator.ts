@@ -1,5 +1,5 @@
 import { duckDBService } from '@/services/duckdb/DuckDBService';
-import { Question, QueryResult, ValidationResult, isArchitectureQuestion, isModelingQuestion } from '@/types';
+import { Question, QueryResult, ValidationResult, isArchitectureQuestion, isModelingQuestion, isPythonCodingQuestion } from '@/types';
 
 function normalizeValue(value: unknown): string {
   if (value === null || value === undefined) return 'NULL';
@@ -79,8 +79,8 @@ export async function validateAnswer(
   question: Question,
   userQuery: string
 ): Promise<ValidationResult> {
-  // Architecture and modeling questions don't use this validator
-  if (isArchitectureQuestion(question) || isModelingQuestion(question)) {
+  // Architecture, modeling, and coding questions don't use this validator
+  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isPythonCodingQuestion(question)) {
     return {
       passed: false,
       totalDatasets: 0,
@@ -125,7 +125,7 @@ export async function validateAnswer(
 
       // Execute expected query
       const expectedResult = await duckDBService.executeQuery(
-        question.expectedOutputQuery
+        question.expectedOutputQuery!
       );
       if (expectedResult.error) {
         return {

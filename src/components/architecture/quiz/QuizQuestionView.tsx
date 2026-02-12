@@ -3,10 +3,12 @@ import { QuizQuestion } from '@/types';
 import { useQuizStore } from '@/stores/quizStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useSubmissionStore } from '@/stores/submissionStore';
+import { useTrackStore } from '@/stores/trackStore';
 import { validateQuizQuestion } from '@/services/validation/QuizValidator';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { BugReportPopover } from '@/components/question-view/BugReportPopover';
 import { TimerWidget } from '@/components/question-view/TimerWidget';
+import { QuestionNavButtons } from '@/components/question-view/QuestionNavButtons';
 import { QuestionTabs, QuestionTab } from '@/components/question-view/QuestionTabs';
 import { HintsPanel } from '@/components/question-view/HintsPanel';
 import { DiscussionPanel } from '@/components/question-view/DiscussionPanel';
@@ -14,9 +16,12 @@ import { useAuthGate, useSubmissionGate } from '@/hooks/useAuthGate';
 
 interface QuizQuestionViewProps {
   question: QuizQuestion;
+  trackId: string | null;
+  prevUrl: string | null;
+  nextUrl: string | null;
 }
 
-export function QuizQuestionView({ question }: QuizQuestionViewProps) {
+export function QuizQuestionView({ question, trackId, prevUrl, nextUrl }: QuizQuestionViewProps) {
   const {
     selectedAnswers,
     validationResult,
@@ -27,6 +32,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
   } = useQuizStore();
   const user = useAuthStore((s) => s.user);
   const submitAnswer = useSubmissionStore((s) => s.submitAnswer);
+  const markQuestionCompleted = useTrackStore((s) => s.markQuestionCompleted);
   const [activeTab, setActiveTab] = useState<QuestionTab>('description');
   const { isAuthenticated, requireAuth } = useAuthGate();
   const { hasSubmitted: hasSubmittedForGate } = useSubmissionGate(question.id);
@@ -40,6 +46,10 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
   const handleSubmit = async () => {
     const result = validateQuizQuestion(question, selectedAnswers);
     setValidationResult(result);
+
+    if (result.passed && trackId) {
+      markQuestionCompleted(trackId, question.id);
+    }
 
     try {
       await submitAnswer(
@@ -97,12 +107,15 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
 
   return (
     <div className="flex-1 p-4 h-full overflow-hidden flex flex-col">
-      <Breadcrumb
-        items={[
-          { label: question.skill === 'tools' ? 'Tools & Frameworks' : 'Architecture', href: `/${question.skill}` },
-          { label: question.title },
-        ]}
-      />
+      <div className="flex items-start justify-between">
+        <Breadcrumb
+          items={[
+            { label: question.skill === 'tools' ? 'Tools & Frameworks' : 'Architecture', href: `/${question.skill}` },
+            { label: question.title },
+          ]}
+        />
+        <QuestionNavButtons prevUrl={prevUrl} nextUrl={nextUrl} />
+      </div>
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4 overflow-auto lg:overflow-hidden">
         {/* Left Panel - Question */}
         <div className="w-full lg:w-1/2 bg-surface rounded-lg shadow-md overflow-hidden flex flex-col flex-shrink-0 lg:flex-shrink">
@@ -185,14 +198,14 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                 >
                   Submit Answer
                 </button>
-              ) : (
+              ) : !validationResult?.passed ? (
                 <button
                   onClick={handleReset}
                   className="px-4 py-2 rounded-lg font-medium text-sm bg-accent text-white hover:bg-accent-hover transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   Try Again
                 </button>
-              )}
+              ) : null}
             </div>
           </div>
 
@@ -303,6 +316,7 @@ export function QuizQuestionView({ question }: QuizQuestionViewProps) {
                 <p className="text-text-secondary">{validationResult.overallExplanation}</p>
               </div>
             )}
+
           </div>
         </div>
       </div>

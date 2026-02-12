@@ -13,6 +13,9 @@ interface TrackState {
   fetchTrackProgress: (userId: string) => Promise<void>;
   computeProgress: (trackId: string, completedQuestionIds: Set<string>) => TrackProgress | null;
   getTracksGroupedByCategory: (skill: SkillType) => Record<string, SkillTrackMeta[]>;
+  getNextQuestionInTrack: (trackId: string, currentQuestionId: string) => { questionId: string; trackId: string } | null;
+  getPrevQuestionInTrack: (trackId: string, currentQuestionId: string) => { questionId: string; trackId: string } | null;
+  markQuestionCompleted: (trackId: string, questionId: string) => void;
 }
 
 export const useTrackStore = create<TrackState>((set, get) => ({
@@ -134,5 +137,35 @@ export const useTrackStore = create<TrackState>((set, get) => ({
       grouped[track.category].push(track);
     }
     return grouped;
+  },
+
+  getNextQuestionInTrack: (trackId: string, currentQuestionId: string) => {
+    const track = get().tracksById[trackId];
+    if (!track) return null;
+    const allIds = track.levels.flatMap((l) => l.questionIds);
+    const currentIndex = allIds.indexOf(currentQuestionId);
+    if (currentIndex === -1 || currentIndex === allIds.length - 1) return null;
+    return { questionId: allIds[currentIndex + 1], trackId };
+  },
+
+  getPrevQuestionInTrack: (trackId: string, currentQuestionId: string) => {
+    const track = get().tracksById[trackId];
+    if (!track) return null;
+    const allIds = track.levels.flatMap((l) => l.questionIds);
+    const currentIndex = allIds.indexOf(currentQuestionId);
+    if (currentIndex <= 0) return null;
+    return { questionId: allIds[currentIndex - 1], trackId };
+  },
+
+  markQuestionCompleted: (trackId: string, questionId: string) => {
+    const existing = get().trackProgress[trackId];
+    const completedIds = new Set(existing?.completedQuestionIds ?? []);
+    if (completedIds.has(questionId)) return;
+    completedIds.add(questionId);
+    const updated = get().computeProgress(trackId, completedIds);
+    if (!updated) return;
+    set((state) => ({
+      trackProgress: { ...state.trackProgress, [trackId]: updated },
+    }));
   },
 }));

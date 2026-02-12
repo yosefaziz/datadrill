@@ -15,6 +15,7 @@ levels:
     description: "Understand the unbounded table model and micro-batch processing"
     concepts: ["micro-batch", "unbounded table", "triggers"]
     questions:
+      - spark-batch-vs-streaming
       - spark-structured-streaming-basics
       - spark-output-modes
     unlock: always_unlocked

@@ -1,7 +1,8 @@
 ---
 title: "Select and Rename Columns"
 difficulty: "Medium"
-tags: ["select", "alias", "withColumnRenamed", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "select", "alias", "withColumnRenamed"]
 tables:
   - name: raw_data
     visible_data: |

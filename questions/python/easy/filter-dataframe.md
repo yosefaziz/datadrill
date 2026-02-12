@@ -1,7 +1,8 @@
 ---
 title: "Filter DataFrame"
 difficulty: "Easy"
-tags: ["filter", "where", "basics", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "filter", "where", "basics"]
 tables:
   - name: employees
     visible_data: |

@@ -1,7 +1,8 @@
 ---
 title: "Filter with isin"
 difficulty: "Easy"
-tags: ["filter", "isin", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "filter", "isin"]
 tables:
   - name: orders
     visible_data: |

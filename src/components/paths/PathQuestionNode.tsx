@@ -4,6 +4,7 @@ import { SkillType } from '@/types';
 interface PathQuestionNodeProps {
   questionId: string;
   skill: SkillType;
+  trackId: string;
   title: string;
   isCompleted: boolean;
   isCurrent: boolean;
@@ -11,7 +12,7 @@ interface PathQuestionNodeProps {
 }
 
 export function PathQuestionNode({
-  questionId, skill, title,
+  questionId, skill, trackId, title,
   isCompleted, isCurrent, isLocked,
 }: PathQuestionNodeProps) {
   const row = (
@@ -53,7 +54,7 @@ export function PathQuestionNode({
   }
 
   return (
-    <Link to={`/${skill}/question/${questionId}`} className="block">
+    <Link to={`/${skill}/question/${questionId}?track=${trackId}`} className="block">
       {row}
     </Link>
   );

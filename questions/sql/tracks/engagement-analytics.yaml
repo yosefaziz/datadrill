@@ -1,0 +1,35 @@
+id: sql-engagement-analytics
+name: "Engagement Analytics"
+tagline: "Measure user engagement with joins, ranking & set operations"
+interviewer_says: "find top content per user, calculate watch time, find drop-offs"
+you_need: "RANK(), JOIN + GROUP BY, EXCEPT / anti-join"
+description: "Practice the SQL patterns behind engagement analytics - ranking content by watch time, aggregating duration metrics, and finding users who dropped off. Common in streaming and ed-tech interviews."
+icon: "activity"
+category: "Real-World Patterns"
+order: 23
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Duration Aggregation"
+    description: "Join sessions with content and aggregate watch time"
+    concepts: ["JOIN", "GROUP BY", "SUM", "ORDER BY"]
+    questions:
+      - engagement-duration-by-category
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Rank Top Content"
+    description: "Use RANK() to find each user's most-watched content"
+    concepts: ["RANK", "CTE", "window functions", "PARTITION BY"]
+    questions:
+      - engagement-rank-top-course
+    unlock: complete_previous
+
+  - level: 3
+    title: "Find Drop-Offs"
+    description: "Identify enrollments with no activity using anti-join patterns"
+    concepts: ["EXCEPT", "LEFT JOIN", "IS NULL", "anti-pattern"]
+    questions:
+      - enrollment-never-started
+    unlock: complete_previous

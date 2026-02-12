@@ -7,7 +7,7 @@ import {
   Link as LinkIcon, Shuffle, SortAsc, Database, MousePointer, RefreshCw,
   Layers, Shield, Repeat, Lock, Globe, Star, Snowflake, Library, Box,
   Layout, UnfoldVertical, Funnel, Cpu, Grid3x3, HardDrive, Merge,
-  Sparkles, Radio,
+  Sparkles, Radio, Braces,
 } from 'lucide-react';
 import { SkillTrackMeta } from '@/types';
 import { useTrackStore } from '@/stores/trackStore';
@@ -61,6 +61,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   'merge': Merge,
   'sparkles': Sparkles,
   'radio': Radio,
+  'braces': Braces,
 };
 
 // Category accent colors (left border)
@@ -86,6 +87,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Spark Core': 'border-l-primary',
   'Spark Performance': 'border-l-accent',
   'Spark Advanced': 'border-l-warning',
+  'Python': 'border-l-success',
 };
 
 interface PathTrackCardProps {

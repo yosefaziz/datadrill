@@ -1,7 +1,8 @@
 ---
 title: "Join Orders with Customers"
 difficulty: "Easy"
-tags: ["join", "inner", "basics", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "join", "inner", "basics"]
 tables:
   - name: orders
     visible_data: |

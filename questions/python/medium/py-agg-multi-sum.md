@@ -1,7 +1,8 @@
 ---
 title: "Regional Sales Summary"
 difficulty: "Medium"
-tags: ["groupBy", "agg", "sum", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "groupBy", "agg", "sum"]
 tables:
   - name: sales
     visible_data: |

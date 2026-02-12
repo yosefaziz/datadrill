@@ -27,7 +27,26 @@ interface BaseFrontmatter {
 
 interface SqlFrontmatter extends BaseFrontmatter {}
 
-interface PythonFrontmatter extends BaseFrontmatter {}
+interface TestCaseFrontmatter {
+  call: string;
+  expected: string;
+  label?: string;
+}
+
+interface PythonFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  hints?: string[];
+  python_type?: 'pyspark' | 'coding' | 'pandas';
+  // PySpark/Pandas fields
+  tables?: TableFrontmatter[];
+  expected_output_query?: string;
+  // Coding fields
+  function_name?: string;
+  test_cases?: TestCaseFrontmatter[];
+  hidden_test_cases?: TestCaseFrontmatter[];
+}
 
 interface DebugFrontmatter extends BaseFrontmatter {
   language: 'sql' | 'python';
@@ -170,11 +189,35 @@ interface SqlProcessedQuestion extends BaseProcessedQuestion {
   expectedOutputQuery: string;
 }
 
-interface PythonProcessedQuestion extends BaseProcessedQuestion {
+interface TestCaseProcessed {
+  call: string;
+  expected: string;
+  label?: string;
+}
+
+interface PySparkProcessedQuestion extends BaseProcessedQuestion {
   skill: 'python';
+  pythonType: 'pyspark';
   tables: ProcessedTable[];
   expectedOutputQuery: string;
 }
+
+interface PythonCodingProcessedQuestion extends BaseProcessedQuestion {
+  skill: 'python';
+  pythonType: 'coding';
+  functionName: string;
+  testCases: TestCaseProcessed[];
+  hiddenTestCases: TestCaseProcessed[];
+}
+
+interface PandasProcessedQuestion extends BaseProcessedQuestion {
+  skill: 'python';
+  pythonType: 'pandas';
+  tables: ProcessedTable[];
+  expectedOutputQuery: string;
+}
+
+type PythonProcessedQuestion = PySparkProcessedQuestion | PythonCodingProcessedQuestion | PandasProcessedQuestion;
 
 interface DebugProcessedQuestion extends BaseProcessedQuestion {
   skill: 'debug';
@@ -653,7 +696,7 @@ async function processQuestion(
   const description = await marked(parts[0].trim());
   const expectedOutput = parts[1] ? parts[1].trim() : '';
 
-  const tables = (data.tables as TableFrontmatter[]).map(processTable);
+  const tables = data.tables ? (data.tables as TableFrontmatter[]).map(processTable) : [];
 
   const baseQuestion = {
     id,
@@ -678,11 +721,44 @@ async function processQuestion(
     }
     case 'python': {
       const frontmatter = data as PythonFrontmatter;
+
+      // Infer pythonType
+      let pythonType: 'pyspark' | 'coding' | 'pandas';
+      if (frontmatter.python_type) {
+        pythonType = frontmatter.python_type;
+      } else if (frontmatter.test_cases || frontmatter.function_name) {
+        pythonType = 'coding';
+      } else if (frontmatter.tables && frontmatter.expected_output_query) {
+        pythonType = 'pyspark';
+      } else {
+        pythonType = 'coding';
+      }
+
+      if (pythonType === 'coding') {
+        return {
+          ...baseQuestion,
+          skill: 'python',
+          pythonType: 'coding',
+          functionName: frontmatter.function_name || id.replace(/^py-/, '').replace(/-/g, '_'),
+          testCases: (frontmatter.test_cases || []).map((tc) => ({
+            call: tc.call.trim(),
+            expected: tc.expected.trim(),
+            label: tc.label,
+          })),
+          hiddenTestCases: (frontmatter.hidden_test_cases || []).map((tc) => ({
+            call: tc.call.trim(),
+            expected: tc.expected.trim(),
+            label: tc.label,
+          })),
+        };
+      }
+
       return {
         ...baseQuestion,
         skill: 'python',
+        pythonType,
         tables,
-        expectedOutputQuery: frontmatter.expected_output_query,
+        expectedOutputQuery: frontmatter.expected_output_query!,
       };
     }
     case 'debug': {

@@ -1,0 +1,61 @@
+id: python-windows
+name: "Windows & Running Stats"
+tagline: "Ranking, running totals, rolling averages & row comparisons"
+interviewer_says: "rank within groups, rolling 7-day average, compare to previous"
+you_need: "Window, partitionBy, orderBy, row_number, lag, rangeBetween"
+description: "Master PySpark window functions for rankings, running calculations, and rolling aggregates - critical for time-series analysis."
+icon: "layers"
+category: "PySpark"
+order: 3
+prerequisites: [python-dataframe-basics]
+
+levels:
+  - level: 1
+    title: "ROW_NUMBER"
+    description: "Assign row numbers within partitions"
+    concepts: ["Window", "partitionBy", "orderBy", "row_number"]
+    questions:
+      - py-window-row-number
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Ranking Functions"
+    description: "Use rank and dense_rank for ties"
+    concepts: ["rank", "dense_rank", "tie handling"]
+    questions:
+      - py-window-rank
+    unlock: complete_previous
+
+  - level: 3
+    title: "Running Totals"
+    description: "Compute cumulative sums and averages"
+    concepts: ["sum over window", "rowsBetween", "unboundedPreceding"]
+    questions:
+      - py-window-cumsum
+      - py-window-cumavg
+    unlock: complete_previous
+
+  - level: 4
+    title: "LAG & LEAD"
+    description: "Compare current row to previous or next"
+    concepts: ["lag", "lead", "offset", "default value"]
+    questions:
+      - py-window-lag
+    unlock: complete_previous
+
+  - level: 5
+    title: "Rolling Average"
+    description: "Calculate N-day moving averages"
+    concepts: ["rangeBetween", "rowsBetween", "avg"]
+    questions:
+      - py-rolling-avg-7day
+      - py-rolling-avg-30day
+    unlock: complete_previous
+
+  - level: 6
+    title: "Cumulative Distinct"
+    description: "Approximate distinct counts over time"
+    concepts: ["approx_count_distinct", "collect_set", "size"]
+    questions:
+      - py-rolling-cumdistinct
+    unlock: complete_previous

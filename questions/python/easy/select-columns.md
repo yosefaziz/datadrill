@@ -1,7 +1,8 @@
 ---
 title: "Select Columns"
 difficulty: "Easy"
-tags: ["select", "basics", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "select", "basics"]
 tables:
   - name: products
     visible_data: |

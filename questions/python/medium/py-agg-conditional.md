@@ -1,7 +1,8 @@
 ---
 title: "Conditional Aggregation with When"
 difficulty: "Medium"
-tags: ["when", "otherwise", "agg", "conditional", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "when", "otherwise", "agg", "conditional"]
 tables:
   - name: transactions
     visible_data: |

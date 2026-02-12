@@ -1,7 +1,8 @@
 ---
 title: "Filter with Multiple Conditions"
 difficulty: "Easy"
-tags: ["filter", "and", "or", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "filter", "and", "or"]
 tables:
   - name: employees
     visible_data: |

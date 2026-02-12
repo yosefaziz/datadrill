@@ -1,0 +1,61 @@
+id: python-data-cleaning
+name: "Data Cleaning & Transforms"
+tagline: "Deduplicate, handle nulls, transform columns & create UDFs"
+interviewer_says: "remove duplicates, handle nulls, apply custom function"
+you_need: "dropDuplicates(), fillna(), withColumn(), when/otherwise, udf()"
+description: "Data quality essentials in PySpark - deduplication, null handling, column transformations, and custom UDFs for real-world pipelines."
+icon: "copy-minus"
+category: "PySpark"
+order: 4
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Drop Duplicates"
+    description: "Remove duplicate rows on a subset of columns"
+    concepts: ["dropDuplicates", "subset", "distinct"]
+    questions:
+      - py-dedup-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Null Handling"
+    description: "Fill, filter, and coalesce null values"
+    concepts: ["fillna", "isNull", "isNotNull", "coalesce"]
+    questions:
+      - py-null-fillna
+      - py-null-coalesce
+    unlock: complete_previous
+
+  - level: 3
+    title: "withColumn"
+    description: "Add and transform columns"
+    concepts: ["withColumn", "lit", "col", "arithmetic"]
+    questions:
+      - py-transform-withcol
+    unlock: complete_previous
+
+  - level: 4
+    title: "Conditional Logic"
+    description: "Apply when/otherwise patterns"
+    concepts: ["when", "otherwise", "chained conditions"]
+    questions:
+      - py-transform-when
+      - py-transform-case-nested
+    unlock: complete_previous
+
+  - level: 5
+    title: "Dedup with Window"
+    description: "Keep the latest record per key using row_number"
+    concepts: ["row_number", "Window", "dedup pattern"]
+    questions:
+      - py-dedup-window
+    unlock: complete_previous
+
+  - level: 6
+    title: "UDF Creation"
+    description: "Create a Python UDF with explicit return type"
+    concepts: ["udf", "returnType", "StringType", "IntegerType"]
+    questions:
+      - py-udf-create
+    unlock: complete_previous

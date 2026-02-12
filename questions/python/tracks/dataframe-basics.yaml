@@ -1,0 +1,61 @@
+id: python-dataframe-basics
+name: "DataFrame Basics"
+tagline: "Filter, select, group & aggregate in PySpark"
+interviewer_says: "filter the dataframe, group by category, calculate totals"
+you_need: "filter(), select(), col(), groupBy(), agg()"
+description: "Learn the fundamental PySpark DataFrame operations - filtering rows, selecting columns, and aggregating data with groupBy."
+icon: "filter"
+category: "PySpark"
+order: 1
+prerequisites: []
+
+levels:
+  - level: 1
+    title: "Basic Filter"
+    description: "Filter rows with simple conditions"
+    concepts: ["filter", "col", "comparison"]
+    questions:
+      - py-filter-basic
+    unlock: always_unlocked
+
+  - level: 2
+    title: "Complex Conditions"
+    description: "Combine conditions with AND/OR, isin, between"
+    concepts: ["and", "or", "isin", "between"]
+    questions:
+      - py-filter-and-or
+      - py-filter-isin
+    unlock: complete_previous
+
+  - level: 3
+    title: "Select & Rename"
+    description: "Select, alias, and drop columns"
+    concepts: ["select", "alias", "drop", "withColumnRenamed"]
+    questions:
+      - py-select-rename
+    unlock: complete_previous
+
+  - level: 4
+    title: "Simple GroupBy"
+    description: "Group by a single column and count"
+    concepts: ["groupBy", "count", "single column"]
+    questions:
+      - py-groupby-count
+    unlock: complete_previous
+
+  - level: 5
+    title: "Multiple Aggregations"
+    description: "Use agg with multiple aggregate functions"
+    concepts: ["agg", "sum", "avg", "max", "min"]
+    questions:
+      - py-agg-multi-sum
+      - py-agg-multi-avg
+    unlock: complete_previous
+
+  - level: 6
+    title: "Conditional Aggregation"
+    description: "Use when/otherwise inside aggregations"
+    concepts: ["when", "otherwise", "conditional sum"]
+    questions:
+      - py-agg-conditional
+    unlock: complete_previous

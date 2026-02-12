@@ -1,7 +1,8 @@
 ---
 title: "Find Inactive Users"
 difficulty: "Medium"
-tags: ["join", "left_anti", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "join", "left_anti"]
 tables:
   - name: all_users
     visible_data: |

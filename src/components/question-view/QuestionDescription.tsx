@@ -1,4 +1,4 @@
-import { Question, isDebugQuestion, isArchitectureQuestion, isModelingQuestion } from '@/types';
+import { Question, isDebugQuestion, isArchitectureQuestion, isModelingQuestion, isPythonCodingQuestion, isPySparkQuestion, isPandasQuestion } from '@/types';
 
 interface QuestionDescriptionProps {
   question: Question;
@@ -6,6 +6,14 @@ interface QuestionDescriptionProps {
 
 export function QuestionDescription({ question }: QuestionDescriptionProps) {
   const isDebug = isDebugQuestion(question);
+  const isCoding = isPythonCodingQuestion(question);
+  const hasTables = !isArchitectureQuestion(question) && !isModelingQuestion(question) && !isCoding && 'tables' in question && question.tables.length > 0;
+
+  const dataFrameLabel = isPySparkQuestion(question)
+    ? 'DataFrames'
+    : isPandasQuestion(question)
+      ? 'DataFrames'
+      : 'Tables';
 
   return (
     <div className="p-6">
@@ -27,12 +35,45 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
         </div>
       )}
 
-      {/* Tables and Expected Output only for code-based questions */}
-      {!isArchitectureQuestion(question) && !isModelingQuestion(question) && (
+      {/* Test cases for coding questions */}
+      {isCoding && (
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-lg font-semibold text-text-primary mb-3">Test Cases</h2>
+            <div className="space-y-3">
+              {question.testCases.map((tc, i) => (
+                <div key={i} className="rounded-lg ring-1 ring-white/10 overflow-hidden">
+                  <div className="bg-bg-secondary px-3 py-2 text-sm font-semibold text-text-primary">
+                    {tc.label || `Test ${i + 1}`}
+                  </div>
+                  <div className="p-3 space-y-2">
+                    <div>
+                      <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">Input</span>
+                      <pre className="mt-1 text-sm text-text-secondary font-mono whitespace-pre-wrap bg-bg-secondary/50 rounded p-2">{tc.call.trim()}</pre>
+                    </div>
+                    <div>
+                      <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">Expected</span>
+                      <pre className="mt-1 text-sm text-text-secondary font-mono whitespace-pre-wrap bg-bg-secondary/50 rounded p-2">{tc.expected.trim()}</pre>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {question.hiddenTestCases.length > 0 && (
+              <p className="mt-3 text-sm text-text-muted">
+                + {question.hiddenTestCases.length} hidden test case{question.hiddenTestCases.length > 1 ? 's' : ''}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Tables and Expected Output only for code-based questions with tables */}
+      {hasTables && (
         <div className="space-y-6">
           <div>
             <h2 className="text-lg font-semibold text-text-primary mb-3">
-              {question.skill === 'python' ? 'DataFrames' : 'Tables'}
+              {dataFrameLabel}
             </h2>
             {question.tables.map((table) => (
               <div key={table.name} className="mb-4">

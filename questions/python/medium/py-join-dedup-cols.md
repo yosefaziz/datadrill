@@ -1,7 +1,8 @@
 ---
 title: "Handle Duplicate Columns After Join"
 difficulty: "Medium"
-tags: ["join", "drop", "duplicate columns", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "join", "drop", "duplicate columns"]
 tables:
   - name: orders
     visible_data: |

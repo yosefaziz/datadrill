@@ -1,7 +1,8 @@
 ---
 title: "Year-Over-Year Sales Comparison"
 difficulty: "Medium"
-tags: ["join", "composite key", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "join", "composite key"]
 tables:
   - name: sales_2023
     visible_data: |

@@ -48,6 +48,8 @@ interface QuestionState {
   getAllTags: () => string[];
   getAllQuestionTypes: () => string[];
   getQuestionCountBySkill: (skill: SkillType) => number;
+  getAdjacentQuestionIds: (skill: SkillType, questionId: string) => { prevId: string | null; nextId: string | null };
+  getToolCategories: () => string[];
 }
 
 export const useQuestionStore = create<QuestionState>((set, get) => ({
@@ -230,6 +232,7 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
     const questions = questionsBySkill[currentSkill];
     const query = filters.searchQuery.toLowerCase();
     const filtered = questions.filter((q) => {
+      if (q.interviewRelevant === false) return false;
       if (filters.difficulty && q.difficulty !== filters.difficulty) return false;
       if (filters.tag && !q.tags.includes(filters.tag)) return false;
       if (filters.questionType && q.questionType !== filters.questionType) return false;
@@ -288,6 +291,26 @@ export const useQuestionStore = create<QuestionState>((set, get) => ({
 
   getQuestionCountBySkill: (skill: SkillType) => {
     const { questionsBySkill } = get();
-    return questionsBySkill[skill].length;
+    return questionsBySkill[skill].filter((q) => q.interviewRelevant !== false).length;
+  },
+
+  getAdjacentQuestionIds: (skill: SkillType, questionId: string) => {
+    const questions = get().questionsBySkill[skill];
+    const index = questions.findIndex((q) => q.id === questionId);
+    return {
+      prevId: index > 0 ? questions[index - 1].id : null,
+      nextId: index !== -1 && index < questions.length - 1 ? questions[index + 1].id : null,
+    };
+  },
+
+  getToolCategories: () => {
+    const { questionsBySkill, currentSkill } = get();
+    if (!currentSkill) return [];
+    const questions = questionsBySkill[currentSkill];
+    const categories = new Set<string>();
+    for (const q of questions) {
+      if (q.tags.length > 0) categories.add(q.tags[0]);
+    }
+    return Array.from(categories).sort();
   },
 }));

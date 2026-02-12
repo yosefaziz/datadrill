@@ -1,7 +1,8 @@
 ---
 title: "Count Events by Type"
 difficulty: "Easy"
-tags: ["groupBy", "count", "basics", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "groupBy", "count", "basics"]
 tables:
   - name: events
     visible_data: |

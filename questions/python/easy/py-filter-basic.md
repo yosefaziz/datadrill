@@ -1,7 +1,8 @@
 ---
 title: "Filter Products by Price"
 difficulty: "Easy"
-tags: ["filter", "col", "basics", "pyspark"]
+interview_relevant: false
+tags: ["pyspark", "filter", "col", "basics"]
 tables:
   - name: products
     visible_data: |
