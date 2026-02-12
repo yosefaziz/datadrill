@@ -36,7 +36,6 @@ Filter the `products` DataFrame to include only products with a price greater th
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.filter()` with `col("price") > 50`.
 
 ## Expected Output
 id,name,category,price

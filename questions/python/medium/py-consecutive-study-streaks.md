@@ -79,4 +79,3 @@ longest_streaks(logs)
 - Do NOT import anything (parse dates manually or use arithmetic)
 - Dates are always valid `"YYYY-MM-DD"` strings
 - Duplicate `(student, course, date)` entries may exist - ignore duplicates
-- Hint: convert `"YYYY-MM-DD"` to a day number for easy comparison

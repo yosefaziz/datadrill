@@ -42,7 +42,6 @@ Group the `orders` DataFrame by `customer_id` and calculate:
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.groupBy()` followed by `.agg()` with aggregation functions.
 
 ## Expected Output
 customer_id,total_amount,order_count

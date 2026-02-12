@@ -38,7 +38,6 @@ Use the `.isin()` method on the status column.
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `col("status").isin("shipped", "delivered")`.
 
 ## Expected Output
 id,customer_id,product,status

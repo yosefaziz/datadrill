@@ -41,7 +41,6 @@ Use `.groupBy()` and `.agg()` with `sum()` for both columns.
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.agg(sum("quantity").alias("total_quantity"), sum("revenue").alias("total_revenue"))`.
 
 ## Expected Output
 region,total_quantity,total_revenue

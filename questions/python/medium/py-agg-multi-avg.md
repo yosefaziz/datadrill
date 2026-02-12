@@ -36,7 +36,6 @@ Group the `employees` DataFrame by `department` and calculate average salary and
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.agg(avg("salary").alias("avg_salary"), max("years_experience").alias("max_experience"))`.
 
 ## Expected Output
 department,avg_salary,max_experience

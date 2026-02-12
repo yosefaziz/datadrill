@@ -54,7 +54,6 @@ Use `broadcast()` to hint that the small table should be broadcast to all worker
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `sales.join(broadcast(regions), "region_id", "inner")`.
 
 ## Expected Output
 region_id,id,product,amount,region_name

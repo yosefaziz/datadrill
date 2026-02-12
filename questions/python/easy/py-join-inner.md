@@ -50,7 +50,6 @@ Use an inner join on `customer_id` matching `id`, then select the `order_id`, cu
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.join()` with the join condition and `"inner"`, then `.select()` the columns you need.
 
 ## Expected Output
 order_id,name,amount

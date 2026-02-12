@@ -55,7 +55,6 @@ Both tables have an `id` column, so you must use `table["column"]` syntax and `.
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** After joining, use `.select()` with `orders["id"].alias("order_id")` to rename.
 
 ## Expected Output
 order_id,product_name,quantity,price

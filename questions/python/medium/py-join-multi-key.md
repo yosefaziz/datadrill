@@ -50,7 +50,6 @@ When joining on multiple columns that share the same name, pass a list of column
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.join(sales_2024, ["region", "product"], "inner")`.
 
 ## Expected Output
 region,product,revenue_2023,revenue_2024

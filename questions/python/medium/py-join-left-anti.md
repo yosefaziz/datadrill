@@ -50,7 +50,6 @@ This returns all rows from `all_users` that have no matching `user_id` in `activ
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.join(active_users, "user_id", "left_anti")`.
 
 ## Expected Output
 user_id,name,signup_date

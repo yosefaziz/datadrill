@@ -35,7 +35,6 @@ Keep `id` as-is, rename `first_name` to `first`, `last_name` to `last`, and `ema
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.select()` with `.alias()` to rename columns.
 
 ## Expected Output
 id,first,last,email

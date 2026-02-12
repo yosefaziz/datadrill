@@ -57,7 +57,6 @@ Return `learner_id` and `course_id` for each enrollment with no matching watch s
 
 Order by `learner_id`, then `course_id`.
 
-**Hint**: You can solve this with `EXCEPT` or a `LEFT JOIN` anti-pattern.
 
 ## Expected Output
 learner_id,course_id

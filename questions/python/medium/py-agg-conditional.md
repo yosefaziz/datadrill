@@ -41,7 +41,6 @@ Use `when()/otherwise()` inside `sum()` to conditionally aggregate by transactio
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `sum(when(col("type") == "credit", col("amount")).otherwise(0)).alias("total_credits")`.
 
 ## Expected Output
 account_id,total_credits,total_debits

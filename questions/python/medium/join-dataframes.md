@@ -49,7 +49,6 @@ Join the `employees` DataFrame with the `departments` DataFrame on `dept_id`, th
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.join()` with the join key, then `.select()` the columns you need.
 
 ## Expected Output
 name,dept_name

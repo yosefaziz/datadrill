@@ -34,7 +34,6 @@ Filter the `employees` DataFrame to include only employees in the Engineering de
 
 Your result should be stored in a variable called `result`.
 
-**Hint:** Use `.filter()` or `.where()` with a column condition.
 
 ## Expected Output
 id,name,department,salary
