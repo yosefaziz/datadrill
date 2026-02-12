@@ -34,3 +34,40 @@ levels:
     questions:
       - spark-shuffle-internals
     unlock: complete_previous
+
+  - level: 4
+    title: "Predicting Execution"
+    description: "Trace through Spark code and predict the execution plan and output"
+    concepts: ["stage prediction", "shuffle output", "partition layout"]
+    questions:
+      - spark-predict-dag-stages
+      - spark-predict-shuffle-output
+    unlock: complete_previous
+
+  - level: 5
+    title: "Architecture Trade-offs"
+    description: "Evaluate trade-offs between different Spark strategies"
+    concepts: ["broadcast vs shuffle", "repartition strategies", "skew handling"]
+    questions:
+      - spark-tradeoff-broadcast-vs-shuffle
+      - spark-tradeoff-repartition-strategy
+    unlock: complete_previous
+
+  - level: 6
+    title: "Production Incidents"
+    description: "Investigate and resolve production Spark failures"
+    concepts: ["OOM diagnosis", "data skew detection", "root cause analysis"]
+    questions:
+      - spark-incident-executor-oom
+      - spark-incident-stage-skew
+    unlock: complete_previous
+
+  - level: 7
+    title: "Code Quality"
+    description: "Review and optimize Spark code for performance and correctness"
+    concepts: ["code review", "anti-patterns", "shuffle reduction", "streaming pitfalls"]
+    questions:
+      - spark-review-inefficient-job
+      - spark-review-streaming-pitfalls
+      - spark-optimize-shuffle-reduction
+    unlock: complete_previous

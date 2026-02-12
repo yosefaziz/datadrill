@@ -71,7 +71,7 @@ export interface DebugQuestion extends BaseQuestion {
 
 // Architecture question types
 export type ArchitectureQuestionType = 'constraints' | 'canvas' | 'quiz';
-export type ToolsQuestionType = 'quiz';
+export type ToolsQuestionType = 'quiz' | 'predict' | 'tradeoff' | 'incident' | 'review' | 'optimize';
 export type ClarifyingQuestionCategory = 'crucial' | 'helpful' | 'irrelevant';
 
 export interface ClarifyingQuestion {
@@ -197,10 +197,210 @@ export interface QuizValidationResult {
   overallExplanation?: string;
 }
 
+// ── Predict Question ──────────────────────────────────────────────
+
+export interface PredictQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'predict';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  description: string;
+  code: string;
+  language: 'sql' | 'python';
+  tables: TableData[];
+  expectedColumns: string[];
+  expectedRows: string[][];
+  givenColumns?: number[];
+  cellOptions?: Record<string, string[]>;
+  hints?: string[];
+}
+
+export interface PredictValidationResult {
+  passed: boolean;
+  totalCells: number;
+  correctCells: number;
+  cellResults: { row: number; col: number; expected: string; actual: string; correct: boolean }[];
+}
+
+// ── Tradeoff Question ─────────────────────────────────────────────
+
+export interface TradeoffOption {
+  id: string;
+  name: string;
+  description: string;
+  correct: boolean;
+  feedback: string;
+}
+
+export interface TradeoffJustification {
+  id: string;
+  text: string;
+  validFor: string[];
+  points: number;
+}
+
+export interface TradeoffQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'tradeoff';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  description: string;
+  prompt: string;
+  options: TradeoffOption[];
+  justifications: TradeoffJustification[];
+  maxJustifications: number;
+  hints?: string[];
+}
+
+export interface TradeoffValidationResult {
+  passed: boolean;
+  optionCorrect: boolean;
+  optionFeedback: string;
+  selectedOptionId: string;
+  justificationScore: number;
+  maxJustificationScore: number;
+  justificationResults: { id: string; text: string; selected: boolean; points: number; feedback: string }[];
+}
+
+// ── Incident Question ─────────────────────────────────────────────
+
+export interface InvestigationStep {
+  id: string;
+  action: string;
+  clue: string;
+  category: 'essential' | 'helpful' | 'irrelevant';
+}
+
+export interface IncidentRootCause {
+  id: string;
+  text: string;
+  correct: boolean;
+  feedback: string;
+}
+
+export interface IncidentFix {
+  id: string;
+  text: string;
+  correct: boolean;
+  points: number;
+  feedback?: string;
+}
+
+export interface IncidentQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'incident';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  description: string;
+  alert: string;
+  investigationSteps: InvestigationStep[];
+  rootCauses: IncidentRootCause[];
+  fixes: IncidentFix[];
+  maxInvestigationSteps: number;
+  maxFixes: number;
+  hints?: string[];
+}
+
+export interface IncidentValidationResult {
+  passed: boolean;
+  investigationEfficiency: number;
+  stepsRevealed: { id: string; action: string; category: string }[];
+  rootCauseCorrect: boolean;
+  rootCauseFeedback: string;
+  fixScore: number;
+  maxFixScore: number;
+  fixResults: { id: string; text: string; selected: boolean; correct: boolean; points: number; feedback?: string }[];
+}
+
+// ── Review Question ───────────────────────────────────────────────
+
+export interface ReviewIssue {
+  id: string;
+  text: string;
+  isReal: boolean;
+  severity: 'bug' | 'warning' | 'minor' | null;
+  explanation: string;
+  points: number;
+}
+
+export interface ReviewQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'review';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  description: string;
+  code: string;
+  language: 'sql' | 'python';
+  context: string;
+  issues: ReviewIssue[];
+  hints?: string[];
+}
+
+export interface ReviewValidationResult {
+  passed: boolean;
+  totalScore: number;
+  maxScore: number;
+  issueResults: {
+    id: string;
+    text: string;
+    wasSelected: boolean;
+    selectedSeverity: string | null;
+    isReal: boolean;
+    correctSeverity: string | null;
+    points: number;
+    explanation: string;
+  }[];
+}
+
+// ── Optimize Question ─────────────────────────────────────────────
+
+export interface AntiPattern {
+  pattern: string;
+  message: string;
+}
+
+export interface OptimizeQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'optimize';
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  description: string;
+  slowQuery: string;
+  language: 'sql' | 'python';
+  tables: TableData[];
+  expectedOutputQuery: string;
+  antiPatterns: AntiPattern[];
+  optimizationHints: string[];
+  hints?: string[];
+}
+
+export interface OptimizeValidationResult {
+  passed: boolean;
+  outputCorrect: boolean;
+  antiPatternMatches: { pattern: string; message: string }[];
+  feedback: string;
+}
+
 // Union of architecture question types
 export type ArchitectureQuestion = ConstraintsQuestion | CanvasQuestion | QuizQuestion;
 
-export type ToolsQuestion = QuizQuestion & { skill: 'tools' };
+export type ToolsQuestion =
+  | (QuizQuestion & { skill: 'tools' })
+  | PredictQuestion
+  | TradeoffQuestion
+  | IncidentQuestion
+  | ReviewQuestion
+  | OptimizeQuestion;
 
 // Data Modeling question types
 export type FieldDataType = 'integer' | 'string' | 'timestamp' | 'decimal' | 'boolean';
@@ -495,12 +695,35 @@ export function isToolsQuestion(question: Question): question is ToolsQuestion {
   return question.skill === 'tools';
 }
 
-export function isToolsQuizQuestion(question: Question): question is ToolsQuestion {
-  return question.skill === 'tools' && 'questionType' in question && (question as ToolsQuestion).questionType === 'quiz';
+export function isToolsQuizQuestion(question: Question): question is QuizQuestion & { skill: 'tools' } {
+  return question.skill === 'tools' && 'questionType' in question && (question as QuizQuestion).questionType === 'quiz';
+}
+
+export function isPredictQuestion(question: Question): question is PredictQuestion {
+  return question.skill === 'tools' && 'questionType' in question && (question as PredictQuestion).questionType === 'predict';
+}
+
+export function isTradeoffQuestion(question: Question): question is TradeoffQuestion {
+  return question.skill === 'tools' && 'questionType' in question && (question as TradeoffQuestion).questionType === 'tradeoff';
+}
+
+export function isIncidentQuestion(question: Question): question is IncidentQuestion {
+  return question.skill === 'tools' && 'questionType' in question && (question as IncidentQuestion).questionType === 'incident';
+}
+
+export function isReviewQuestion(question: Question): question is ReviewQuestion {
+  return question.skill === 'tools' && 'questionType' in question && (question as ReviewQuestion).questionType === 'review';
+}
+
+export function isOptimizeQuestion(question: Question): question is OptimizeQuestion {
+  return question.skill === 'tools' && 'questionType' in question && (question as OptimizeQuestion).questionType === 'optimize';
 }
 
 // Helper to get tables from any question type (not applicable to architecture/modeling/coding questions)
 export function getQuestionTables(question: Question): TableData[] {
+  if (isPredictQuestion(question) || isOptimizeQuestion(question)) {
+    return question.tables;
+  }
   if (isArchitectureQuestion(question) || isModelingQuestion(question) || isToolsQuestion(question) || isPythonCodingQuestion(question)) {
     return [];
   }

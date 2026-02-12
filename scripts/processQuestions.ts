@@ -8,7 +8,7 @@ import * as yaml from 'js-yaml';
 type SkillType = 'sql' | 'python' | 'debug' | 'architecture' | 'modeling' | 'tools';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
 type ArchitectureQuestionType = 'constraints' | 'canvas' | 'quiz';
-type ToolsQuestionType = 'quiz';
+type ToolsQuestionType = 'quiz' | 'predict' | 'tradeoff' | 'incident' | 'review' | 'optimize';
 
 interface TableFrontmatter {
   name: string;
@@ -125,6 +125,124 @@ interface QuizFrontmatter {
   multi_select: boolean;
   answers: QuizAnswerFrontmatter[];
   explanation?: string;
+  hints?: string[];
+}
+
+// Predict question frontmatter types
+interface PredictFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  code: string;
+  language: 'sql' | 'python';
+  tables: TableFrontmatter[];
+  expected_columns: string[];
+  expected_rows: string[][];
+  given_columns?: number[];
+  cell_options?: Record<string, string[]>;
+  hints?: string[];
+}
+
+// Tradeoff question frontmatter types
+interface TradeoffOptionFrontmatter {
+  id: string;
+  name: string;
+  description: string;
+  correct: boolean;
+  feedback: string;
+}
+
+interface TradeoffJustificationFrontmatter {
+  id: string;
+  text: string;
+  valid_for: string[];
+  points: number;
+}
+
+interface TradeoffFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  prompt: string;
+  options: TradeoffOptionFrontmatter[];
+  justifications: TradeoffJustificationFrontmatter[];
+  max_justifications: number;
+  hints?: string[];
+}
+
+// Incident question frontmatter types
+interface InvestigationStepFrontmatter {
+  id: string;
+  action: string;
+  clue: string;
+  category: 'essential' | 'helpful' | 'irrelevant';
+}
+
+interface IncidentRootCauseFrontmatter {
+  id: string;
+  text: string;
+  correct: boolean;
+  feedback: string;
+}
+
+interface IncidentFixFrontmatter {
+  id: string;
+  text: string;
+  correct: boolean;
+  points: number;
+  feedback?: string;
+}
+
+interface IncidentFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  alert: string;
+  investigation_steps: InvestigationStepFrontmatter[];
+  root_causes: IncidentRootCauseFrontmatter[];
+  fixes: IncidentFixFrontmatter[];
+  max_investigation_steps: number;
+  max_fixes: number;
+  hints?: string[];
+}
+
+// Review question frontmatter types
+interface ReviewIssueFrontmatter {
+  id: string;
+  text: string;
+  is_real: boolean;
+  severity: 'bug' | 'warning' | 'nit' | null;
+  explanation: string;
+  points: number;
+}
+
+interface ReviewFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  code: string;
+  language: 'sql' | 'python';
+  context: string;
+  issues: ReviewIssueFrontmatter[];
+  hints?: string[];
+}
+
+// Optimize question frontmatter types
+interface AntiPatternFrontmatter {
+  pattern: string;
+  message: string;
+}
+
+interface OptimizeFrontmatter {
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  slow_query: string;
+  language: 'sql' | 'python';
+  tables: TableFrontmatter[];
+  expected_output_query: string;
+  anti_patterns: AntiPatternFrontmatter[];
+  optimization_hints: string[];
   hints?: string[];
 }
 
@@ -297,7 +415,95 @@ interface QuizProcessedQuestion {
 
 type ArchitectureProcessedQuestion = ConstraintsProcessedQuestion | CanvasProcessedQuestion | QuizProcessedQuestion;
 
-type ToolsProcessedQuestion = QuizProcessedQuestion;
+interface PredictProcessedQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'predict';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  description: string;
+  code: string;
+  language: 'sql' | 'python';
+  tables: ProcessedTable[];
+  expectedColumns: string[];
+  expectedRows: string[][];
+  givenColumns?: number[];
+  cellOptions?: Record<string, string[]>;
+  hints?: string[];
+}
+
+interface TradeoffProcessedQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'tradeoff';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  description: string;
+  prompt: string;
+  options: { id: string; name: string; description: string; correct: boolean; feedback: string }[];
+  justifications: { id: string; text: string; validFor: string[]; points: number }[];
+  maxJustifications: number;
+  hints?: string[];
+}
+
+interface IncidentProcessedQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'incident';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  description: string;
+  alert: string;
+  investigationSteps: { id: string; action: string; clue: string; category: 'essential' | 'helpful' | 'irrelevant' }[];
+  rootCauses: { id: string; text: string; correct: boolean; feedback: string }[];
+  fixes: { id: string; text: string; correct: boolean; points: number; feedback?: string }[];
+  maxInvestigationSteps: number;
+  maxFixes: number;
+  hints?: string[];
+}
+
+interface ReviewProcessedQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'review';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  description: string;
+  code: string;
+  language: 'sql' | 'python';
+  context: string;
+  issues: { id: string; text: string; isReal: boolean; severity: 'bug' | 'warning' | 'nit' | null; explanation: string; points: number }[];
+  hints?: string[];
+}
+
+interface OptimizeProcessedQuestion {
+  id: string;
+  skill: 'tools';
+  questionType: 'optimize';
+  title: string;
+  difficulty: Difficulty;
+  tags: string[];
+  description: string;
+  slowQuery: string;
+  language: 'sql' | 'python';
+  tables: ProcessedTable[];
+  expectedOutputQuery: string;
+  antiPatterns: { pattern: string; message: string }[];
+  optimizationHints: string[];
+  hints?: string[];
+}
+
+type ToolsProcessedQuestion =
+  | QuizProcessedQuestion
+  | PredictProcessedQuestion
+  | TradeoffProcessedQuestion
+  | IncidentProcessedQuestion
+  | ReviewProcessedQuestion
+  | OptimizeProcessedQuestion;
 
 // Modeling processed types
 interface ModelingField {
@@ -617,6 +823,164 @@ async function processQuizQuestion(
   };
 }
 
+async function processPredictQuestion(
+  id: string,
+  frontmatter: PredictFrontmatter,
+  markdownContent: string
+): Promise<PredictProcessedQuestion> {
+  const description = markdownContent.trim() ? await marked(markdownContent.trim()) : '';
+  return {
+    id,
+    skill: 'tools',
+    questionType: 'predict',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    description,
+    code: frontmatter.code,
+    language: frontmatter.language,
+    tables: frontmatter.tables ? frontmatter.tables.map(processTable) : [],
+    expectedColumns: frontmatter.expected_columns,
+    expectedRows: frontmatter.expected_rows,
+    givenColumns: frontmatter.given_columns,
+    cellOptions: frontmatter.cell_options,
+    hints: frontmatter.hints,
+  };
+}
+
+async function processTradeoffQuestion(
+  id: string,
+  frontmatter: TradeoffFrontmatter,
+  markdownContent: string
+): Promise<TradeoffProcessedQuestion> {
+  const description = markdownContent.trim() ? await marked(markdownContent.trim()) : '';
+  return {
+    id,
+    skill: 'tools',
+    questionType: 'tradeoff',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    description,
+    prompt: frontmatter.prompt,
+    options: frontmatter.options.map((o) => ({
+      id: o.id,
+      name: o.name,
+      description: o.description,
+      correct: o.correct,
+      feedback: o.feedback,
+    })),
+    justifications: frontmatter.justifications.map((j) => ({
+      id: j.id,
+      text: j.text,
+      validFor: j.valid_for,
+      points: j.points,
+    })),
+    maxJustifications: frontmatter.max_justifications,
+    hints: frontmatter.hints,
+  };
+}
+
+async function processIncidentQuestion(
+  id: string,
+  frontmatter: IncidentFrontmatter,
+  markdownContent: string
+): Promise<IncidentProcessedQuestion> {
+  const description = markdownContent.trim() ? await marked(markdownContent.trim()) : '';
+  return {
+    id,
+    skill: 'tools',
+    questionType: 'incident',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    description,
+    alert: frontmatter.alert,
+    investigationSteps: frontmatter.investigation_steps.map((s) => ({
+      id: s.id,
+      action: s.action,
+      clue: s.clue,
+      category: s.category,
+    })),
+    rootCauses: frontmatter.root_causes.map((rc) => ({
+      id: rc.id,
+      text: rc.text,
+      correct: rc.correct,
+      feedback: rc.feedback,
+    })),
+    fixes: frontmatter.fixes.map((f) => ({
+      id: f.id,
+      text: f.text,
+      correct: f.correct,
+      points: f.points,
+      feedback: f.feedback,
+    })),
+    maxInvestigationSteps: frontmatter.max_investigation_steps,
+    maxFixes: frontmatter.max_fixes,
+    hints: frontmatter.hints,
+  };
+}
+
+async function processReviewQuestion(
+  id: string,
+  frontmatter: ReviewFrontmatter,
+  markdownContent: string
+): Promise<ReviewProcessedQuestion> {
+  const MAX_REVIEW_ISSUES = 5;
+  if (frontmatter.issues.length > MAX_REVIEW_ISSUES) {
+    throw new Error(`Review question "${id}" has ${frontmatter.issues.length} issues (max ${MAX_REVIEW_ISSUES})`);
+  }
+  const description = markdownContent.trim() ? await marked(markdownContent.trim()) : '';
+  return {
+    id,
+    skill: 'tools',
+    questionType: 'review',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    description,
+    code: frontmatter.code,
+    language: frontmatter.language,
+    context: frontmatter.context,
+    issues: frontmatter.issues.map((i) => ({
+      id: i.id,
+      text: i.text,
+      isReal: i.is_real,
+      severity: i.severity,
+      explanation: i.explanation,
+      points: i.points,
+    })),
+    hints: frontmatter.hints,
+  };
+}
+
+async function processOptimizeQuestion(
+  id: string,
+  frontmatter: OptimizeFrontmatter,
+  markdownContent: string
+): Promise<OptimizeProcessedQuestion> {
+  const description = markdownContent.trim() ? await marked(markdownContent.trim()) : '';
+  return {
+    id,
+    skill: 'tools',
+    questionType: 'optimize',
+    title: frontmatter.title,
+    difficulty: frontmatter.difficulty,
+    tags: frontmatter.tags,
+    description,
+    slowQuery: frontmatter.slow_query,
+    language: frontmatter.language,
+    tables: frontmatter.tables ? frontmatter.tables.map(processTable) : [],
+    expectedOutputQuery: frontmatter.expected_output_query,
+    antiPatterns: frontmatter.anti_patterns.map((ap) => ({
+      pattern: ap.pattern,
+      message: ap.message,
+    })),
+    optimizationHints: frontmatter.optimization_hints,
+    hints: frontmatter.hints,
+  };
+}
+
 async function processModelingQuestion(
   id: string,
   frontmatter: ModelingFrontmatter,
@@ -664,7 +1028,8 @@ async function processQuestion(
   filePath: string,
   skill: SkillType,
   content: string,
-  architectureType?: ArchitectureQuestionType
+  architectureType?: ArchitectureQuestionType,
+  relativeFile?: string
 ): Promise<ProcessedQuestion> {
   const { data, content: markdownContent } = matter(content);
   const id = path.basename(filePath, '.md');
@@ -681,8 +1046,14 @@ async function processQuestion(
     }
   }
 
-  // Handle tools questions (all tools questions are quiz type)
+  // Handle tools questions
   if (skill === 'tools') {
+    const rf = relativeFile || '';
+    if (rf.startsWith('predict/')) return processPredictQuestion(id, data as PredictFrontmatter, markdownContent);
+    if (rf.startsWith('tradeoff/')) return processTradeoffQuestion(id, data as TradeoffFrontmatter, markdownContent);
+    if (rf.startsWith('incident/')) return processIncidentQuestion(id, data as IncidentFrontmatter, markdownContent);
+    if (rf.startsWith('review/')) return processReviewQuestion(id, data as ReviewFrontmatter, markdownContent);
+    if (rf.startsWith('optimize/')) return processOptimizeQuestion(id, data as OptimizeFrontmatter, markdownContent);
     return processQuizQuestion(id, data as QuizFrontmatter, markdownContent, 'tools');
   }
 
@@ -860,13 +1231,12 @@ async function processQuestions() {
           architectureType = 'constraints';
         }
       } else if (skill === 'tools') {
-        if (file.startsWith('quiz/')) {
-          architectureType = 'quiz';
-        }
+        // Tools question type is determined from the subdirectory path
+        // in processQuestion() via relativeFile param
       }
 
       try {
-        const question = await processQuestion(filePath, skill, content, architectureType);
+        const question = await processQuestion(filePath, skill, content, architectureType, file);
 
         // Write individual question file
         fs.writeFileSync(

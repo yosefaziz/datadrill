@@ -79,8 +79,8 @@ export async function validateAnswer(
   question: Question,
   userQuery: string
 ): Promise<ValidationResult> {
-  // Architecture, modeling, and coding questions don't use this validator
-  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isPythonCodingQuestion(question)) {
+  // Architecture, modeling, coding, and tools questions don't use this validator
+  if (isArchitectureQuestion(question) || isModelingQuestion(question) || isPythonCodingQuestion(question) || question.skill === 'tools') {
     return {
       passed: false,
       totalDatasets: 0,

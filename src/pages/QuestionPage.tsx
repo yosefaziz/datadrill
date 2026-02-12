@@ -13,7 +13,12 @@ import { ArchitectureQuestionView } from '@/components/architecture/Architecture
 import { CanvasQuestionView } from '@/components/architecture/canvas/CanvasQuestionView';
 import { QuizQuestionView } from '@/components/architecture/quiz/QuizQuestionView';
 import { ModelingQuestionView } from '@/components/modeling/ModelingQuestionView';
-import { SkillType, getInitialCode, getQuestionTables, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion, isModelingQuestion, isPythonCodingQuestion, isPandasQuestion } from '@/types';
+import { SkillType, getInitialCode, getQuestionTables, isArchitectureQuestion, isCanvasQuestion, isConstraintsQuestion, isQuizQuestion, isModelingQuestion, isPythonCodingQuestion, isPandasQuestion, isPredictQuestion, isTradeoffQuestion, isIncidentQuestion, isReviewQuestion, isOptimizeQuestion } from '@/types';
+import { PredictQuestionView } from '@/components/tools/predict/PredictQuestionView';
+import { TradeoffQuestionView } from '@/components/tools/tradeoff/TradeoffQuestionView';
+import { IncidentQuestionView } from '@/components/tools/incident/IncidentQuestionView';
+import { ReviewQuestionView } from '@/components/tools/review/ReviewQuestionView';
+import { OptimizeQuestionView } from '@/components/tools/optimize/OptimizeQuestionView';
 
 function isValidSkill(skill: string | undefined): skill is SkillType {
   return skill === 'sql' || skill === 'python' || skill === 'debug' || skill === 'architecture' || skill === 'modeling' || skill === 'tools';
@@ -204,6 +209,23 @@ export function QuestionPage() {
   // Render architecture questions with their specialized views
   if (isCanvasQuestion(currentQuestion)) {
     return <CanvasQuestionView question={currentQuestion} />;
+  }
+
+  // Render tools question types (before quiz check, since quiz is shared with architecture)
+  if (isPredictQuestion(currentQuestion)) {
+    return <PredictQuestionView question={currentQuestion} trackId={trackId} prevUrl={prevUrl} nextUrl={nextUrl} />;
+  }
+  if (isTradeoffQuestion(currentQuestion)) {
+    return <TradeoffQuestionView question={currentQuestion} trackId={trackId} prevUrl={prevUrl} nextUrl={nextUrl} />;
+  }
+  if (isIncidentQuestion(currentQuestion)) {
+    return <IncidentQuestionView question={currentQuestion} trackId={trackId} prevUrl={prevUrl} nextUrl={nextUrl} />;
+  }
+  if (isReviewQuestion(currentQuestion)) {
+    return <ReviewQuestionView question={currentQuestion} trackId={trackId} prevUrl={prevUrl} nextUrl={nextUrl} />;
+  }
+  if (isOptimizeQuestion(currentQuestion)) {
+    return <OptimizeQuestionView question={currentQuestion} trackId={trackId} prevUrl={prevUrl} nextUrl={nextUrl} />;
   }
 
   if (isQuizQuestion(currentQuestion)) {
