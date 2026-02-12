@@ -1,4 +1,5 @@
-import Editor from '@monaco-editor/react';
+import { useRef, useCallback } from 'react';
+import Editor, { OnMount } from '@monaco-editor/react';
 import { useEditorStore } from '@/stores/editorStore';
 import { useThemeStore } from '@/stores/themeStore';
 
@@ -13,10 +14,21 @@ interface CodeEditorProps {
 export function CodeEditor({ language, onRun, onSubmit, isExecuting, isValidating }: CodeEditorProps) {
   const { code, setCode } = useEditorStore();
   const { theme } = useThemeStore();
+  const onRunRef = useRef(onRun);
+  onRunRef.current = onRun;
 
   const runLabel = language === 'python' ? 'Run Code' : 'Run Query';
   const runningLabel = language === 'python' ? 'Running...' : 'Running...';
   const editorTheme = theme === 'dark' ? 'vs-dark' : 'light';
+
+  const handleEditorMount: OnMount = useCallback((editor, monaco) => {
+    editor.addAction({
+      id: 'run-code',
+      label: 'Run Code',
+      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter],
+      run: () => onRunRef.current(),
+    });
+  }, []);
 
   return (
     <div className="flex flex-col h-full">
@@ -28,6 +40,7 @@ export function CodeEditor({ language, onRun, onSubmit, isExecuting, isValidatin
           value={code}
           onChange={(value) => setCode(value || '')}
           theme={editorTheme}
+          onMount={handleEditorMount}
           options={{
             minimap: { enabled: false },
             fontSize: 14,
