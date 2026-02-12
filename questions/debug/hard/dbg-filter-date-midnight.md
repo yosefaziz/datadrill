@@ -43,7 +43,6 @@ The query should include all sessions up to and including March 15, but sessions
 
 Fix the date comparison to capture the full day.
 
-**The Bug:** `<= '2024-03-15'` is interpreted as `<= '2024-03-15 00:00:00'`, which excludes everything after midnight on March 15. Use `< '2024-03-16'` instead.
 
 ## Expected Output
 user_id,login_time,duration_minutes

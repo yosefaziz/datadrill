@@ -58,7 +58,6 @@ The query below is meant to list ALL employees with their department name (or NU
 
 Fix the query so that employees without a department still appear.
 
-**The Bug:** `INNER JOIN` excludes employees with NULL `department_id`. Use `LEFT JOIN` instead.
 
 ## Expected Output
 name,dept_name

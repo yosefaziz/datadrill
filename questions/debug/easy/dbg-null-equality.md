@@ -45,7 +45,6 @@ The query below is supposed to find users who have no email address, but it retu
 
 Fix the query so it correctly finds users with NULL emails.
 
-**The Bug:** `email = NULL` always evaluates to `NULL` (not TRUE), so no rows match. Use `IS NULL` instead.
 
 ## Expected Output
 name

@@ -38,7 +38,6 @@ hint: "When using aggregate functions like SUM, you need to specify which column
 
 The following query is supposed to calculate the total sales amount per category, but it's missing something important. Fix the query.
 
-**The Bug:** The query uses SUM() without a GROUP BY clause, which would either error or return a single row instead of per-category totals.
 
 ## Expected Output
 category,total

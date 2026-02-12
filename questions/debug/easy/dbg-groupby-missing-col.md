@@ -48,7 +48,6 @@ The query should show total sales by region AND category, but `category` is miss
 
 Fix the query by adding the missing column to GROUP BY.
 
-**The Bug:** `category` is in SELECT but not in GROUP BY. DuckDB may error or produce unexpected results.
 
 ## Expected Output
 region,category,total

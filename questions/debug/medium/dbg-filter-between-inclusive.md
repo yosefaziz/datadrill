@@ -45,7 +45,6 @@ The query should find products priced between $10 and $50 inclusive, but it's mi
 
 Fix the operators to include boundary values.
 
-**The Bug:** `>` and `<` exclude the boundaries. Use `BETWEEN` (which is inclusive) or `>=` and `<=`.
 
 ## Expected Output
 name,price

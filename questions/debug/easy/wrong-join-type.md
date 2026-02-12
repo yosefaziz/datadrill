@@ -52,7 +52,6 @@ hint: "The query is returning rows where customer name is NULL. Should it?"
 
 The following query is supposed to show order amounts for customers, but it's including orders that don't have matching customers. Fix the query so it only shows orders that have a matching customer.
 
-**The Bug:** The query uses LEFT JOIN, which includes all orders even if there's no matching customer.
 
 ## Expected Output
 name,amount

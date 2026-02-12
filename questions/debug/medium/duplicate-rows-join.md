@@ -57,8 +57,6 @@ hint: "Each product appears multiple times because it has multiple reviews. How 
 
 The following query is meant to list all products that have at least one review, showing each product only once. However, products with multiple reviews are appearing multiple times. Fix the query.
 
-**The Bug:** The JOIN creates duplicate rows when a product has multiple reviews. We need DISTINCT to get unique products.
-
 ## Expected Output
 name,price
 Laptop,999

@@ -46,7 +46,6 @@ The query calculates average rating and review count, but AVG silently ignores N
 
 Fix the query to show the true average (treating NULL as 0) and distinguish rated vs total reviews.
 
-**The Bug:** `AVG(rating)` skips NULLs, inflating the average. `COUNT(*)` counts all rows including unrated ones. Use `COALESCE(rating, 0)` and show both `COUNT(rating)` and `COUNT(*)`.
 
 ## Expected Output
 product_id,avg_rating,rated_count,total_count

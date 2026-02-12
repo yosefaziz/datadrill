@@ -43,7 +43,6 @@ The query should find all products with stock of 10 or more, but products with e
 
 Fix the comparison operator to include the boundary value.
 
-**The Bug:** `>` (strictly greater than) excludes the boundary. Use `>=` (greater than or equal) to include products with exactly 10 in stock.
 
 ## Expected Output
 name,price,stock

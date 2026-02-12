@@ -65,7 +65,6 @@ The query shows how many students are enrolled in each course, but the counts ar
 
 Fix the query to count unique students per course.
 
-**The Bug:** `COUNT(*)` counts all enrollment rows including re-enrollments. Use `COUNT(DISTINCT e.student_id)` to count unique students.
 
 ## Expected Output
 name,student_count

@@ -1,11 +1,10 @@
-import { Question, isDebugQuestion, isArchitectureQuestion, isModelingQuestion, isPythonCodingQuestion, isPySparkQuestion, isPandasQuestion } from '@/types';
+import { Question, isArchitectureQuestion, isModelingQuestion, isPythonCodingQuestion, isPySparkQuestion, isPandasQuestion } from '@/types';
 
 interface QuestionDescriptionProps {
   question: Question;
 }
 
 export function QuestionDescription({ question }: QuestionDescriptionProps) {
-  const isDebug = isDebugQuestion(question);
   const isCoding = isPythonCodingQuestion(question);
   const hasTables = !isArchitectureQuestion(question) && !isModelingQuestion(question) && !isCoding && 'tables' in question && question.tables.length > 0;
 
@@ -21,19 +20,6 @@ export function QuestionDescription({ question }: QuestionDescriptionProps) {
         className="prose prose-slate max-w-none mb-6 prose-invert"
         dangerouslySetInnerHTML={{ __html: question.description }}
       />
-
-      {/* Show hint for debug questions */}
-      {isDebug && question.hint && (
-        <div className="mb-6 p-4 bg-warning/10 border border-warning/30 rounded-lg">
-          <div className="flex items-start gap-2">
-            <span className="text-warning text-lg">💡</span>
-            <div>
-              <h3 className="font-semibold text-warning mb-1">Hint</h3>
-              <p className="text-text-secondary text-sm">{question.hint}</p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Test cases for coding questions */}
       {isCoding && (

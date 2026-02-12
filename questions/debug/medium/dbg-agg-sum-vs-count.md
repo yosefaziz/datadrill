@@ -43,7 +43,6 @@ The query should calculate total payroll per department, but it's showing headco
 
 Fix the aggregate function.
 
-**The Bug:** `COUNT(salary)` counts the number of salary values, not their sum. Use `SUM(salary)` for the total.
 
 ## Expected Output
 department,total_payroll

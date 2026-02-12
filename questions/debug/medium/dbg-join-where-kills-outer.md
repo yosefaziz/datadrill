@@ -62,7 +62,6 @@ The query should show all customers with their shipped order amounts (NULL if no
 
 Move the filter condition from WHERE to the ON clause.
 
-**The Bug:** `WHERE o.status = 'shipped'` filters out NULL rows from the LEFT JOIN, effectively turning it into an INNER JOIN. Move the predicate to the ON clause.
 
 ## Expected Output
 name,amount

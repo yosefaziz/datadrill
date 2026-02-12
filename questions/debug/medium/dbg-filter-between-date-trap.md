@@ -43,7 +43,6 @@ The query should find all events in January 2024, but events on January 31st aft
 
 Fix the date range to capture the full day.
 
-**The Bug:** `BETWEEN '2024-01-01' AND '2024-01-31'` treats Jan 31 as midnight (00:00:00), missing events at 10:00 and 18:30 on that day. Use `< '2024-02-01'` instead.
 
 ## Expected Output
 event_name,event_timestamp

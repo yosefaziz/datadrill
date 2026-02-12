@@ -35,7 +35,6 @@ hint: "Check the logical operator. Are you looking for 'OR' or 'AND' conditions?
 
 The following PySpark code is supposed to find all completed transactions with an amount greater than 100. However, it's returning incorrect results. Fix the filter condition.
 
-**The Bug:** The code uses `|` (OR) instead of `&` (AND), and is missing parentheses for correct operator precedence.
 
 ## Expected Output
 id,customer,amount,status

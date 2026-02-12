@@ -61,7 +61,6 @@ The query is supposed to show total spending per customer, but the amounts are t
 
 Fix the query to avoid the fan-out.
 
-**The Bug:** Joining orders to payments creates duplicate rows when an order has multiple payments, inflating the SUM. Remove the unnecessary join since we only need order amounts.
 
 ## Expected Output
 customer_id,total_spent
