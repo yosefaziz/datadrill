@@ -124,18 +124,6 @@ function ScenarioCard({ scenario, isAuthenticated, requireAuth }: ScenarioCardPr
           {scenario.roundCount} {scenario.roundCount === 1 ? 'round' : 'rounds'}
         </span>
       </div>
-      {scenario.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {scenario.tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
     </Link>
   );
 }

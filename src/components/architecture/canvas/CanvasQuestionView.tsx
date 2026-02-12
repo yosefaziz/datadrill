@@ -207,14 +207,6 @@ export function CanvasQuestionView({ question }: CanvasQuestionViewProps) {
                 >
                   {question.difficulty}
                 </span>
-                {question.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs bg-bg-secondary text-text-secondary px-2 py-1 rounded"
-                  >
-                    {tag}
-                  </span>
-                ))}
               </div>
             </div>
 

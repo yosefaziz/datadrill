@@ -106,16 +106,6 @@ export function ModelingQuestionView({ question }: ModelingQuestionViewProps) {
       case 'description':
         return (
           <>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {question.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs bg-bg-secondary text-text-secondary px-2 py-0.5 rounded"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
             <p className="mt-2 text-sm text-text-secondary">{question.prompt}</p>
           </>
         );

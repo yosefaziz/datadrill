@@ -47,14 +47,6 @@ export function QuestionHeader({ question, children }: QuestionHeaderProps) {
         >
           {question.difficulty}
         </span>
-        {question.tags.map((tag) => (
-          <span
-            key={tag}
-            className="px-2 py-0.5 bg-bg-secondary text-text-secondary rounded text-xs"
-          >
-            {tag}
-          </span>
-        ))}
       </div>
     </div>
   );
